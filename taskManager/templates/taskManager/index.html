@@ -2,6 +2,18 @@
 
 <a href="/taskManager/register/">Register Here</a>
 
+{% if user.is_authenticated %}
+<a href="/taskManager/logout/">Log Out</a>
+{% else %}
+<a href="/taskManager/login/">Log In</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+<h1>hello {{ user.username }}!</h1>
+{% else %}
+<h1>hello!</h1>
+{% endif %}
+
 <h4>All Projects</h4>
 
 {% if latest_Project_list %}

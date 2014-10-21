@@ -3,10 +3,38 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
+from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
 from taskManager.forms import UserForm
 
 from taskManager.models import Task, CommentForm, Project
+
+#20821e4abaea95268880f020c9f6768288f3725a
+
+from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)
+    latest_Project_list = Project.objects.order_by('-start_date')
+    return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
+    # Redirect to a success page.
+
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+            return redirect ('/taskManager/thanks/')
+        else:
+            # Return a 'disabled account' error message
+            return redirect ('/taskManager/thanks/')
+    else:
+        # Return an 'invalid login' error message.
+        return render_to_response('taskManager/login.html', {}, RequestContext(request))
+
 
 def register(request):
     # Like before, get the request's context.
@@ -45,7 +73,7 @@ def register(request):
 
 
 def index(request):
-	latest_Project_list = Project.objects.order_by('-start_date')[:5]
+	latest_Project_list = Project.objects.order_by('-start_date')
 	#template = loader.get_template('taskManager/index.html')
 	#context = RequestContext(request, {
 	#	'latest_task_list': latest_task_list,
@@ -57,24 +85,24 @@ def index(request):
 #	return HttpResponse("You're looking at question %s" % task_id)
 
 
-def login(request):
-    state = "Please log in below..."
-    username = password = ''
-    if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+# def login(request):
+#     state = "Please log in below..."
+#     username = password = ''
+#     if request.POST:
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                state = "You're successfully logged in!"
-            else:
-                state = "Your account is not active, please contact the site admin."
-        else:
-            state = "Your username and/or password were incorrect."
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 state = "You're successfully logged in!"
+#             else:
+#                 state = "Your account is not active, please contact the site admin."
+#         else:
+#             state = "Your username and/or password were incorrect."
 
-    return render_to_response('login.html',{'state':state, 'username': username})
+#     return render_to_response('login.html',{'state':state, 'username': username})
 
 
 def proj_details(request, project_id):
@@ -86,15 +114,7 @@ def the_comments(request, task_id):
 	response = "You're looking at the comments of question %s."
 	return HttpResponse(response % task_id)
 
-def detail(request, task_id, foreign_key):
-	#try:
-	if request.method == 'POST':
-		form = CommentForm(request.POST)
-		if form.is_valid():
-			return HttpResponseRedirect('/thanks/')
-		else:
-			form = CommentForm()
-
+def detail(request, task_id, project_id):
 	task = Task.objects.get(pk = task_id)
 	#except Task.DoesNotExist:
 	#	raise Http404
