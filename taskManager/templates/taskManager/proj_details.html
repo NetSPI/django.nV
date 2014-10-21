@@ -1,0 +1,7 @@
+<h4>{{proj.proj_text}}</h4>
+
+<ul>
+{% for task in proj.task_set.all %}
+    <li><a href="{% url 'taskManager:detail' task.id %}"/>{{ task.task_text }}</li>
+{% endfor %}
+</ul>

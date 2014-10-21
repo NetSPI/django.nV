@@ -1,0 +1,15 @@
+
+
+<a href="/taskManager/register/">Register Here</a>
+
+<h4>All Projects</h4>
+
+{% if latest_Project_list %}
+	<ul>
+	{% for proj in latest_Project_list %}
+		<li><a href="{% url 'taskManager:proj_details' proj.id %}"/>{{proj.project_text}}</a></li>
+	{% endfor%}
+	</ul>
+{% else %}
+	<p> No projects are available.</p>
+{%endif%}
