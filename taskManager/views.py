@@ -34,9 +34,13 @@ def login_view(request):
             else:
                 # Return a 'disabled account' error message
                 return redirect('/taskManager/')
+        else:
+            # Return an 'invalid login' error message.
+            return render(request, 'taskManager/login.html', {'failed_login': False})
+            #return render_to_response('taskManager/login.html', {'failed_login': failed_login}, RequestContext(request))
     else:
-        # Return an 'invalid login' error message.
-        return render_to_response('taskManager/login.html', {}, RequestContext(request))
+            # Return an 'invalid login' error message.
+            return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
 
 def register(request):
@@ -84,44 +88,28 @@ def index(request):
 	#return HttpResponse(template.render(context))
 	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
 
-#def detail(request, task_id):
-#	return HttpResponse("You're looking at question %s" % task_id)
-
-
-# def login(request):
-#     state = "Please log in below..."
-#     username = password = ''
-#     if request.POST:
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             if user.is_active:
-#                 login(request, user)
-#                 state = "You're successfully logged in!"
-#             else:
-#                 state = "Your account is not active, please contact the site admin."
-#         else:
-#             state = "Your username and/or password were incorrect."
-
-#     return render_to_response('login.html',{'state':state, 'username': username})
-
-
 def proj_details(request, project_id):
-	proj = Project.objects.get(pk = project_id)
-	return render(request, 'taskManager/proj_details.html', {'proj':proj})
 
+    proj = Project.objects.get(pk = project_id)
+    logged_in = True
+
+    if not request.user.is_authenticated():
+        logged_in =False
+	
+    return render(request, 'taskManager/proj_details.html', {'proj':proj, 'logged_in':logged_in})
 
 def the_comments(request, task_id):
 	response = "You're looking at the comments of question %s."
 	return HttpResponse(response % task_id)
 
 def detail(request, task_id, project_id):
-	task = Task.objects.get(pk = task_id)
-	#except Task.DoesNotExist:
-	#	raise Http404
-	return render(request, 'taskManager/detail.html', {'task':task})
+    task = Task.objects.get(pk = task_id)
+    logged_in = True
+
+    if not request.user.is_authenticated():
+        logged_in =False
+
+    return render(request, 'taskManager/detail.html', {'task':task, 'logged_in':logged_in})
 
 def thanks(request):
 	response = "We are grateful for your comment!"

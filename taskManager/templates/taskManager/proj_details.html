@@ -1,7 +1,16 @@
 <h4>{{proj.proj_text}}</h4>
 
+{% if logged_in == True %}
+
 <ul>
 {% for task in proj.task_set.all %}
     <li><a href="{% url 'taskManager:detail' proj.id task.id%}"/>{{ task.task_text }}</li>
 {% endfor %}
 </ul>
+
+{% else %}
+
+<h4> Please log in to see project details </h4>
+<p><a href = "/taskManager/login/">Log in</a></p>
+
+{% endif %}

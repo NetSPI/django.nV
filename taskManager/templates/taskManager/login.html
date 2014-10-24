@@ -8,6 +8,12 @@
     <body>
         <h1>Login to Task Manager</h1>
 
+        {% if failed_login == False %}
+
+        <h3>Login failed. Please try again</h3>
+
+        {% endif %}
+
         <form id="login_form" method="post">
             {% csrf_token %}
             Username: <input type="text" name="username" value="" size="50" />
