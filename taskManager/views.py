@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
 from django.template import RequestContext, loader
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
 from taskManager.forms import UserForm
@@ -19,18 +19,21 @@ def logout_view(request):
     return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
     # Redirect to a success page.
 
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            # Redirect to a success page.
-            return redirect ('/taskManager/thanks/')
-        else:
-            # Return a 'disabled account' error message
-            return redirect ('/taskManager/thanks/')
+def login_view(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username', False)
+        password = request.POST.get('password', False)
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                # Redirect to a success page.
+                return redirect('/taskManager/')
+            else:
+                # Return a 'disabled account' error message
+                return redirect('/taskManager/')
     else:
         # Return an 'invalid login' error message.
         return render_to_response('taskManager/login.html', {}, RequestContext(request))
