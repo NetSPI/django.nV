@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
+        <title>Create New Project</title>
+    </head>
+
+    <body>
+        <h1>Create New Project</h1>
+
+        {% if user.is_authenticated == False %}
+
+        <h4> Please log in to make a new project    </h4>
+        <p><a href = "/taskManager/login/">Log in</a></p>
+
+        {% else %}
+
+        <form id="new_proj_form" method="post">
+            {% csrf_token %}
+            Project Title: <input type="text" name="project_title" value="" size="50" />
+            <br />
+            Project Text: <input type="text" name="project_text" value="" size="100" />
+            <br />
+            <input type="submit" value="submit" />
+        </form>
+
+        {% endif %}
+    </body>
+</html>

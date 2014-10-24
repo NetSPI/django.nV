@@ -9,17 +9,35 @@
 {% endif %}
 
 {% if user.is_authenticated %}
+
+<a href='/taskManager/newproj/'>Create a project</a>
+
 <h1>hello {{ user.username }}!</h1>
-{% else %}
+
+{% elif disabled_user == True %}
+
+<h3>Your account has been disabled! The powers at be deny you access</h3>
 <h1>hello!</h1>
+
+{% else %}
+
+<h1>hello!</h1>
+
 {% endif %}
+
+
+{% if new_project_added == True %}
+
+<h4>A new project has been added! </h4>
+
+{%  endif %}
 
 <h4>All Projects</h4>
 
 {% if latest_Project_list %}
 	<ul>
 	{% for proj in latest_Project_list %}
-		<li><a href="{% url 'taskManager:proj_details' proj.id %}"/>{{proj.project_text}}</a></li>
+		<li><a href="{% url 'taskManager:proj_details' proj.id %}"/>{{proj.project_title}}</a></li>
 	{% endfor%}
 	</ul>
 {% else %}

@@ -1,6 +1,6 @@
-<h4>{{proj.proj_text}}</h4>
-
 {% if logged_in == True %}
+
+<h4>Project Description: {{proj.project_text}}</h4>
 
 <ul>
 {% for task in proj.task_set.all %}

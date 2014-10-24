@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
@@ -5,13 +7,37 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group, Permission
 from taskManager.forms import UserForm
+from django.contrib.auth.decorators import login_required
 
 from taskManager.models import Task, CommentForm, Project
 
 #20821e4abaea95268880f020c9f6768288f3725a
 
 from django.contrib.auth import logout
+
+#@login_required
+#def my_projects(request):
+def newproj(request):
+
+    if request.method == 'POST':
+       
+        project_title = request.POST.get('project_title', False)
+        project_text = request.POST.get('project_text', False)
+        now = datetime.datetime.now()
+       
+        project = Project(project_title = project_title,
+        project_text = project_text,
+        start_date = now)
+        
+        project.save()
+
+        return redirect('/taskManager/', {'new_project_added':True})
+    else:
+        return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
+
+
 
 def logout_view(request):
     logout(request)
@@ -33,18 +59,17 @@ def login_view(request):
                 return redirect('/taskManager/')
             else:
                 # Return a 'disabled account' error message
-                return redirect('/taskManager/')
+                return redirect('/taskManager/', {'disabled_user':True})
         else:
             # Return an 'invalid login' error message.
             return render(request, 'taskManager/login.html', {'failed_login': False})
-            #return render_to_response('taskManager/login.html', {'failed_login': failed_login}, RequestContext(request))
     else:
             # Return an 'invalid login' error message.
             return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
 
 def register(request):
-    # Like before, get the request's context.
+
     context = RequestContext(request)
 
     registered = False
