@@ -1,10 +1,15 @@
 {% if logged_in == True %}
 
-<h4>Project Description: {{proj.project_text}}</h4>
+<a href = "/taskManager/"> <- Project List </a> <br />
+
+
+<h4>Project Description: {{proj.project_text}}</h4> 
+<a href = "{% url 'taskManager:new_task' proj.id %}"> Add a Task </a>
+
 
 <ul>
 {% for task in proj.task_set.all %}
-    <li><a href="{% url 'taskManager:detail' proj.id task.id%}"/>{{ task.task_text }}</li>
+    <li><a href="{% url 'taskManager:detail' proj.id task.id%}"/>{{ task.task_text|truncatechars:60 }}</li>
 {% endfor %}
 </ul>
 

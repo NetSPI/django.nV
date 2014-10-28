@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
+        <title>Add New Task</title>
+    </head>
+
+    <body>
+        <h1>Add New Task</h1>
+
+        {% if user.is_authenticated == False %}
+
+        <h4> Please log in to make a new task    </h4>
+        <p><a href = "/taskManager/login/">Log in</a></p>
+
+        {% else %}
+
+        <form id="new_task_form" method="post">
+            {% csrf_token %}
+            Task Text: <input type="text" name="task_text" value="" size="100" />
+            <br />
+            <input type="submit" value="submit" />
+        </form>
+
+        {% endif %}
+    </body>
+</html>

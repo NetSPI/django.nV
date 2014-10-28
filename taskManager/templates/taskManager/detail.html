@@ -1,5 +1,8 @@
 {% if logged_in == True %}
 
+
+<a href = "{% url 'taskManager:proj_details' task.assoc_project.id %}"> <--- </a><br />
+
 <h4>{{task.task_text}}</h4>
 
 <ul>
@@ -7,6 +10,9 @@
     <li>{{ comment.comment_text }}</li>
 {% endfor %}
 </ul>
+
+
+
 
 {% else %}
 

@@ -1,5 +1,8 @@
 import datetime
 
+
+from django.contrib.auth.models import User
+
 from django.utils import timezone
 from django.db import models
 from django import forms
@@ -31,14 +34,13 @@ class Task(models.Model):
 	def was_created_recently(self):
 		return self.pub_date >=timezone.now() - datetime.timedelta(days =1)
 
-class Comment(models.Model):
+class Comments(models.Model):
 	task = models.ForeignKey(Task)
+	user = models.ForeignKey(User, default = 1)
+
 	comment_text = models.CharField(max_length = 200)
 
 	def __str__(self):
 		return self.comment_text
 
-
-class CommentForm(forms.Form):
-	the_comment = forms.CharField(widget = forms.Textarea)
 

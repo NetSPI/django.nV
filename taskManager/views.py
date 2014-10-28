@@ -11,7 +11,7 @@ from django.contrib.auth.models import Group, Permission
 from taskManager.forms import UserForm
 from django.contrib.auth.decorators import login_required
 
-from taskManager.models import Task, CommentForm, Project
+from taskManager.models import Task, Project #,CommentForm
 
 #20821e4abaea95268880f020c9f6768288f3725a
 
@@ -19,6 +19,30 @@ from django.contrib.auth import logout
 
 #@login_required
 #def my_projects(request):
+
+
+def newtask(request, project_id):
+
+    if request.method == 'POST':
+       
+        proj = Project.objects.get(pk = project_id)
+
+        task_text = request.POST.get('task_text', False)
+        now = datetime.datetime.now()
+       
+        task = Task(
+        task_text = task_text,
+        pub_date = now,
+        assoc_project = proj)
+        
+        task.save()
+
+        return redirect('/taskManager/' + project_id + '/', {'new_task_added':True})
+    else:
+        return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
+
+
+
 def newproj(request):
 
     if request.method == 'POST':
