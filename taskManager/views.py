@@ -7,19 +7,38 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import Group, Permission
-from taskManager.forms import UserForm
+from django.contrib.auth.models import Group, Permission, User
+from taskManager.forms import UserForm, GroupForm
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import logout
 from taskManager.models import Task, Project #,CommentForm
 
 #20821e4abaea95268880f020c9f6768288f3725a
 
-from django.contrib.auth import logout
 
-#@login_required
-#def my_projects(request):
+def manageGroups(request):
 
+    user  = request.user
+
+    if user.is_authenticated():
+        logged_in = True
+
+        if user.has_perm('can_change_group'):
+			
+            user_list = User.objects.order_by('date_joined')
+
+            if request.method == 'POST':
+                x=1
+
+            else:	
+                group_form = GroupForm()
+                return render_to_response('taskManager/manage_groups.html', 
+				    {'group_form':group_form,'users':user_list, 'logged_in':logged_in}, RequestContext(request))
+        else:
+            return redirect('/taskManager/', {'permission':False})
+    else:
+        redirect('/taskManager/', {'logged_in':False})
 
 def newtask(request, project_id):
 
@@ -41,8 +60,6 @@ def newtask(request, project_id):
     else:
         return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
 
-
-
 def newproj(request):
 
     if request.method == 'POST':
@@ -60,8 +77,6 @@ def newproj(request):
         return redirect('/taskManager/', {'new_project_added':True})
     else:
         return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
-
-
 
 def logout_view(request):
     logout(request)
@@ -91,7 +106,6 @@ def login_view(request):
             # Return an 'invalid login' error message.
             return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
-
 def register(request):
 
     context = RequestContext(request)
@@ -108,6 +122,11 @@ def register(request):
             user = user_form.save()
 
             user.set_password(user.password)
+
+            #add user to lowest permission group
+            grp = Group.objects.get(name='team_member')
+            user.groups.add(grp)
+
             user.save()
 
             # Update our variable to tell the template registration was successful.
@@ -127,15 +146,16 @@ def register(request):
             {'user_form': user_form, 'registered': registered},
             context)
 
-
 def index(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
-	#template = loader.get_template('taskManager/index.html')
-	#context = RequestContext(request, {
-	#	'latest_task_list': latest_task_list,
-	#})
-	#return HttpResponse(template.render(context))
-	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
+	
+	admin_level = False
+
+	if request.user.has_perm('can_change_group'):
+		admin_level = True
+
+	return render(request, 'taskManager/index.html',
+    {'latest_Project_list': latest_Project_list, 'user':request.user , 'admin_level':admin_level })
 
 def proj_details(request, project_id):
 
@@ -163,5 +183,3 @@ def detail(request, task_id, project_id):
 def thanks(request):
 	response = "We are grateful for your comment!"
 	return HttpResponse(response)
-
-# Create your views here.

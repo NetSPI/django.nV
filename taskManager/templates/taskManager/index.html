@@ -9,8 +9,12 @@
 {% endif %}
 
 {% if user.is_authenticated %}
+{% if admin_level == True %}
 
 <a href='/taskManager/newproj/'>Create a project</a>
+
+<a href = {% url 'taskManager:manage_groups' %}>Manage Users</a>
+{% endif %}
 
 <h1>hello {{ user.username }}!</h1>
 
@@ -25,6 +29,11 @@
 
 {% endif %}
 
+{% if permission == False %}
+
+<h4>You do not have the permissions to view that page</h4>
+
+{% endif %}
 
 {% if new_project_added == True %}
 

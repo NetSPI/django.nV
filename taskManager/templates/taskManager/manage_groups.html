@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
+        <title>Manage Groups</title>
+    </head>
+
+    <body>
+
+        {% if logged_in == True %}
+
+        <a href="/taskManager/"> <-- Return home</a>
+
+        <h1>Manage Groups</h1>
+
+        {% if groups_changed = True %}
+        <h4> groups have been changed</h4>
+        {% endif %}
+
+        <form method = "post">
+        {% csrf_token %}
+        {% for user in users %}
+        
+        <h5>{{user.username}}</h5> 
+
+        <input type="radio" name="radio" id="user{{forloop.counter}}" value="admin_g">Admin Access<br />
+        <input type="radio" name="radio" id="user{{forloop.counter}}" value="project_managers">Project Manager Access<br /> 
+        <input type="radio" name="radio" id="user{{forloop.counter}}" value="team_member">Project Member Access<br />
+
+
+        {% endfor %}
+        <br />
+        <input type="submit" value="Submit" />
+
+        </form>
+
+        {% endif %}
+
+
+        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+    </body>
+</html>

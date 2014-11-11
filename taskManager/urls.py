@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^register/$', views.register, name = 'register'),
     url(r'^login/$', views.login_view, name = 'login'),
     url(r'^newproj/$', views.newproj, name= 'new project'),
+    url(r'^manage_groups/$', views.manageGroups, name = 'manage_groups')
     #url(r'^my-projects/$', views.my_projects, name = 'my projects'),
 )
