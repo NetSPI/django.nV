@@ -1,15 +1,43 @@
+<html>
+<body>
+{% extends 'taskManager/base.html' %}
+
+
+{% block menu %}
+
+{% if logged_in == True %}
+<ul class="nav pull-right">
+	<li><a href = "{% url 'taskManager:proj_details' task.assoc_project.id %}"> <--- Back </a><br /></li>
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
 {% if logged_in == True %}
 
 
-<a href = "{% url 'taskManager:proj_details' task.assoc_project.id %}"> <--- </a><br />
 
 <h4>{{task.task_text}}</h4>
 
+<h5>Comments:</h5><br />
 <ul>
-{% for comment in task.comment_set.all %}
-    <li>{{ comment.comment_text }}</li>
+
+{% for noter in task.notes_set.all %}
+    <li>{{ noter.user }}:&nbsp&nbsp&nbsp{{ noter.note_text }}</li>
+    &nbsp&nbsp&nbsp  <img src={{ noter.image_url }}/></li>
 {% endfor %}
 </ul>
+
+
+
+<form method="post">{% csrf_token %}
+
+	Your comment: <input type="text" name="comment" value="" size="400" /><br />
+	Or image url: <input type="text" name="image" value="" size="400" /><br />
+
+	<input type="submit" value="submit" />
+</form>
 
 
 
@@ -19,4 +47,25 @@
 <h4> Please log in to see task details </h4>
 <p><a href = "/taskManager/login/">Log in</a></p>
 
+
 {% endif %}
+
+{% endblock %}
+
+</body>
+</html>
+
+
+<!-- {% if assigned_to == False%}
+
+<h4>You have not been assigned to this project nor have the permissions necessary, therefore
+you will not be able to see the project details</h4>
+
+{% endif %} -->
+
+<!-- {% if assigned_to == True%} -->
+
+<!-- {%  endif %}
+ -->
+
+<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>

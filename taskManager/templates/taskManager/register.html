@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+{% extends 'taskManager/base.html' %}
+
     <head>
-        <title>Task Manager</title>
     </head>
 
     <body>
+        {% block content %}
 
+        <h1>Register a user</h1>
         {% if registered %}
         Task Manager says: <strong>thank you for registering!</strong>
         <a href="/taskManager/">Return to the homepage.</a><br />
@@ -23,5 +26,6 @@
             <input type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
+        {% endblock %}
     </body>
 </html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+{% extends 'taskManager/base.html' %}
+
+    <head>
+        
+    </head>
+
+    <body>
+        {% block content %}
+        {% if logged_in == True %}
+
+        <a href="/taskManager/"> <-- Return home</a>
+
+        <h1>Manage Projects - Assign or Remove a user from a project</h1>
+
+        <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+        </form>
+        {% endif %}
+        {% endblock %}
+
+        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+    </body>
+</html>

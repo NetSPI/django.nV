@@ -1,15 +1,22 @@
 <!DOCTYPE html>
+{% extends 'taskManager/base.html' %}
 <html>
     <head>
         <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Manage Groups</title>
     </head>
 
     <body>
+        {% block menu %}
+        {% if logged_in == True %}
+        <ul class="nav pull-right">
+            <li><a href="/taskManager/"><--- Return Home</a></li>
+        </ul>
+        {% endif %}
+
+        {% endblock %}
+        {% block content %}
 
         {% if logged_in == True %}
-
-        <a href="/taskManager/"> <-- Return home</a>
 
         <h1>Manage Groups</h1>
 
@@ -20,22 +27,19 @@
         <form method = "post">
         {% csrf_token %}
         {% for user in users %}
-        
-        <h5>{{user.username}}</h5> 
-
-        <input type="radio" name="radio" id="user{{forloop.counter}}" value="admin_g">Admin Access<br />
-        <input type="radio" name="radio" id="user{{forloop.counter}}" value="project_managers">Project Manager Access<br /> 
-        <input type="radio" name="radio" id="user{{forloop.counter}}" value="team_member">Project Member Access<br />
-
-
+            <h4>{{user.username}}</h4> 
+            <input type="checkbox" name = "radio_bool{{forloop.counter}}" id = "user_bool{{forloop.counter}}" value = "change_group"><u>Change this user's permissions</u><br /><br />
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="admin_g">Admin Access<br />
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="project_managers">Project Manager Access<br /> 
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="team_member" checked>Project Member Access<br />
         {% endfor %}
         <br />
         <input type="submit" value="Submit" />
 
         </form>
-
+        
         {% endif %}
-
+        {% endblock %}
 
         <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
     </body>

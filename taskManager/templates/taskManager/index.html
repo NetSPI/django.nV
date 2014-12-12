@@ -1,21 +1,37 @@
+{% extends 'taskManager/base.html' %}
 
+{% block menu %}
+<ul class="nav pull-right">
+	<li><a href="/taskManager/register/">Register Here</a></li>
 
-<a href="/taskManager/register/">Register Here</a>
+	{% if user.is_authenticated %}
+	<li class="divider-vertical"></li>
+	<li><a href="/taskManager/logout/"><li>Log Out</a></li>
+	{% else %}
+	<li class="divider-vertical"></li>
+	<li><a href="/taskManager/login/">Log In</a></li>
+	{% endif %}
 
-{% if user.is_authenticated %}
-<a href="/taskManager/logout/">Log Out</a>
-{% else %}
-<a href="/taskManager/login/">Log In</a>
+	{% if user.is_authenticated %}
+	{% if admin_level == True %}
+
+	<li class="divider-vertical"></li>
+	<li><a href='/taskManager/newproj/'>Create a project</a></li>
+	<li class="divider-vertical"></li>
+	<li><a href = {% url 'taskManager:manage_groups' %}>Manage Users</a></li>
+	<li class="divider-vertical"></li>
+	<li><a href = {% url 'taskManager:manage_projects' %}>Manage Projects</a></li>
+
+</ul>
 {% endif %}
-
-{% if user.is_authenticated %}
-{% if admin_level == True %}
-
-<a href='/taskManager/newproj/'>Create a project</a>
-
-<a href = {% url 'taskManager:manage_groups' %}>Manage Users</a>
 {% endif %}
+{% endblock %}
 
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
 <h1>hello {{ user.username }}!</h1>
 
 {% elif disabled_user == True %}
@@ -46,9 +62,18 @@
 {% if latest_Project_list %}
 	<ul>
 	{% for proj in latest_Project_list %}
-		<li><a href="{% url 'taskManager:proj_details' proj.id %}"/>{{proj.project_title}}</a></li>
+		<a href="{% url 'taskManager:proj_details' proj.id %}"/><li class='btn'>{{proj.project_title}}</li></a>
 	{% endfor%}
 	</ul>
 {% else %}
 	<p> No projects are available.</p>
 {%endif%}
+
+{% endblock %}
+
+
+
+
+<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+
+

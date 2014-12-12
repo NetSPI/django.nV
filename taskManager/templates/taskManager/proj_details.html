@@ -1,7 +1,37 @@
+
+{% extends 'taskManager/base.html' %}
+
+{% block menu %}
+<ul class="nav pull-right">
+	{% if logged_in == True %}
+
+	<li><a href = "/taskManager/"> <- Project List </a> </li>
+
+
+	{% if assigned_to == True%}
+
+	<li class="divider-vertical"></li>
+
+
+	<li><a href = "/taskManager/{{proj.id}}/manage_tasks/" > Manage Tasks </a></li>
+
+</ul>
+
+{%  endif %}
+
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
 {% if logged_in == True %}
 
-<a href = "/taskManager/"> <- Project List </a> <br />
+{% if assigned_to == False%}
 
+<h4>You have not been assigned to this project nor have the permissions necessary, therefore
+you will not be able to see the project details</h4>
+
+{% else %}
 
 <h4>Project Description: {{proj.project_text}}</h4> 
 <a href = "{% url 'taskManager:new_task' proj.id %}"> Add a Task </a>
@@ -9,13 +39,22 @@
 
 <ul>
 {% for task in proj.task_set.all %}
-    <li><a href="{% url 'taskManager:detail' proj.id task.id%}"/>{{ task.task_text|truncatechars:60 }}</li>
+    <li> <a href="{% url 'taskManager:detail' proj.id task.id%}">{{ task.task_text|truncatechars:60 }}</a> | Status:
+
+    {% if task.completed == True %}
+    	Complete
+    {% else %}
+    	In Progress
+    {% endif %}
+
+    </li>
 {% endfor %}
 </ul>
-
+{% endif %}
 {% else %}
 
 <h4> Please log in to see project details </h4>
 <p><a href = "/taskManager/login/">Log in</a></p>
 
 {% endif %}
+{%  endblock %}
