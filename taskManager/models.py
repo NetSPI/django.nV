@@ -21,6 +21,7 @@ class Project(models.Model):
 	def was_created_recently(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days =1)
 
+
 class Task(models.Model):
 	assoc_project = models.ForeignKey(Project, default=1)
 	task_text = models.CharField(max_length = 200)

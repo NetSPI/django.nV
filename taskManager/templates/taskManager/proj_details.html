@@ -39,7 +39,7 @@ you will not be able to see the project details</h4>
 
 <ul>
 {% for task in proj.task_set.all %}
-    <li> <a href="{% url 'taskManager:detail' proj.id task.id%}">{{ task.task_text|truncatechars:60 }}</a> | Status:
+    <li> <a href="{% url 'taskManager:detail' proj.project_title task.id%}">{{ task.task_text|truncatechars:60 }}</a> | Status:
 
     {% if task.completed == True %}
     	Complete

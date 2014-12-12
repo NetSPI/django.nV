@@ -23,10 +23,16 @@
 <h5>Comments:</h5><br />
 <ul>
 
+<!-- {% autoescape off %} allows for xss in the comments -->
+{% autoescape off %}
+
 {% for noter in task.notes_set.all %}
     <li>{{ noter.user }}:&nbsp&nbsp&nbsp{{ noter.note_text }}</li>
     &nbsp&nbsp&nbsp  <img src={{ noter.image_url }}/></li>
 {% endfor %}
+
+{% endautoescape %}
+
 </ul>
 
 
@@ -55,7 +61,7 @@
 </body>
 </html>
 
-
+<!-- code that could be used to prevent insecure direct object reference
 <!-- {% if assigned_to == False%}
 
 <h4>You have not been assigned to this project nor have the permissions necessary, therefore

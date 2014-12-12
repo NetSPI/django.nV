@@ -12,6 +12,7 @@ from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.db import connection
 from taskManager.models import Task, Project, Notes #,CommentForm
 
 #20821e4abaea95268880f020c9f6768288f3725a
@@ -347,9 +348,28 @@ def the_comments(request, task_id):
 	response = "You're looking at the comments of question %s."
 	return HttpResponse(response % task_id)
 
-def detail(request, task_id, project_id):
+def get_proj_by_name(project_title):
+        
+
+        # tables = connection.introspection.table_names()
+        # seen_models = connection.introspection.installed_models(tables)
+
+        # print(tables)
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
+        row = cursor.fetchone() 
+        return row
+
+def detail(request, task_id, project_title):
+
     task = Task.objects.get(pk = task_id)
-    proj = Project.objects.get(pk = project_id)
+    #proj_id = 
+    print(get_proj_by_name(project_title))
+    #proj = Project.objects.get(pk = proj_id[0])
+
+    #print(proj)
+
 
     logged_in = True
 
