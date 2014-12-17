@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+{% extends 'taskManager/base.html' %}
+
     <head>
         <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
         <title>Login</title>
     </head>
 
     <body>
+        {% block content %}
         <h1>Login to Task Manager</h1>
 
         {% if failed_login == False %}
@@ -22,6 +25,6 @@
             <br />
             <input type="submit" value="submit" />
         </form>
-
+        {%  endblock %}
     </body>
 </html>

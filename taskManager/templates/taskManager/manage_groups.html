@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends 'taskManager/base.html' %}
+<html>
+    <head>
+        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
+    </head>
+
+    <body>
+        {% block menu %}
+        {% if logged_in == True %}
+        <ul class="nav pull-right">
+            <li><a href="/taskManager/"><--- Return Home</a></li>
+        </ul>
+        {% endif %}
+
+        {% endblock %}
+        {% block content %}
+
+        {% if logged_in == True %}
+
+        <h1>Manage Groups</h1>
+
+        {% if groups_changed = True %}
+        <h4> groups have been changed</h4>
+        {% endif %}
+
+        <form method = "post">
+        {% csrf_token %}
+        {% for user in users %}
+            <h4>{{user.username}}</h4> 
+            <input type="checkbox" name = "radio_bool{{forloop.counter}}" id = "user_bool{{forloop.counter}}" value = "change_group"><u>Change this user's permissions</u><br /><br />
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="admin_g">Admin Access<br />
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="project_managers">Project Manager Access<br /> 
+            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="team_member" checked>Project Member Access<br />
+        {% endfor %}
+        <br />
+        <input type="submit" value="Submit" />
+
+        </form>
+        
+        {% endif %}
+        {% endblock %}
+
+        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+    </body>
+</html>

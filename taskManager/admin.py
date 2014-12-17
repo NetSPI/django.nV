@@ -1,10 +1,10 @@
 from django.contrib import admin
-from taskManager.models import Task, Comments, Project
+from taskManager.models import Task, Project, Notes
 
 # Register your models here.
 
 class CommentInline(admin.TabularInline):
-	model = Comments
+	model = Notes
 	extra = 3	
 
 class TaskInline(admin.TabularInline):
@@ -25,4 +25,4 @@ class ProjectAdmin(admin.ModelAdmin):
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Task, TaskAdmin)
-#admin.site.register(Comment)
+admin.site.register(Notes)

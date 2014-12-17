@@ -13,17 +13,21 @@ class Project(models.Model):
 	project_title = models.CharField(max_length = 50, default = 'Default')
 	project_text = models.CharField(max_length = 500)
 	start_date = models.DateTimeField('date started')
+	users_assinged = models.ManyToManyField(User)
 
 	def __str__(self):
-		return self.project_text
+		return self.project_title
 
 	def was_created_recently(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days =1)
+
 
 class Task(models.Model):
 	assoc_project = models.ForeignKey(Project, default=1)
 	task_text = models.CharField(max_length = 200)
 	pub_date = models.DateTimeField('date created')
+	completed = models.NullBooleanField(default = False)
+	users_assinged = models.ManyToManyField(User)
 
 	def __str__(self):
 		return self.task_text
@@ -34,13 +38,14 @@ class Task(models.Model):
 	def was_created_recently(self):
 		return self.pub_date >=timezone.now() - datetime.timedelta(days =1)
 
-class Comments(models.Model):
+class Notes(models.Model):
 	task = models.ForeignKey(Task)
-	user = models.ForeignKey(User, default = 1)
 
-	comment_text = models.CharField(max_length = 200)
+	note_text = models.CharField(max_length = 200)
+	image_url = models.CharField(max_length = 200)
+	user = models.CharField(max_length = 200, default = 'ancestor')
 
 	def __str__(self):
-		return self.comment_text
+		return self.note_text
 
 

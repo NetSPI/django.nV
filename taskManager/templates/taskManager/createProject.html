@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+{% extends 'taskManager/base.html' %}
+
     <head>
         <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
         <title>Create New Project</title>
     </head>
 
     <body>
+        {% block content %}
         <h1>Create New Project</h1>
 
         {% if user.is_authenticated == False %}
@@ -25,5 +28,6 @@
         </form>
 
         {% endif %}
+        {% endblock %}
     </body>
 </html>

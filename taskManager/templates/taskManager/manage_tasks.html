@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+{% extends 'taskManager/base.html' %}
+
+    <head>
+        
+        <title>Manage Tasks</title>
+    </head>
+
+    <body>
+
+        {% block content %}
+
+        {% if logged_in == True %}
+
+        <h1>Manage Tasks</h1>
+
+        <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+        </form>
+        {% endif %}
+
+        {% endblock %}
+
+        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
+    </body>
+</html>

@@ -7,19 +7,191 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import Group, Permission
-from taskManager.forms import UserForm
+from django.contrib.auth.models import Group, Permission, User
+from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
-
-from taskManager.models import Task, Project #,CommentForm
+from django.contrib.auth import logout
+from django.db import connection
+from taskManager.models import Task, Project, Notes #,CommentForm
 
 #20821e4abaea95268880f020c9f6768288f3725a
+#add completed status, due date
+#pmem can only see his tasks
+#pman can only see his projects
+#admin can see all tasks
 
-from django.contrib.auth import logout
+def manageTasks(request, project_id):
 
-#@login_required
-#def my_projects(request):
+    print('here')
+    user  = request.user
+    proj = Project.objects.get(pk = project_id)
 
+    if user.is_authenticated():
+        logged_in = True
+
+        if user.has_perm('can_change_project'):
+
+            if request.method == 'POST':
+                form = ManageTask(request.POST)
+                valid = False
+                if form.is_valid():
+                    valid = True
+                    username_input = form.cleaned_data['User']
+                    task_input = form.cleaned_data['Task']
+
+                    user_tuples = get_my_choices_users()
+                    task_tuples = get_my_choices_tasks(proj)
+
+                    user = User.objects.get(username= user_tuples[int(username_input)-1][1])
+                    task = Task.objects.get(task_text = task_tuples[int(task_input)-1][1])
+
+                    task.users_assinged.add(user)
+                    
+
+                return render_to_response('taskManager/manage_tasks.html', 
+                    {'task':form.errors, 'valid':valid, 'logged_in':logged_in}, RequestContext(request))
+
+            else:   
+
+
+                form = ManageTask(current_proj = proj)
+
+                return render_to_response('taskManager/manage_tasks.html', 
+                    {'form':form,'logged_in':logged_in}, RequestContext(request))
+
+        else:
+            return redirect('/taskManager/', {'permission':False})
+    else:
+        redirect('/taskManager/', {'logged_in':False})
+
+
+def get_my_choices_users():
+    # you place some logic here
+    user_list = User.objects.order_by('date_joined')
+    user_tuple = []
+    counter = 1
+    for user in user_list:
+        user_tuple.append((counter, user))
+        counter = counter +1
+    return user_tuple
+
+
+def get_my_choices_projects():
+    # you place some logic here
+    proj_list = Project.objects.all()
+    proj_tuple = []
+    counter = 1
+    for proj in proj_list:
+        proj_tuple.append((counter, proj))
+        counter = counter +1
+    return proj_tuple
+
+def get_my_choices_tasks(current_proj):
+    # you place some logic here
+    task_list = []
+    tasks = Task.objects.all()
+    # for task in tasks:
+    #     if task.assoc_project == current_proj:
+    #         task_list.append(task)
+    task_tuple = []
+    counter = 1
+    for task in tasks:
+        task_tuple.append((counter, task))
+        counter = counter +1
+    return task_tuple
+
+
+def manageProjects(request):
+
+    user  = request.user
+
+    if user.is_authenticated():
+        logged_in = True
+
+        if user.has_perm('can_change_group'):
+
+            if request.method == 'POST':
+                form = AssignProject(request.POST)
+                if form.is_valid():
+
+                    username_input = form.cleaned_data['User']
+                    project_title_input = form.cleaned_data['Project']
+
+                    user_tuples = get_my_choices_users()
+                    project_tuples = get_my_choices_projects()
+
+                    user = User.objects.get(username=user_tuples[int(username_input)-1][1])
+                    project = Project.objects.get(project_title = project_tuples[int(project_title_input)-1][1])
+
+                    project.users_assinged.add(user)
+
+                return redirect('/taskManager/')
+            else:   
+
+                form = AssignProject()
+
+                return redirect('/taskManager/')
+
+        else:
+            return redirect('/taskManager/', {'permission':False})
+    else:
+        redirect('/taskManager/', {'logged_in':False})
+
+def manageGroups(request):
+
+    user  = request.user
+
+    if user.is_authenticated():
+        logged_in = True
+
+        if user.has_perm('can_change_group'):
+			
+            user_list = User.objects.order_by('date_joined')
+
+            if request.method == 'POST':
+
+                selected_choice = request.POST.dict()
+
+                counter = 1
+                groups_changed = False
+
+                while counter < len(selected_choice):
+
+                    current = "radio" + str(counter)
+                    current_bool = "radio_bool" + str(counter)
+                    
+                    if current in selected_choice.keys() and current_bool in selected_choice.keys():
+
+                        user_list[counter-1].groups.clear()
+
+                        if selected_choice[current] == 'admin_g':
+                            grp = Group.objects.get(name='admin_g')
+                            user_list[counter-1].groups.add(grp)#admin group
+                            groups_changed = True
+                        elif selected_choice[current] == 'project_managers':
+                            grp = Group.objects.get(name='project_managers')
+                            user_list[counter-1].groups.add(grp)#manager  group                     
+                            groups_changed = True
+                        elif selected_choice[current] == 'team_member':
+                            grp = Group.objects.get(name='team_member')
+                            user_list[counter-1].groups.add(grp)
+                            groups_changed = True
+
+                        user_list[counter-1].save()
+
+                    counter = counter+1
+
+                return render_to_response('taskManager/manage_groups.html', 
+                    {'users':user_list,'choices':selected_choice, 'groups_changed':groups_changed, 'logged_in':logged_in}, RequestContext(request))
+
+            else:	
+                return render_to_response('taskManager/manage_groups.html', 
+				    {'users':user_list, 'logged_in':logged_in}, RequestContext(request))
+        else:
+            return redirect('/taskManager/', {'permission':False})
+    else:
+        redirect('/taskManager/', {'logged_in':False})
 
 def newtask(request, project_id):
 
@@ -41,8 +213,6 @@ def newtask(request, project_id):
     else:
         return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
 
-
-
 def newproj(request):
 
     if request.method == 'POST':
@@ -60,8 +230,6 @@ def newproj(request):
         return redirect('/taskManager/', {'new_project_added':True})
     else:
         return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
-
-
 
 def logout_view(request):
     logout(request)
@@ -91,7 +259,6 @@ def login_view(request):
             # Return an 'invalid login' error message.
             return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
-
 def register(request):
 
     context = RequestContext(request)
@@ -108,6 +275,11 @@ def register(request):
             user = user_form.save()
 
             user.set_password(user.password)
+
+            #add user to lowest permission group
+            grp = Group.objects.get(name='team_member')
+            user.groups.add(grp)
+
             user.save()
 
             # Update our variable to tell the template registration was successful.
@@ -127,41 +299,114 @@ def register(request):
             {'user_form': user_form, 'registered': registered},
             context)
 
-
 def index(request):
-	latest_Project_list = Project.objects.order_by('-start_date')
-	#template = loader.get_template('taskManager/index.html')
-	#context = RequestContext(request, {
-	#	'latest_task_list': latest_task_list,
-	#})
-	#return HttpResponse(template.render(context))
-	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
+    latest_Project_list = Project.objects.order_by('-start_date')
+	
+    admin_level = False
+
+    # #debugging
+    # group = Group.objects.get(name='admin_g')
+    # users = group.user_set.all()
+
+    if request.user.groups.filter(name='admin_g').exists():
+        admin_level = True
+
+    # #debugging end
+
+    list_to_show = []
+    for project in latest_Project_list:
+        if(project.users_assinged.filter(username= request.user.username)).exists():
+            list_to_show.append(project)
+
+
+
+    return render(request, 'taskManager/index.html',
+    {'latest_Project_list': latest_Project_list, 'user':request.user , 'admin_level':admin_level })
 
 def proj_details(request, project_id):
 
     proj = Project.objects.get(pk = project_id)
     logged_in = True
 
+    admin_level = False
+    if request.user.groups.filter(name='admin_g').exists():
+        admin_level = True
+
+    assigned_to = False
+    if proj.users_assinged.filter(username= request.user.username).exists():
+        assigned_to = True
+    elif admin_level == True:
+        assigned_to = True
+
+
     if not request.user.is_authenticated():
         logged_in =False
 	
-    return render(request, 'taskManager/proj_details.html', {'proj':proj, 'logged_in':logged_in})
+    return render(request, 'taskManager/proj_details.html', {'proj':proj, 'assigned_to':assigned_to, 'logged_in':logged_in})
 
 def the_comments(request, task_id):
 	response = "You're looking at the comments of question %s."
 	return HttpResponse(response % task_id)
 
-def detail(request, task_id, project_id):
+def get_proj_by_name(project_title):
+        
+
+        # tables = connection.introspection.table_names()
+        # seen_models = connection.introspection.installed_models(tables)
+
+        # print(tables)
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
+        row = cursor.fetchone() 
+        return row
+
+def detail(request, task_id, project_title):
+
     task = Task.objects.get(pk = task_id)
+    #proj_id = 
+    print(get_proj_by_name(project_title))
+    #proj = Project.objects.get(pk = proj_id[0])
+
+    #print(proj)
+
+
     logged_in = True
 
     if not request.user.is_authenticated():
         logged_in =False
 
-    return render(request, 'taskManager/detail.html', {'task':task, 'logged_in':logged_in})
+    admin_level = False
+    if request.user.groups.filter(name='admin_g').exists():
+        admin_level = True
+
+    pmanager_level = False
+    if request.user.groups.filter(name='project_managers').exists():
+        pmanager_level = True
+
+    assigned_to = False
+    if task.users_assinged.filter(username= request.user.username).exists():
+        assigned_to = True
+    elif admin_level == True:
+        assigned_to = True
+    elif pmanager_level == True and proj.users_assinged.filter(username= request.user.username).exists():
+        assigned_to = True
+
+
+    if request.method == 'POST':
+        
+        notes_input = request.POST.get('comment', False)
+        image_url = request.POST.get('image', False)
+
+        newNote = Notes()
+        #if notes_input != "" and image_url != "":
+        newNote = Notes(note_text = notes_input, image_url = image_url, task = task, user = request.user.username)
+
+        newNote.save()
+
+
+    return render(request, 'taskManager/detail.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in})
 
 def thanks(request):
 	response = "We are grateful for your comment!"
 	return HttpResponse(response)
-
-# Create your views here.
