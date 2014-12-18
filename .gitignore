@@ -54,3 +54,6 @@ docs/_build/
 
 # Virtualenv
 venv/
+
+#OSX created files
+.DS_Store
