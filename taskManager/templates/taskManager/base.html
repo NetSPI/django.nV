@@ -75,7 +75,7 @@
                       {% if user.is_authenticated %}
                       <li><a href="/taskManager/logout">Logout</a></li>
                       {% else %}
-                      <li class="active" ><a href="/taskManager/register">Signup</a></li>
+                      <li class="active" ><a href="/taskManager/register">Sign Up</a></li>
                       <li><a href="/taskManager/login">Login</a></li>
                       {% endif %}
                   </ul>
@@ -86,20 +86,13 @@
   <!--header end-->
 
 
-<!-- Page Header
+<!-- Body/content
 ================================================== -->
-<div id="page-heading">
-    <div class="page-header" >
-        <div class="container">
-            <div class="row home">
+        
                 {% block content %}
                 {% endblock %}
-            </div>  
-        </div>
-    </div>
-</div>
 
-<!-- End Page Wrapper -->
+<!-- Body/content -->
 
 <!-- Footer
 ================================================== -->
@@ -120,12 +113,12 @@
                 </address>
             </div>
             <div class="col-lg-3 col-sm-3 col-lg-offset-1">
-                <h1>latest tweet</h1>
+                <h1>Product Information</h1>
             </div>
             
             <!-- Column 3-->
             <div class="col-lg-3 col-sm-3 col-lg-offset-1">
-                <h1>stay connected</h1>
+                <h1>Our Mission</h1>
             </div>
             <!-- End Column 3-->
             
