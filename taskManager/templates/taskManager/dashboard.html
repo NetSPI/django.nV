@@ -1,2 +1,16 @@
 {% extends 'taskManager/backend/base.html' %}
+{% block content %}
 
+  <h4>All Projects</h4>
+  
+  {% if latest_Project_list %}
+  	<ul>
+  	{% for proj in latest_Project_list %}
+  		<a href="{% url 'taskManager:proj_details' proj.id %}"/><li class='btn'>{{proj.project_title}}</li></a>
+  	{% endfor%}
+  	</ul>
+  {% else %}
+  	<p> No projects are available.</p>
+  {%endif%}
+
+{% endblock %}

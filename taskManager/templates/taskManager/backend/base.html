@@ -74,51 +74,6 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-laptop"></i>
-                    <span>Layouts</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="boxed_page.html">Boxed Page</a></li>
-                    <li><a  href="horizontal_menu.html">Horizontal Menu</a></li>
-                    <li><a  href="mega_menu.html">Mega Menu</a></li>
-                    <li><a  href="language_switch_bar.html">Language Switch Bar</a></li>
-                    <li><a  href="email_template.html" target="_blank">Email Template</a></li>
-                </ul>
-            </li>
-
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-book"></i>
-                    <span>UI Elements</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="general.html">General</a></li>
-                    <li><a  href="buttons.html">Buttons</a></li>
-                    <li><a  href="widget.html">Widget</a></li>
-                    <li><a  href="slider.html">Slider</a></li>
-                    <li><a  href="nestable.html">Nestable</a></li>
-                    <li><a  href="font_awesome.html">Font Awesome</a></li>
-                </ul>
-            </li>
-
-            <li class="sub-menu">
-                <a href="javascript:;" >
-                    <i class="fa fa-cogs"></i>
-                    <span>Components</span>
-                </a>
-                <ul class="sub">
-                    <li><a  href="grids.html">Grids</a></li>
-                    <li><a  href="calendar.html">Calendar</a></li>
-                    <li><a  href="gallery.html">Gallery</a></li>
-                    <li><a  href="todo_list.html">Todo List</a></li>
-                    <li><a  href="draggable_portlet.html">Draggable Portlet</a></li>
-                    <li><a  href="tree.html">Tree View</a></li>
-                </ul>
-            </li>
-
         </ul>
         <!-- sidebar menu end-->
     </div>
@@ -130,9 +85,12 @@
 
 <!-- Body/content
 ================================================== -->
-    
-                {% block content %}
-                {% endblock %}
+<section id="main-content">
+  <section class="wrapper">
+    {% block content %}
+    {% endblock %}
+  </section>
+</section>      
 
 <!-- Body/content -->
 
