@@ -43,7 +43,7 @@
               </div>
               <div class="navbar-collapse collapse ">
                   <ul class="nav navbar-nav">
-                      <li><a href="#">Tutorials</a></li>
+                      <li><a href="{% url 'taskManager:tutorials' %}">Tutorials</a></li>
                       {% if user.is_authenticated %}
                       <li><a href="/taskManager/logout">Logout</a></li>
                       {% else %}
