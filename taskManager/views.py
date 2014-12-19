@@ -410,3 +410,6 @@ def detail(request, task_id, project_title):
 def thanks(request):
 	response = "We are grateful for your comment!"
 	return HttpResponse(response)
+
+def dashboard(request):
+	return render(request, 'taskManager/dashboard.html')

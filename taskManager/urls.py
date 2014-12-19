@@ -16,5 +16,7 @@ urlpatterns = patterns('',
     url(r'^manage_groups/$', views.manageGroups, name = 'manage_groups'),
     url(r'^manage_projects/$', views.manageProjects, name = 'manage_projects'),
     url(r'^(?P<project_id>\d+)/manage_tasks/$', views.manageTasks, name = 'manage_tasks'),
+	url(r'^dashboard/$', views.dashboard, name = 'dashboard'),
+	
 
 )

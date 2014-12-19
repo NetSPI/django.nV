@@ -1,16 +1,10 @@
 {% extends 'taskManager/base.html' %}
+ {% load staticfiles %}
+ <link rel="stylesheet" href="{% static "taskManager/css/settings.css" %}"/>
 
 {% block menu %}
 <ul class="nav pull-right">
 	<li><a href="/taskManager/register/">Register Here</a></li>
-
-	{% if user.is_authenticated %}
-	<li class="divider-vertical"></li>
-	<li><a href="/taskManager/logout/"><li>Log Out</a></li>
-	{% else %}
-	<li class="divider-vertical"></li>
-	<li><a href="/taskManager/login/">Log In</a></li>
-	{% endif %}
 
 	{% if user.is_authenticated %}
 	{% if admin_level == True %}
@@ -28,52 +22,57 @@
 {% endblock %}
 
 
-
-
 {% block content %}
-{% if user.is_authenticated %}
-<h1>hello {{ user.username }}!</h1>
 
-{% elif disabled_user == True %}
+{% if not user.is_authenticated %}
+ <div class="container">
+      <div class="row">
+          <!--feature start-->
+          <div class="text-center feature-head">
+              <h1>welcome to TaskManager</h1>
+              <p>Professional Project Management Software</p>
+          </div>
+          <div class="col-lg-4 col-sm-4">
+              <section>
+                  <div class="f-box">
+                      <i class=" fa fa-desktop"></i>
+                      <h2>Powerful Design</h2>
+                  </div>
+                  <p class="f-text">Simplicity in design but powerful project management tracking capabilities.</p>
+              </section>
+          </div>
+          <div class="col-lg-4 col-sm-4">
+              <section>
+                  <div class="f-box active">
+                      <i class=" fa fa-code"></i>
+                      <h2>API</h2>
+                  </div>
+                  <p class="f-text">Extensible interface for API driven activities, Coming soon!</p>
+              </section>
+          </div>
+          <div class="col-lg-4 col-sm-4">
+              <section>
+                  <div class="f-box">
+                      <i class="fa fa-gears"></i>
+                      <h2>fully customizable</h2>
+                  </div>
+                  <p class="f-text">Customizable project management interface that allows you to manage your projects, your way.</p>
+              </section>
+          </div>
+          <!--feature end-->
+      </div>
+      <div class="row">
+          <!--quote start-->
+          <div class="quote">
+              <div class="col-lg-3 col-sm-3 text-center pull-right">
+                  <a href="/taskManager/register" class="btn btn-danger purchase-btn">Sign-Up Now!</a>
+              </div>
+          </div>
+          <!--quote end-->
+      </div>
+  </div>
 
-<h3>Your account has been disabled! The powers at be deny you access</h3>
-<h1>hello!</h1>
-
-{% else %}
-
-<h1>hello!</h1>
 
 {% endif %}
-
-{% if permission == False %}
-
-<h4>You do not have the permissions to view that page</h4>
-
-{% endif %}
-
-{% if new_project_added == True %}
-
-<h4>A new project has been added! </h4>
-
-{%  endif %}
-
-<h4>All Projects</h4>
-
-{% if latest_Project_list %}
-	<ul>
-	{% for proj in latest_Project_list %}
-		<a href="{% url 'taskManager:proj_details' proj.id %}"/><li class='btn'>{{proj.project_title}}</li></a>
-	{% endfor%}
-	</ul>
-{% else %}
-	<p> No projects are available.</p>
-{%endif%}
 
 {% endblock %}
-
-
-
-
-<pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
-
-

@@ -10,10 +10,10 @@
     <!-- Styles
     ================================================== -->  
     {% load staticfiles %}
-    <link rel="stylesheet" href="{% static "taskManager/css/app.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.min.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "taskManager/css/style.css" %}"/>
     
     
     <!-- Google Fonts
@@ -28,87 +28,84 @@
 
     </head>
 <body>
-    
-<!-- Page Wrapper
-================================================== -->
-<div id="wrap" class="page">
+
 
 <!-- Navbar
 ================================================== -->
-<div class="nav-wrap">
-    <div class="container">
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="/taskManager">
-                        <strong>Django.nV - task manager</strong>
-                    </a>
-                    <div class="nav-collapse collapse">
-
-                        {% block menu %}
-                        {% endblock %}
-                        <!-- <ul class="nav pull-right">
-                            <li class="active"><a href="index.html" class="active">Home</a></li>
-                            <li class="divider-vertical"></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li class="divider-vertical"></li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                            <li class="divider-vertical"></li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li class="divider-vertical"></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    Pages
-                                    <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="features.html">Features</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="portfolio-item.html">Portfolio Item</a></li>
-                                    <li><a href="coming-soon.html">Coming Soon</a></li> 
-                                </ul>
-                            </li> -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+  <header class="header-frontend">
+      <div class="navbar navbar-default navbar-static-top">
+          <div class="container">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                      <span class="fa fa-bars"></span>
+                  </button>
+                  <a class="navbar-brand" href="/">Task<span>Manager</span></a>
+              </div>
+              <div class="navbar-collapse collapse ">
+                  <ul class="nav navbar-nav">
+                      <li><a href="#">Tutorials</a></li>
+                      {% if user.is_authenticated %}
+                      <li><a href="/taskManager/logout">Logout</a></li>
+                      {% else %}
+                      <li class="active" ><a href="/taskManager/register">Sign Up</a></li>
+                      <li><a href="/taskManager/login">Login</a></li>
+                      {% endif %}
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </header>
+  <!--header end-->
 
 
-<!-- Page Header
+<!-- Body/content
 ================================================== -->
-<div id="page-heading">
-    <div class="page-header" >
-        <div class="container">
-            <div class="row home">
+        
                 {% block content %}
                 {% endblock %}
-            </div>  
-        </div>
-    </div>
-    <div class="home-cta" style="height: 400px;" >
-        <div class="container">
-            <div class="arrow-down"></div>
-            <div class="home-cta-inner text-center">
-               -----------------------------------------------------------------------------
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- End Page Wrapper -->
+<!-- Body/content -->
+
+<!-- Footer
+================================================== -->
+
+<!--footer start-->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-3">
+                <h1>contact info</h1>
+                <address>
+                    <p>Address: No.28-63877 street</p>
+                    <p>lorem ipsum city, Country</p>
+
+                    <p>Phone : (123) 456-7890</p>
+                    <p>Fax : (123) 456-7890</p>
+                    <p>Email : <a href="javascript:;">support@vectorlab.com</a></p>
+                </address>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-lg-offset-1">
+                <h1>Product Information</h1>
+                
+            </div>
+            
+            <!-- Column 3-->
+            <div class="col-lg-3 col-sm-3 col-lg-offset-1">
+                <h1>Our Mission</h1>
+            </div>
+            <!-- End Column 3-->
+            
+        </div>
+    </div>
+</footer>
+<!--footer end-->
+
+<!-- End Footer -->
 
 <!-- Javascript
 ================================================== -->
-    <script src="{% static "taskManager/js/bootstrap.min.js" %}" ></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!--<script src="{% static "taskManager/js/bootstrap.min.js" %}" ></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>-->
     
 </body>     
 </html>
