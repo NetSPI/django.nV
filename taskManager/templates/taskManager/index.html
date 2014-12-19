@@ -24,14 +24,7 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-<div class="property gray-bg">
-    <div class="container">
-        <div class="row">
-        </div>
-    </div>
-</div>
-{% else  %}
+{% if not user.is_authenticated %}
  <div class="container">
       <div class="row">
           <!--feature start-->
