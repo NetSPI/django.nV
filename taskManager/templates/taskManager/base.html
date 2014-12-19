@@ -75,7 +75,8 @@
                       {% if user.is_authenticated %}
                       <li><a href="/taskManager/logout">Logout</a></li>
                       {% else %}
-                      <li class="active"><a href="/taskManager/login">Login</a></li>
+                      <li class="active" ><a href="/taskManager/register">Signup</a></li>
+                      <li><a href="/taskManager/login">Login</a></li>
                       {% endif %}
                   </ul>
               </div>
@@ -96,17 +97,44 @@
             </div>  
         </div>
     </div>
-    <div class="home-cta" style="height: 400px;" >
-        <div class="container">
-            <div class="arrow-down"></div>
-            <div class="home-cta-inner text-center">
-               -----------------------------------------------------------------------------
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- End Page Wrapper -->
+
+<!-- Footer
+================================================== -->
+
+<!--footer start-->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-3">
+                <h1>contact info</h1>
+                <address>
+                    <p>Address: No.28-63877 street</p>
+                    <p>lorem ipsum city, Country</p>
+
+                    <p>Phone : (123) 456-7890</p>
+                    <p>Fax : (123) 456-7890</p>
+                    <p>Email : <a href="javascript:;">support@vectorlab.com</a></p>
+                </address>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-lg-offset-1">
+                <h1>latest tweet</h1>
+            </div>
+            
+            <!-- Column 3-->
+            <div class="col-lg-3 col-sm-3 col-lg-offset-1">
+                <h1>stay connected</h1>
+            </div>
+            <!-- End Column 3-->
+            
+        </div>
+    </div>
+</footer>
+<!--footer end-->
+
+<!-- End Footer -->
 
 <!-- Javascript
 ================================================== -->
