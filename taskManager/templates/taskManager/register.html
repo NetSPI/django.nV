@@ -1,38 +1,28 @@
-<!DOCTYPE html>
-<html>
+
 {% extends 'taskManager/base.html' %}
-
-    <head>
-    </head>
-
-    <body>
+      
         {% block content %}
-
-        <h1>Register a user</h1>
-
         {% if registered %}
-
-        Task Manager says: <strong>thank you for registering!</strong>
-        <a href="/taskManager/">Return to the homepage.</a><br />
-
+           Task Manager says: <strong>thank you for registering!</strong>
+            <a href="/taskManager/login">Return to the homepage.</a><br />
         {% else %}
-
-        <strong>register for the task manager here!</strong><br />
-
-        <form id="user_form" method="post" action="/taskManager/register/"
-                enctype="multipart/form-data">
-
-            {% csrf_token %}
-
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-
-            <input type="submit" name="submit" value="Register" />
-        </form>
-
-        {% endif %}
-
-        {% endblock %}
         
-    </body>
-</html>
+          <div class="col-lg-7 col-sm-7 address">
+               <h4>Registration</h4>
+               <div class="contact-form">
+                   <form method="post" role="form" action="/taskManager/register/" enctype="multipart/form-data">
+                      {% csrf_token %}
+                     <div class="form-group">
+                      {{ user_form }}
+                     </div>  
+                      {{ profile_form }}
+                       <button class="btn btn-danger" type="submit">Register</button>
+                   </form>
+          
+               </div>
+          </div>
+        
+        {% endif %}
+        
+        {%  endblock %}
+      
