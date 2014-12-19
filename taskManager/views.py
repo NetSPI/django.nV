@@ -318,10 +318,16 @@ def index(request):
         if(project.users_assinged.filter(username= request.user.username)).exists():
             list_to_show.append(project)
 
-
-
-    return render(request, 'taskManager/index.html',
-    {'latest_Project_list': latest_Project_list, 'user':request.user , 'admin_level':admin_level })
+	if request.user.is_authenticated():
+    	  return redirect("/taskManager/dashboard")
+	else:
+		return render(
+			request, 
+			'taskManager/index.html', 
+			{'latest_Project_list': latest_Project_list, 
+			'user':request.user , 
+			'admin_level':admin_level }
+			)
 
 def proj_details(request, project_id):
 
