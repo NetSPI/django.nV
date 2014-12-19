@@ -191,7 +191,7 @@ a, a:hover, a:focus {
     height:17px;
     width:17px;
     display:inline-block;
-    background: url(../img/nav-expand.png) no-repeat top;
+    background: url(/static/taskManager/img/nav-expand.png) no-repeat top;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -200,7 +200,7 @@ a, a:hover, a:focus {
     top:15px;
 }
 .active .dcjq-icon {
-    background: url(../img/nav-expand.png) no-repeat bottom;
+    background: url(/static/taskManager/img/nav-expand.png) no-repeat bottom;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -631,7 +631,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .log-arrow-up {
-    background: url("../img/arrow-up.png") no-repeat;
+    background: url("/static/taskManager/img/arrow-up.png") no-repeat;
     width: 20px;
     height: 11px;
     position: absolute;
@@ -966,7 +966,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 /**/
 
 .panel-body.chart-texture {
-    background: url("../img/chart-texture.jpg");
+    background: url("/static/taskManager/img/chart-texture.jpg");
     -webkit-border-radius: 4px 4px 0px 0px;
     border-radius: 4px 4px 0px 0px;
 }
@@ -1541,7 +1541,7 @@ ul.ft-link li a i {
 
 .owl-buttons .owl-prev {
     text-indent: -9999px;
-    background: url("../img/left-arrow.png") no-repeat;
+    background: url("/static/taskManager/img/left-arrow.png") no-repeat;
     width: 6px;
     height: 10px;
     display: inline-block;
@@ -1549,7 +1549,7 @@ ul.ft-link li a i {
 
 .owl-buttons .owl-next {
     text-indent: -9999px;
-    background: url("../img/right-arrow.png") no-repeat;
+    background: url("/static/taskManager/img/right-arrow.png") no-repeat;
     width: 6px;
     height: 10px;
     display: inline-block;
@@ -2279,7 +2279,7 @@ ul.inbox-pagination li {
 }
 
 .error-wrapper .icon-404{
-    background: url("../img/404_icon.png") no-repeat;
+    background: url("/static/taskManager/img/404_icon.png") no-repeat;
     width: 289px;
     height: 274px;
     display: inline-block;
@@ -2325,7 +2325,7 @@ ul.inbox-pagination li {
 }
 
 .error-wrapper .icon-500{
-    background: url("../img/500_icon.png") no-repeat;
+    background: url("/static/taskManager/img/500_icon.png") no-repeat;
     width: 289px;
     height: 274px;
     display: inline-block;
@@ -3158,7 +3158,7 @@ ul.amounts li {
 }
 
 input.spinner[type="text"], input.spinner[type="password"], input.spinner[type="datetime"], input.spinner[type="datetime-local"], input.spinner[type="date"], input.spinner[type="month"], input.spinner[type="time"], input.spinner[type="week"], input.spinner[type="number"], input.spinner[type="email"], input.spinner[type="url"], input.spinner[type="search"], input.spinner[type="tel"], input.spinner[type="color"] {
-    background: url("../img/input-spinner.gif") right no-repeat !important;
+    background: url("/static/taskManager/img/input-spinner.gif") right no-repeat !important;
 }
 
 
@@ -3283,8 +3283,8 @@ table.sliders tr td {
     position: relative;
     text-align: left;
     width: 80px;
-    -webkit-mask: url('../img/mask.png') 0 0 no-repeat;
-    mask: url('../img/mask.png') 0 0 no-repeat;
+    -webkit-mask: url('/static/taskManager/img/mask.png') 0 0 no-repeat;
+    mask: url('/static/taskManager/img/mask.png') 0 0 no-repeat;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -3390,8 +3390,8 @@ table.sliders tr td {
 .switch-square {
     border-radius: 6px;
     -webkit-border-radius: 6px;
-    -webkit-mask: url('../img/mask.png') 0 0 no-repeat;
-    mask: url('../img/mask.png') 0 0 no-repeat;
+    -webkit-mask: url('/static/taskManager/img/mask.png') 0 0 no-repeat;
+    mask: url('/static/taskManager/img/mask.png') 0 0 no-repeat;
 }
 .switch-square > div.switch-off label {
     border-color: #7f8c9a;
@@ -3553,19 +3553,19 @@ table.sliders tr td {
 }
 
 .has-js .label_radio {
-    background: url(../img/checkbox/radio-off.png) no-repeat;
+    background: url(/static/taskManager/img/checkbox/radio-off.png) no-repeat;
 }
 
 .has-js .label_check {
-    background: url(../img/checkbox/check-off.png) no-repeat;
+    background: url(/static/taskManager/img/checkbox/check-off.png) no-repeat;
 }
 
 .has-js label.c_on {
-    background: url(../img/checkbox/check-on.png) no-repeat;
+    background: url(/static/taskManager/img/checkbox/check-on.png) no-repeat;
 }
 
 .has-js label.r_on {
-    background: url(../img/checkbox/radio-on.png) no-repeat;
+    background: url(/static/taskManager/img/checkbox/radio-on.png) no-repeat;
 }
 
 .has-js .label_check input,
@@ -4023,7 +4023,7 @@ span.customSelect.changed {
     background-color: #fff;
 }
 .customSelectInner {
-    background:url(../img/customSelect-arrow.gif) no-repeat center right;
+    background:url(/static/taskManager/img/customSelect-arrow.gif) no-repeat center right;
 }
 
 /*boxed page */
@@ -4500,7 +4500,7 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
 /*lock screen*/
 
 .lock-screen {
-    background:#02bac6 url("../img/lock-bg.jpg");
+    background:#02bac6 url("/static/taskManager/img/lock-bg.jpg");
     background-size: cover;
     background-repeat: repeat;
 }
@@ -5229,7 +5229,7 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
     -o-transition: all .3s ease;
     transition: all .3s ease;
     box-shadow: none;
-    background: #01a6b2 url("../img/chat-search.png") no-repeat 12px 9px;
+    background: #01a6b2 url("/static/taskManager/img/chat-search.png") no-repeat 12px 9px;
     padding:0 5px 0 35px;
     margin-top: 2px;
     border: none;
@@ -5775,7 +5775,7 @@ a.guest-on i {
 }
 
 .mega-bg {
-    background-image: url("../img/mega-menu/corner_image.jpg");
+    background-image: url("/static/taskManager/img/mega-menu/corner_image.jpg");
     background-repeat: no-repeat;
     background-position: bottom right;
     position: absolute;
