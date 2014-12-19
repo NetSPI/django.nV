@@ -53,7 +53,7 @@
                         <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
                         <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                         <li><a href="#"><i class="fa fa-bell-o"></i> Notification</a></li>
-                        <li><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
+                        <li><a href="/taskManager/logout"><i class="fa fa-key"></i> Log Out</a></li>
                     </ul>
                 </li>
                 
@@ -281,6 +281,25 @@
 ================================================== -->
 <script src="{% static "taskManager/backend/js/jquery.js" %}"></script>
 <script src="{% static "taskManager/backend/js/bootstrap.js" %}"></script>
+<script src="{% static "taskManager/backend/js/jquery.dcjqaccordion.2.7.js" %}"></script>
+<script src="{% static "taskManager/backend/js/jquery.scrollTo.min.js" %}"></script>
+<script src="{% static "taskManager/backend/js/jquery.nicescroll.js" %}"></script>
+<script src="{% static "taskManager/backend/js/jquery.sparkline.js" %}"></script>
+<script src="{% static "taskManager/backend/js/jquery.customSelect.min.js" %}"></script>
+<script src="{% static "taskManager/backend/js/respond.min.js" %}"></script>
+<script src="{% static "taskManager/backend/js/slidebars.min.js" %}"></script>
+<script src="{% static "taskManager/backend/js/common-scripts.js" %}"></script>
+
+<script>
+
+    //custom select box
+
+    $(function(){
+        $('select.styled').customSelect();
+    });
+
+</script>
+
 
   </section>    
 </body>     
