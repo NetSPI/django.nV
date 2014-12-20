@@ -39,7 +39,9 @@
           <div class="top-nav ">
             <!--search & user info start-->
             <ul class="nav pull-right top-menu">
-               <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
+               {% if user.is_authenticated %}
+                  <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
+               {% endif %}    
                 <li>
                     <input type="text" class="form-control search" placeholder="Search">
                 </li>
