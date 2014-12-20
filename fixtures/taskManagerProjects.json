@@ -1,0 +1,11 @@
+[
+  {
+    "model": "taskManager.project",
+    "pk": 1,
+    "fields": {
+      "project_text" : "This is the first project",
+      "start_date" : "2014-12-20 23:26:41.446886+00:00",
+      "project_title" : "First Project!"
+    }
+  }
+]
