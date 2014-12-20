@@ -1,0 +1,16 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "first_name" : "",
+      "last_name" : "",
+      "username" : "admin",
+      "password": "pbkdf2_sha256$12000$es7gjnRmtSt7$OgmFIpKpe9FX3tlGK5qmxmQ2riCxAmFj4mgIh27K+78=",
+      "is_superuser" : true,
+      "email" : "email@taskmanager.com",
+      "is_staff" : true,
+      "is_active" : true
+    }
+  }
+]
