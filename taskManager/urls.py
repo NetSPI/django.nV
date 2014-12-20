@@ -18,6 +18,6 @@ urlpatterns = patterns('',
     url(r'^(?P<project_id>\d+)/manage_tasks/$', views.manageTasks, name = 'manage_tasks'),
 	url(r'^dashboard/$', views.dashboard, name = 'dashboard'),
 	url(r'^tutorials/$', views.tutorials, name = 'tutorials'),
+	url(r'^tutorials/(?P<vuln_id>[a-z\-]+)/$', views.show_tutorial, name = 'show_tutorial'),
 	
-
 )
