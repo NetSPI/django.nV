@@ -2,10 +2,21 @@
   {
     "model": "taskManager.task",
     "pk": 1,
+    "fk" : 1,
     "fields": {
       "task_text" : "What's News",
       "pub_date" : "2014-12-20 23:26:41.446886+00:00",
       "completed" : 0
     }
-  }
+  },
+  {
+    "model": "taskManager.task",
+    "pk": 2,
+    "fk" : 2,
+    "fields": {
+      "task_text" : "Djangooo!",
+      "pub_date" : "2014-12-20 23:26:41.446886+00:00",
+      "completed" : 0
+    }
+  }  
 ]
