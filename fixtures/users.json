@@ -8,9 +8,66 @@
       "username" : "admin",
       "password": "pbkdf2_sha256$12000$es7gjnRmtSt7$OgmFIpKpe9FX3tlGK5qmxmQ2riCxAmFj4mgIh27K+78=",
       "is_superuser" : true,
-      "email" : "email@taskmanager.com",
+      "email" : "admin@tm.com",
       "is_staff" : true,
       "is_active" : true
     }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "first_name" : "Seth",
+      "last_name" : "Law",
+      "username" : "seth",
+      "password": "pbkdf2_sha256$12000$RHN7a1oSFiD3$673lpWkmfiU6vxPjJ9ITunt1tuBUgU0yL7nP1jAAgGY=",
+      "is_superuser" : true,
+      "email" : "seth@tm.com",
+      "is_staff" : true,
+      "is_active" : true
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "first_name" : "Chris",
+      "last_name" : "Zawora",
+      "username" : "chris",
+      "password": "pbkdf2_sha256$12000$GMXZnlXBkqAn$683Bn6zfTuj9UkjoLPXmHNkQliezAGWw5f5wl0HtmJo=",
+      "is_superuser" : false,
+      "email" : "chris@tm.com",
+      "is_staff" : true,
+      "is_active" : true
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "first_name" : "Ken",
+      "last_name" : "Johnson",
+      "username" : "ken",
+      "password": "pbkdf2_sha256$12000$ArtiooziRhLZ$5p+eWvKhIKpiE8tTPyUazY6kF5JiiIrAm7z9IyVkXDI=",
+      "is_superuser" : false,
+      "email" : "ken@tm.com",
+      "is_staff" : true,
+      "is_active" : true
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "first_name" : "Dade",
+      "last_name" : "Murphy",
+      "username" : "dade",
+      "password": "pbkdf2_sha256$12000$h7AQVHmDETsh$U2/S9z/KNDHCSMQABW7bVMCAEs84AcT1FWcXLHjr0fo=",
+      "is_superuser" : false,
+      "email" : "dade@zerocool.net",
+      "is_staff" : false,
+      "is_active" : true
+    }
   }
+  
 ]

@@ -327,7 +327,7 @@ def index(request):
 			{'latest_Project_list': latest_Project_list, 
 			'user':request.user , 
 			'admin_level':admin_level }
-			)
+			)	
 
 def proj_details(request, project_id):
 
