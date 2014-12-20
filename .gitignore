@@ -57,3 +57,6 @@ venv/
 
 #OSX created files
 .DS_Store
+
+#SQLite DB
+db.sqlite3
