@@ -39,6 +39,7 @@
           <div class="top-nav ">
             <!--search & user info start-->
             <ul class="nav pull-right top-menu">
+               <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
                 <li>
                     <input type="text" class="form-control search" placeholder="Search">
                 </li>
@@ -69,9 +70,63 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li>
-                <a class="active" href="/taskManager/dashboard">
-                    <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A1 - Injection</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A2 - Broken Auth</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A3 - XSS</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A4 - Insecure DOR</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A5 - Misconfig</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A6 - Exposure</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A7 - Access</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A8 - CSRF</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A9 - Components</span>
+                </a>
+            </li>
+            <li>
+                <a class="active" href="#">
+                    <i class="fa fa-bug"></i>
+                    <span>A10 - Redirects</span>
                 </a>
             </li>
         </ul>
@@ -127,6 +182,7 @@
 </script>
 
 
-  </section>    
+  </section>   
+   
 </body>     
 </html>

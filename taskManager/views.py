@@ -424,4 +424,4 @@ def dashboard(request):
 	
 def tutorials(request):
 
-	return render(request, 'taskManager/tutorials.html')
+	return render(request, 'taskManager/tutorials.html', {'user':request.user})
