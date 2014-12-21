@@ -14,7 +14,8 @@
    {
       "fields":{
          "users_assinged":[
-
+          1,
+          2
          ],
          "project_text":"number 2",
          "project_title":"Default 2",
@@ -26,7 +27,8 @@
    {
       "fields":{
          "users_assinged":[
-
+          1,
+          2
          ],
          "project_text":"wkjfn",
          "project_title":"kwjdnf",
@@ -39,7 +41,7 @@
       "fields":{
          "users_assinged":[
             1,
-            8
+            2
          ],
          "project_text":"the trunk",
          "project_title":"the elephant",
@@ -51,8 +53,8 @@
    {
       "fields":{
          "users_assinged":[
-            9,
-            10
+            3,
+            4
          ],
          "project_text":"little dogs",
          "project_title":"the punks",
@@ -65,8 +67,9 @@
       "fields":{
          "users_assinged":[
             1,
-            9,
-            10
+            2,
+            3,
+            4
          ],
          "project_text":"A new marketing campaign needs to be created to promote our new vacuum cleaner product. It will include television, radio, and social media as well as promotions at department stores.",
          "project_title":"Marketing Campaign",
@@ -78,7 +81,7 @@
    {
       "fields":{
          "users_assinged":[
-
+          5
          ],
          "project_text":"This is a test project",
          "project_title":"test2",

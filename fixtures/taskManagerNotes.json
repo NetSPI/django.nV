@@ -3,7 +3,7 @@
       "fields":{
          "task":15,
          "image_url":"2014-12-12",
-         "user":"ancestor",
+         "user":"dade",
          "note_text":"ok"
       },
       "model":"taskManager.notes",
@@ -13,7 +13,7 @@
       "fields":{
          "task":15,
          "image_url":"2014-12-12",
-         "user":"ancestor",
+         "user":"dade",
          "note_text":"what do you mean?"
       },
       "model":"taskManager.notes",
@@ -23,7 +23,7 @@
       "fields":{
          "task":15,
          "image_url":"2014-12-12",
-         "user":"ancestor",
+         "user":"dade",
          "note_text":"I am young and beautiful but what is Twitter?"
       },
       "model":"taskManager.notes",
@@ -63,7 +63,7 @@
       "fields":{
          "task":19,
          "image_url":"2014-12-12",
-         "user":"pman",
+         "user":"seth",
          "note_text":"start with some seeds"
       },
       "model":"taskManager.notes",
