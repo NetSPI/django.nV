@@ -1,20 +1,90 @@
 [
   {
-    "model": "taskManager.project",
-    "pk": 1,
-    "fields": {
-      "project_text" : "This is the first project",
-      "start_date" : "2014-12-20 23:26:41.446886+00:00",
-      "project_title" : "First Project!"
-    }
-  },
-  {
-    "model": "taskManager.project",
-    "pk": 2,
-    "fields": {
-      "project_text" : "number 2",
-      "start_date" : "2014-12-20 23:26:41.446886+00:00",
-      "project_title" : "Second Project!"
-    }
-  }
+      "fields":{
+         "users_assinged":[
+            1
+         ],
+         "project_text":"This is the first project",
+         "project_title":"Default",
+         "start_date":"2014-10-10T20:56:42Z"
+      },
+      "model":"taskManager.project",
+      "pk":1
+   },
+   {
+      "fields":{
+         "users_assinged":[
+
+         ],
+         "project_text":"number 2",
+         "project_title":"Default 2",
+         "start_date":"2014-10-10T21:16:26Z"
+      },
+      "model":"taskManager.project",
+      "pk":2
+   },
+   {
+      "fields":{
+         "users_assinged":[
+
+         ],
+         "project_text":"wkjfn",
+         "project_title":"kwjdnf",
+         "start_date":"2014-10-24T21:08:53.942Z"
+      },
+      "model":"taskManager.project",
+      "pk":3
+   },
+   {
+      "fields":{
+         "users_assinged":[
+            1,
+            8
+         ],
+         "project_text":"the trunk",
+         "project_title":"the elephant",
+         "start_date":"2014-10-24T21:11:43.812Z"
+      },
+      "model":"taskManager.project",
+      "pk":4
+   },
+   {
+      "fields":{
+         "users_assinged":[
+            9,
+            10
+         ],
+         "project_text":"little dogs",
+         "project_title":"the punks",
+         "start_date":"2014-10-28T14:54:59.075Z"
+      },
+      "model":"taskManager.project",
+      "pk":6
+   },
+   {
+      "fields":{
+         "users_assinged":[
+            1,
+            9,
+            10
+         ],
+         "project_text":"A new marketing campaign needs to be created to promote our new vacuum cleaner product. It will include television, radio, and social media as well as promotions at department stores.",
+         "project_title":"Marketing Campaign",
+         "start_date":"2014-11-11T18:30:45.830Z"
+      },
+      "model":"taskManager.project",
+      "pk":7
+   },
+   {
+      "fields":{
+         "users_assinged":[
+
+         ],
+         "project_text":"This is a test project",
+         "project_title":"test2",
+         "start_date":"2014-12-11T19:04:22.365Z"
+      },
+      "model":"taskManager.project",
+      "pk":8
+   }
 ]

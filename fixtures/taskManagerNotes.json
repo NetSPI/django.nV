@@ -1,0 +1,102 @@
+[
+  {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"ancestor",
+         "note_text":"ok"
+      },
+      "model":"taskManager.notes",
+      "pk":1
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"ancestor",
+         "note_text":"what do you mean?"
+      },
+      "model":"taskManager.notes",
+      "pk":2
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"ancestor",
+         "note_text":"I am young and beautiful but what is Twitter?"
+      },
+      "model":"taskManager.notes",
+      "pk":3
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"admin",
+         "note_text":"because you don't know technology"
+      },
+      "model":"taskManager.notes",
+      "pk":4
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"admin",
+         "note_text":"but you can leanr"
+      },
+      "model":"taskManager.notes",
+      "pk":5
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"2014-12-12",
+         "user":"admin",
+         "note_text":"I mean learn"
+      },
+      "model":"taskManager.notes",
+      "pk":6
+   },
+   {
+      "fields":{
+         "task":19,
+         "image_url":"2014-12-12",
+         "user":"pman",
+         "note_text":"start with some seeds"
+      },
+      "model":"taskManager.notes",
+      "pk":7
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"",
+         "user":"admin",
+         "note_text":"<script>alert(document.cookie);</script>"
+      },
+      "model":"taskManager.notes",
+      "pk":18
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"",
+         "user":"admin",
+         "note_text":"{% autoescape off %} <script>alert(document.cookie);</script> {% endautoescape %}"
+      },
+      "model":"taskManager.notes",
+      "pk":23
+   },
+   {
+      "fields":{
+         "task":15,
+         "image_url":"<script>alert(document.cookie);</script> {% endautoescape %}",
+         "user":"admin",
+         "note_text":"{% autoescape off %}"
+      },
+      "model":"taskManager.notes",
+      "pk":24
+   }
+]   
