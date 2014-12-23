@@ -19,7 +19,7 @@
             <div class="col-md-8">
                 <section class="panel">
                     <div class="bio-graph-heading project-heading">
-                        <strong> [ New Dashboard BS3 ] </strong>
+                        <strong> [{{proj.project_title}}]</strong>
                     </div>
                     <div class="panel-body bio-graph-info">
                         <!--<h1>New Dashboard BS3 </h1>-->
@@ -71,140 +71,41 @@
 
                 <section class="panel">
                   <header class="panel-heading">
-                    Last Activity
+                    Tasks
                   </header>
                   <div class="panel-body">
                       <table class="table table-hover p-table">
                     <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Commnets</th>
+                        <th>Created At</th>
+                        <th>Comments</th>
                         <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            Project analysis
-                        </td>
-                        <td>
-                           18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                             Ipsum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Completed</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Requirement Collection
-                        </td>
-                        <td>
-                            10/11/2014 9:28:23
-                        </td>
-                        <td>
-                            22/11/2014 12:23:03
-                        </td>
-                        <td>
-                            Tawseef Ipsum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Reported</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Design Implement
-                        </td>
-                        <td>
-                            18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                            Dism Ipsum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Accepted</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Widget Management
-                        </td>
-                        <td>
-                            18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                            Cosm Ipsum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Completed</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Contact Info
-                        </td>
-                        <td>
-                            18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                            Hello that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Sent</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Project analysis
-                        </td>
-                        <td>
-                            18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                             Ipsum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Completed</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Project analysis
-                        </td>
-                        <td>
-                            18/11/2014 9:28:23
-                        </td>
-                        <td>
-                            28/11/2014 12:23:03
-                        </td>
-                        <td>
-                            Orem psum is that it has a as opposed to using Lorem Ipsum is that it has a as opposed to using
-                        </td>
-                        <td>
-                            <span class="label label-info">Completed</span>
-                        </td>
-                    </tr>
-                    </tbody>
+                    {% for task in proj.task_set.all %}  
+                      <tr>
+                          <td>
+                              todo
+                          </td>
+                          <td>
+                              {{task.pub_date}}
+                          </td>
+                          <td>
+                              {{ task.task_text }}
+                          </td>
+                          <td>
+                             {% if task.completed == True %}
+                              	 <span class="label label-info">Completed</span>
+                              {% else %}
+                              	 <span class="label label-warning">In Progress</span>
+                              {% endif %}
+                             
+                          </td>
+                      </tr>
+                    {% endfor %}  
+                </tbody>
                     </table>
                   </div>
                 </section>
@@ -217,10 +118,8 @@
                     </header>
 
                     <div class="panel-body">
-                        <a href="#"><img src="img/email-img/vector-lab.jpg" alt=""/></a>
-
                         <p>
-                            Sometimes the simplest things are the hardest to find. I imagined a line of my favorite pieces, the things i would live in every day, all year round. So I stopped looking and started designing. Sometimes the simplest things are the hardest to find. Sometimes the simplest things are the hardest to find. I imagined a line of my favorite pieces, the things i would live in every day, all year round. So I stopped looking and started designing. Sometimes the simplest things are the hardest to find.
+                            {{proj.project_text}}
                         </p>
                         <br/>
                         <h5 class="bold">Priority</h5>
