@@ -38,7 +38,7 @@
                     {% for proj in latest_Project_list %}
                       <tr>
                           <td class="p-name">
-                              <a href="project_details.html">{{proj.project_title}}</a>
+                              <a href="{% url 'taskManager:proj_details' proj.id %}">{{proj.project_title}}</a>
                               <br>
                               <small>Created 27.11.2014</small>
                           </td>
