@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{% static "taskManager/backend/css/style.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/backend/css/style-responsive.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/backend/css/shCore.css" %}"/>
+    <link rel="stylesheet" href="{% static "taskManager/backend/css/shThemeDefault.css" %}"/>
     
     <!-- Google Fonts
     ================================================== -->
@@ -179,6 +180,7 @@
 <script src="{% static "taskManager/backend/js/shCore.js" %}"></script>
 <script src="{% static "taskManager/backend/js/shBrushPython.js" %}"></script>
 
+
 <script>
 
     //custom select box
@@ -186,7 +188,7 @@
     $(function(){
         $('select.styled').customSelect();
     });
-
+SyntaxHighlighter.all();
 </script>
 
 
