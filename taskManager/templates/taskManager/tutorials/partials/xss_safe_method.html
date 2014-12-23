@@ -34,6 +34,12 @@
                      <div class="panel-body">
                          The application renders back a user's username (user-supplied data) by leveraging a call to the safe method within the view. This means the content will not be HTML encoded and will be interpreted as valid JS or HTML code.
                      </div>
+                     <pre class="brush: python">
+                       def thanks(request):
+                       	response = "We are grateful for your comment!"
+                       	return HttpResponse(response)
+                       	
+                     </pre>
                  </div>
              </div>
              <div class="panel panel-success">
