@@ -46,7 +46,7 @@ def manageTasks(request, project_id):
                     user = User.objects.get(username= user_tuples[int(username_input)-1][1])
                     task = Task.objects.get(task_text = task_tuples[int(task_input)-1][1])
 
-                    task.users_assinged.add(user)
+                    task.users_assigned.add(user)
                     
 
                 return render_to_response('taskManager/manage_tasks.html', 
@@ -124,7 +124,7 @@ def manageProjects(request):
                     user = User.objects.get(username=user_tuples[int(username_input)-1][1])
                     project = Project.objects.get(project_title = project_tuples[int(project_title_input)-1][1])
 
-                    project.users_assinged.add(user)
+                    project.users_assigned.add(user)
 
                 return redirect('/taskManager/')
             else:   
@@ -315,7 +315,7 @@ def index(request):
 
     list_to_show = []
     for project in latest_Project_list:
-        if(project.users_assinged.filter(username= request.user.username)).exists():
+        if(project.users_assigned.filter(username= request.user.username)).exists():
             list_to_show.append(project)
 
 	if request.user.is_authenticated():
@@ -339,7 +339,7 @@ def proj_details(request, project_id):
         admin_level = True
 
     assigned_to = False
-    if proj.users_assinged.filter(username= request.user.username).exists():
+    if proj.users_assigned.filter(username= request.user.username).exists():
         assigned_to = True
     elif admin_level == True:
         assigned_to = True
@@ -391,11 +391,11 @@ def detail(request, task_id, project_title):
         pmanager_level = True
 
     assigned_to = False
-    if task.users_assinged.filter(username= request.user.username).exists():
+    if task.users_assigned.filter(username= request.user.username).exists():
         assigned_to = True
     elif admin_level == True:
         assigned_to = True
-    elif pmanager_level == True and proj.users_assinged.filter(username= request.user.username).exists():
+    elif pmanager_level == True and proj.users_assigned.filter(username= request.user.username).exists():
         assigned_to = True
 
 
@@ -419,7 +419,10 @@ def thanks(request):
 
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
-	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
+	rec = latest_Project_list.get(pk=1)
+	a = rec.users_assigned
+	return HttpResponse(a)
+	#return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
 	
 def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})

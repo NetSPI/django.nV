@@ -17,7 +17,7 @@ class Project(models.Model):
 	project_title = models.CharField(max_length = 50, default = 'Default')
 	project_text = models.CharField(max_length = 500)
 	start_date = models.DateTimeField('date started')
-	users_assinged = models.ManyToManyField(User)
+	users_assigned = models.ManyToManyField(User)
 
 	def __str__(self):
 		return self.project_title
@@ -31,7 +31,7 @@ class Task(models.Model):
 	task_text = models.CharField(max_length = 200)
 	pub_date = models.DateTimeField('date created')
 	completed = models.NullBooleanField(default = False)
-	users_assinged = models.ManyToManyField(User)
+	users_assigned = models.ManyToManyField(User)
 
 	def __str__(self):
 		return self.task_text
