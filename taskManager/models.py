@@ -10,7 +10,7 @@ from django import forms
 # Create your models here.
 
 class UserProfile(models.Model):
-	user = models.ForeignKey(User, unique=True)
+	user = models.OneToOneField(User)
 	profile_img = models.TextField()
 
 class Project(models.Model):
