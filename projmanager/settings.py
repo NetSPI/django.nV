@@ -64,6 +64,7 @@ DATABASES = {
     }
 }
 
+AUTH_PROFILE_MODULE = "taskManager.UserProfile"
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

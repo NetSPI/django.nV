@@ -9,6 +9,10 @@ from django import forms
 
 # Create your models here.
 
+class UserProfile(models.Model):
+	user = models.ForeignKey(User, unique=True)
+	profile_img = models.TextField()
+
 class Project(models.Model):
 	project_title = models.CharField(max_length = 50, default = 'Default')
 	project_text = models.CharField(max_length = 500)
