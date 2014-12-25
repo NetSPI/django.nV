@@ -419,10 +419,7 @@ def thanks(request):
 
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
-	rec = latest_Project_list.get(pk=1)
-	a = rec.users_assigned
-	return HttpResponse(a)
-	#return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
+	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
 	
 def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})
