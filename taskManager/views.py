@@ -224,9 +224,9 @@ def newproj(request):
         project = Project(project_title = project_title,
         project_text = project_text,
         start_date = now)
-        
         project.save()
-
+        project.users_assigned = [request.user]
+        
         return redirect('/taskManager/', {'new_project_added':True})
     else:
         return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
