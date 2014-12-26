@@ -1,33 +1,28 @@
-<!DOCTYPE html>
-<html>
 {% extends 'taskManager/backend/base.html' %}
 
-    <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Add New Task</title>
-    </head>
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Task Creation
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label >Enter Task Information</label>
+                      <input name="task_text" class="form-control" placeholder="">
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
 
-    <body>
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
 
-        {% block content %}
-        <h1>Add New Task</h1>
-
-        {% if user.is_authenticated == False %}
-
-        <h4> Please log in to make a new task    </h4>
-        <p><a href = "/taskManager/login/">Log in</a></p>
-
-        {% else %}
-
-        <form id="new_task_form" method="post">
-            {% csrf_token %}
-            Task Text: <input type="text" name="task_text" value="" size="100" />
-            <br />
-            <input type="submit" value="submit" />
-        </form>
-
-        {% endif %}
-
-        {% endblock %}
-    </body>
-</html>
+{% endblock %}
