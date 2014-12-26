@@ -2,24 +2,6 @@
  {% load staticfiles %}
  <link rel="stylesheet" href="{% static "taskManager/css/settings.css" %}"/>
 
-{% block menu %}
-<ul class="nav pull-right">
-	<li><a href="/taskManager/register/">Register Here</a></li>
-
-	{% if user.is_authenticated %}
-	{% if admin_level == True %}
-
-	<li class="divider-vertical"></li>
-	<li><a href='/taskManager/newproj/'>Create a project</a></li>
-	<li class="divider-vertical"></li>
-	<li><a href = {% url 'taskManager:manage_groups' %}>Manage Users</a></li>
-	<li class="divider-vertical"></li>
-	<li><a href = {% url 'taskManager:manage_projects' %}>Manage Projects</a></li>
-
-</ul>
-{% endif %}
-{% endif %}
-{% endblock %}
 
 
 {% block content %}
