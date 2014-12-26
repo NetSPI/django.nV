@@ -33,9 +33,9 @@
                             <div class="bio-row">
                                 <p><span class="bold">Participants </span>:
                                 <span class="p-team">
-                                    <a href="#"><img alt="image" class="" src="img/chat-avatar.jpg"></a>
-                                    <a href="#"><img alt="image" class="" src="img/chat-avatar2.jpg"></a>
-                                    <a href="#"><img alt="image" class="" src="img/pro-ac-1.png"></a>
+                                    {% for u in proj.users_assigned.all%}
+                                      <a href="#"><img alt="image" class="" src="{{u.userprofile.profile_img}}"></a>
+                                    {% endfor %}
                                 </span>
                                 </p>
                             </div>
