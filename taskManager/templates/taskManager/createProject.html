@@ -1,33 +1,31 @@
-<!DOCTYPE html>
-<html>
-{% extends 'taskManager/base.html' %}
+{% extends 'taskManager/backend/base.html' %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Project Creation
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label >Enter Project Title</label>
+                      <input name="project_title" class="form-control" placeholder="">
+                  </div>
+                  <div class="form-group">
+                      <label >Enter Project Information</label>
+                      <textarea name="project_text" class="form-control" placeholder=""></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
 
-    <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Create New Project</title>
-    </head>
-
-    <body>
-        {% block content %}
-        <h1>Create New Project</h1>
-
-        {% if user.is_authenticated == False %}
-
-        <h4> Please log in to make a new project    </h4>
-        <p><a href = "/taskManager/login/">Log in</a></p>
-
-        {% else %}
-
-        <form id="new_proj_form" method="post">
-            {% csrf_token %}
-            Project Title: <input type="text" name="project_title" value="" size="50" />
-            <br />
-            Project Text: <input type="text" name="project_text" value="" size="100" />
-            <br />
-            <input type="submit" value="submit" />
-        </form>
-
-        {% endif %}
-        {% endblock %}
-    </body>
-</html>
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+             
+{% endblock %}
