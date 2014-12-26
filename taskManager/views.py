@@ -138,6 +138,12 @@ def manageProjects(request):
     else:
         redirect('/taskManager/', {'logged_in':False})
 
+def deleteProject(request, project_id):
+	# IDOR
+	project = Project.objects.get(pk=project_id)
+	project.delete()
+	return redirect('/taskManager/dashboard')
+
 def manageGroups(request):
 
     user  = request.user
