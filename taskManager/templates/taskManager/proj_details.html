@@ -57,7 +57,8 @@
                     <tr>
                         <th>Title</th>
                         <th>Created At</th>
-                        <th>Comments</th>
+                        <th>Description</th>
+                        <th>Notes</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -71,9 +72,14 @@
                               {{task.pub_date}}
                           </td>
                           <td>
-                             {% for note in task.notes_set.all %}
-                                {{note.note_text}}
-                             {% endfor %}
+                            {{task.task_text}}
+                          </td>  
+                          <td>
+                              {% if task.notes_set.count > 0 %}
+                                <span class="badge bg-success">{{task.notes_set.count}}</span>
+                              {% else %}
+                              <span class="badge bg-primary">0</span>
+                              {% endif %}
                           </td>
                           <td>
                              {% if task.completed == True %}
