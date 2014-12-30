@@ -414,10 +414,6 @@ def detail(request, task_id, project_title):
 
     return render(request, 'taskManager/detail.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in})
 
-def thanks(request):
-	response = "We are grateful for your comment!"
-	return HttpResponse(response)
-
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
 	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
