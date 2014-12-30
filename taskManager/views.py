@@ -206,10 +206,12 @@ def newtask(request, project_id):
         proj = Project.objects.get(pk = project_id)
 
         task_text = request.POST.get('task_text', False)
+        task_title = request.POST.get('task_title', False)
         now = datetime.datetime.now()
        
         task = Task(
         task_text = task_text,
+        title = task_title,
         pub_date = now,
         assoc_project = proj)
         
