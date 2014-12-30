@@ -29,6 +29,7 @@ class Project(models.Model):
 class Task(models.Model):
 	assoc_project = models.ForeignKey(Project, default=1)
 	task_text = models.CharField(max_length = 200)
+	title = models.CharField(max_length = 200, default="N/A")
 	pub_date = models.DateTimeField('date created')
 	completed = models.NullBooleanField(default = False)
 	users_assigned = models.ManyToManyField(User)
