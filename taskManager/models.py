@@ -43,7 +43,7 @@ class Task(models.Model):
 		return self.pub_date >=timezone.now() - datetime.timedelta(days =1)
 
 class Notes(models.Model):
-	task = models.ForeignKey(Task)
+	task = models.ForeignKey(Task, default=1)
 
 	note_text = models.CharField(max_length = 200)
 	image_url = models.CharField(max_length = 200)

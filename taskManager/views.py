@@ -336,7 +336,8 @@ def index(request):
 			)	
 
 def proj_details(request, project_id):
-
+    #t = Task.objects.get(pk=1)
+    #return HttpResponse(t.notes_set.all)
     proj = Project.objects.get(pk = project_id)
     logged_in = True
 

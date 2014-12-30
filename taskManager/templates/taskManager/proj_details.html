@@ -71,7 +71,9 @@
                               {{task.pub_date}}
                           </td>
                           <td>
-                              {{ task.task_text }}
+                             {% for note in task.notes_set.all %}
+                                {{note.note_text}}
+                             {% endfor %}
                           </td>
                           <td>
                              {% if task.completed == True %}
