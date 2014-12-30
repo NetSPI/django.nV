@@ -45,7 +45,7 @@ class Task(models.Model):
 
 class Notes(models.Model):
 	task = models.ForeignKey(Task, default=1)
-
+	title = models.CharField(max_length = 200, default = "N/A")
 	note_text = models.CharField(max_length = 200)
 	image_url = models.CharField(max_length = 200)
 	user = models.CharField(max_length = 200, default = 'ancestor')

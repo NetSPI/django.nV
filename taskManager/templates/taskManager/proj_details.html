@@ -66,7 +66,7 @@
                     {% for task in proj.task_set.all %}  
                       <tr>
                           <td>
-                              todo
+                              {{task.title}}
                           </td>
                           <td>
                               {{task.pub_date}}
