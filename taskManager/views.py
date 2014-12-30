@@ -246,7 +246,6 @@ def logout_view(request):
     # Redirect to a success page.
 
 def login_view(request):
-
     if request.method == 'POST':
         username = request.POST.get('username', False)
         password = request.POST.get('password', False)
@@ -359,9 +358,6 @@ def proj_details(request, project_id):
 	
     return render(request, 'taskManager/proj_details.html', {'proj':proj, 'assigned_to':assigned_to, 'logged_in':logged_in})
 
-def the_comments(request, task_id):
-	response = "You're looking at the comments of question %s."
-	return HttpResponse(response % task_id)
 
 def get_proj_by_name(project_title):
         
