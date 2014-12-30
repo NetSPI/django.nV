@@ -13,7 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db import connection
-from taskManager.models import Task, Project, Notes #,CommentForm
+from taskManager.models import Task, Project, Notes
 
 #20821e4abaea95268880f020c9f6768288f3725a
 #add completed status, due date
@@ -284,8 +284,8 @@ def register(request):
             user.set_password(user.password)
 
             #add user to lowest permission group
-            grp = Group.objects.get(name='team_member')
-            user.groups.add(grp)
+            #grp = Group.objects.get(name='team_member')
+            #user.groups.add(grp)
 
             user.save()
 
@@ -444,4 +444,6 @@ def show_tutorial(request, vuln_id):
 		return render(request, 'taskManager/tutorials/redirects.html')				
 	else:
 		return render(request, 'taskManager/tutorials.html', {'user':request.user});
-	
+
+def profile(request):
+	return HttpResponse('..')
