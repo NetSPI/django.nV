@@ -375,12 +375,8 @@ def get_proj_by_name(project_title):
 def detail(request, task_id, project_title):
 
     task = Task.objects.get(pk = task_id)
-    #proj_id = 
+
     print(get_proj_by_name(project_title))
-    #proj = Project.objects.get(pk = proj_id[0])
-
-    #print(proj)
-
 
     logged_in = True
 
