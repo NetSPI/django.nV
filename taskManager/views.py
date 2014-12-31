@@ -337,26 +337,13 @@ def index(request):
 			)	
 
 def proj_details(request, project_id):
-   # t = Task.objects.get(pk=1)
-    #return HttpResponse(t.notes_set.all.__len__)
-    proj = Project.objects.get(pk = project_id)
-    logged_in = True
+    proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
+    if not proj:
+      return redirect('/taskManager/dashboard')
+    else:
+      proj = Project.objects.get(pk=project_id)
 
-    admin_level = False
-    if request.user.groups.filter(name='admin_g').exists():
-        admin_level = True
-
-    assigned_to = False
-    if proj.users_assigned.filter(username= request.user.username).exists():
-        assigned_to = True
-    elif admin_level == True:
-        assigned_to = True
-
-
-    if not request.user.is_authenticated():
-        logged_in =False
-	
-    return render(request, 'taskManager/proj_details.html', {'proj':proj, 'assigned_to':assigned_to, 'logged_in':logged_in})
+      return render(request, 'taskManager/proj_details.html', {'proj':proj})
 
 
 def get_proj_by_name(project_title):
