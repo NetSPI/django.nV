@@ -13,6 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db import connection
+from django.contrib import messages
 from taskManager.models import Task, Project, Notes
 
 #20821e4abaea95268880f020c9f6768288f3725a
@@ -339,6 +340,7 @@ def index(request):
 def proj_details(request, project_id):
     proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
     if not proj:
+      messages.warning(request, 'You are not authorized to view this project')
       return redirect('/taskManager/dashboard')
     else:
       proj = Project.objects.get(pk=project_id)
