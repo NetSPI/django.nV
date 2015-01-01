@@ -13,7 +13,14 @@
             <i class="fa fa-times"></i>
           </button>
           {{ message }}
-        </div>  
+        </div>
+    {% elif message.tags and message.tags == 'info' %}
+        <div class="alert alert-block alert-info fade in">
+          <button data-dismiss="alert" class="close close-sm" type="button">
+            <i class="fa fa-times"></i>
+          </button>
+          {{ message }}
+        </div>      
     {% endif %}
   {% endfor %}
 {% endif %}
