@@ -38,17 +38,16 @@
         <!--logo start-->
         <a href="/taskManager/" class="logo">Task<span>Manager</span></a>
         <!--logo end-->
+    
           <div class="top-nav ">
-            <!--search & user info start-->
+            <!--search & user info start-->  
             <ul class="nav pull-right top-menu">
                {% if user.is_authenticated %}
                   <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
                {% else %}    
                   <li><a href="{% url 'taskManager:login' %}">Login</a></li>
-               {% endif %}    
-                <li>
-                    <input type="text" class="form-control search" placeholder="Search">
-                </li>
+               {% endif %}  
+                {% if user.is_authenticated %}
                 <!-- user login dropdown start-->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -61,8 +60,8 @@
                         <li><a href="/taskManager/logout"><i class="fa fa-key"></i> Log Out</a></li>
                     </ul>
                 </li>
-                
-                <!-- user login dropdown end -->
+                {% endif %}
+                <!-- user dropdown end -->
             </ul>
             <!--search & user info end-->
         </div>
