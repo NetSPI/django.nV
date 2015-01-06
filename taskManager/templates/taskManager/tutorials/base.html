@@ -42,7 +42,7 @@
           <div class="top-nav ">
             <!--search & user info start-->  
             <ul class="nav pull-right top-menu">
-               <li><a class="tutorial_creds" href="#">Tutorial Credentials</a></li>
+               <li><a class="tutorial_creds" data-toggle="modal" href="#myModal">Tutorial Credentials</a></li>
                {% if user.is_authenticated %}
                   <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
                {% else %}    
@@ -143,6 +143,71 @@
 
 <!-- Sidebar -->
 
+ <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">Tutorial Credentials</h4>
+              </div>
+              <div class="modal-body">
+                   <div class="row">
+                        <div class="col-sm-12">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    <strong>*WARNING - SPOILER ALERT*</strong> | Click "I understand" to see the credentials
+                                </header>
+                                <table id="creds" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>admin</td>
+                                        <td>djangobango</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>seth</td>
+                                        <td>soccerlover</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>chris</td>
+                                        <td>ilovedjango</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>ken</td>
+                                        <td>koala1234</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>dade</td>
+                                        <td>hacktheplanet</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                  
+
+              </div>
+              <div class="modal-footer">
+                  <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                  <button id="show_creds" class="btn btn-primary" type="button">I understand</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- modal -->
 
 <!-- Body/content
 ================================================== -->
@@ -191,16 +256,30 @@ color: #fff;"
 background: #F77B6F !important;
 color: #fff !important;
 }
+.top-nav ul.top-menu > li > a.tutorial_creds:focus {
+background: #F77B6F !important;
+color: #fff !important;
+}
 </style>
 
 <script>
 
-    //custom select box
+//custom select box
 
-    $(function(){
-        $('select.styled').customSelect();
-    });
+$(function(){
+    $('select.styled').customSelect();
+});
+
+$('#creds').hide();
+
+$('#show_creds').click(function(e){
+   e.preventDefault();
+   $('#creds').show();
+   $('#show_creds').hide();
+});
+
 SyntaxHighlighter.all();
+
 </script>
 
 
