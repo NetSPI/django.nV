@@ -42,6 +42,7 @@
           <div class="top-nav ">
             <!--search & user info start-->  
             <ul class="nav pull-right top-menu">
+               <li><a class="tutorial_creds" href="#">Tutorial Credentials</a></li>
                {% if user.is_authenticated %}
                   <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
                {% else %}    
@@ -179,6 +180,18 @@
 <script src="{% static "taskManager/backend/js/shCore.js" %}"></script>
 <script src="{% static "taskManager/backend/js/shBrushPython.js" %}"></script>
 
+<style type="text/css">
+.top-nav ul.top-menu > li > a.tutorial_creds{
+background: #F77B6F;
+color: #fff;"
+
+
+}
+.top-nav ul.top-menu > li > a.tutorial_creds:hover {
+background: #F77B6F !important;
+color: #fff !important;
+}
+</style>
 
 <script>
 
