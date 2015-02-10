@@ -24,120 +24,120 @@ from taskManager.models import Task, Project, Notes
 
 def manageTasks(request, project_id):
 
-    print('here')
-    user  = request.user
-    proj = Project.objects.get(pk = project_id)
+	print('here')
+	user  = request.user
+	proj = Project.objects.get(pk = project_id)
 
-    if user.is_authenticated():
-        logged_in = True
+	if user.is_authenticated():
+		logged_in = True
 
-        if user.has_perm('can_change_project'):
+		if user.has_perm('can_change_project'):
 
-            if request.method == 'POST':
-                form = ManageTask(request.POST)
-                valid = False
-                if form.is_valid():
-                    valid = True
-                    username_input = form.cleaned_data['User']
-                    task_input = form.cleaned_data['Task']
+			if request.method == 'POST':
+				form = ManageTask(request.POST)
+				valid = False
+				if form.is_valid():
+					valid = True
+					username_input = form.cleaned_data['User']
+					task_input = form.cleaned_data['Task']
 
-                    user_tuples = get_my_choices_users()
-                    task_tuples = get_my_choices_tasks(proj)
+					user_tuples = get_my_choices_users()
+					task_tuples = get_my_choices_tasks(proj)
 
-                    user = User.objects.get(username= user_tuples[int(username_input)-1][1])
-                    task = Task.objects.get(task_text = task_tuples[int(task_input)-1][1])
+					user = User.objects.get(username= user_tuples[int(username_input)-1][1])
+					task = Task.objects.get(task_text = task_tuples[int(task_input)-1][1])
 
-                    task.users_assigned.add(user)
-                    
+					task.users_assigned.add(user)
+					
 
-                return render_to_response('taskManager/manage_tasks.html', 
-                    {'task':form.errors, 'valid':valid, 'logged_in':logged_in}, RequestContext(request))
+				return render_to_response('taskManager/manage_tasks.html', 
+					{'task':form.errors, 'valid':valid, 'logged_in':logged_in}, RequestContext(request))
 
-            else:   
+			else:   
 
 
-                form = ManageTask(current_proj = proj)
+				form = ManageTask(current_proj = proj)
 
-                return render_to_response('taskManager/manage_tasks.html', 
-                    {'form':form,'logged_in':logged_in}, RequestContext(request))
+				return render_to_response('taskManager/manage_tasks.html', 
+					{'form':form,'logged_in':logged_in}, RequestContext(request))
 
-        else:
-            return redirect('/taskManager/', {'permission':False})
-    else:
-        redirect('/taskManager/', {'logged_in':False})
+		else:
+			return redirect('/taskManager/', {'permission':False})
+	else:
+		redirect('/taskManager/', {'logged_in':False})
 
 
 def get_my_choices_users():
-    # you place some logic here
-    user_list = User.objects.order_by('date_joined')
-    user_tuple = []
-    counter = 1
-    for user in user_list:
-        user_tuple.append((counter, user))
-        counter = counter +1
-    return user_tuple
+	# you place some logic here
+	user_list = User.objects.order_by('date_joined')
+	user_tuple = []
+	counter = 1
+	for user in user_list:
+		user_tuple.append((counter, user))
+		counter = counter +1
+	return user_tuple
 
 
 def get_my_choices_projects():
-    # you place some logic here
-    proj_list = Project.objects.all()
-    proj_tuple = []
-    counter = 1
-    for proj in proj_list:
-        proj_tuple.append((counter, proj))
-        counter = counter +1
-    return proj_tuple
+	# you place some logic here
+	proj_list = Project.objects.all()
+	proj_tuple = []
+	counter = 1
+	for proj in proj_list:
+		proj_tuple.append((counter, proj))
+		counter = counter +1
+	return proj_tuple
 
 def get_my_choices_tasks(current_proj):
-    # you place some logic here
-    task_list = []
-    tasks = Task.objects.all()
-    # for task in tasks:
-    #     if task.assoc_project == current_proj:
-    #         task_list.append(task)
-    task_tuple = []
-    counter = 1
-    for task in tasks:
-        task_tuple.append((counter, task))
-        counter = counter +1
-    return task_tuple
+	# you place some logic here
+	task_list = []
+	tasks = Task.objects.all()
+	# for task in tasks:
+	#     if task.assoc_project == current_proj:
+	#         task_list.append(task)
+	task_tuple = []
+	counter = 1
+	for task in tasks:
+		task_tuple.append((counter, task))
+		counter = counter +1
+	return task_tuple
 
 
 def manageProjects(request):
 
-    user  = request.user
+	user  = request.user
 
-    if user.is_authenticated():
-        logged_in = True
+	if user.is_authenticated():
+		logged_in = True
 
-        if user.has_perm('can_change_group'):
+		if user.has_perm('can_change_group'):
 
-            if request.method == 'POST':
-                form = AssignProject(request.POST)
-                if form.is_valid():
+			if request.method == 'POST':
+				form = AssignProject(request.POST)
+				if form.is_valid():
 
-                    username_input = form.cleaned_data['User']
-                    project_title_input = form.cleaned_data['Project']
+					username_input = form.cleaned_data['User']
+					project_title_input = form.cleaned_data['Project']
 
-                    user_tuples = get_my_choices_users()
-                    project_tuples = get_my_choices_projects()
+					user_tuples = get_my_choices_users()
+					project_tuples = get_my_choices_projects()
 
-                    user = User.objects.get(username=user_tuples[int(username_input)-1][1])
-                    project = Project.objects.get(project_title = project_tuples[int(project_title_input)-1][1])
+					user = User.objects.get(username=user_tuples[int(username_input)-1][1])
+					project = Project.objects.get(project_title = project_tuples[int(project_title_input)-1][1])
 
-                    project.users_assigned.add(user)
+					project.users_assigned.add(user)
 
-                return redirect('/taskManager/')
-            else:   
+				return redirect('/taskManager/')
+			else:   
 
-                form = AssignProject()
+				form = AssignProject()
 
-                return redirect('/taskManager/')
+				return redirect('/taskManager/')
 
-        else:
-            return redirect('/taskManager/', {'permission':False})
-    else:
-        redirect('/taskManager/', {'logged_in':False})
+		else:
+			return redirect('/taskManager/', {'permission':False})
+	else:
+		redirect('/taskManager/', {'logged_in':False})
 
 def deleteProject(request, project_id):
 	# IDOR
@@ -147,187 +147,187 @@ def deleteProject(request, project_id):
 
 def manageGroups(request):
 
-    user  = request.user
+	user  = request.user
 
-    if user.is_authenticated():
-        logged_in = True
+	if user.is_authenticated():
+		logged_in = True
 
-        if user.has_perm('can_change_group'):
+		if user.has_perm('can_change_group'):
 			
-            user_list = User.objects.order_by('date_joined')
+			user_list = User.objects.order_by('date_joined')
 
-            if request.method == 'POST':
+			if request.method == 'POST':
 
-                selected_choice = request.POST.dict()
+				selected_choice = request.POST.dict()
 
-                counter = 1
-                groups_changed = False
+				counter = 1
+				groups_changed = False
 
-                while counter < len(selected_choice):
+				while counter < len(selected_choice):
 
-                    current = "radio" + str(counter)
-                    current_bool = "radio_bool" + str(counter)
-                    
-                    if current in selected_choice.keys() and current_bool in selected_choice.keys():
+					current = "radio" + str(counter)
+					current_bool = "radio_bool" + str(counter)
+					
+					if current in selected_choice.keys() and current_bool in selected_choice.keys():
 
-                        user_list[counter-1].groups.clear()
+						user_list[counter-1].groups.clear()
 
-                        if selected_choice[current] == 'admin_g':
-                            grp = Group.objects.get(name='admin_g')
-                            user_list[counter-1].groups.add(grp)#admin group
-                            groups_changed = True
-                        elif selected_choice[current] == 'project_managers':
-                            grp = Group.objects.get(name='project_managers')
-                            user_list[counter-1].groups.add(grp)#manager  group                     
-                            groups_changed = True
-                        elif selected_choice[current] == 'team_member':
-                            grp = Group.objects.get(name='team_member')
-                            user_list[counter-1].groups.add(grp)
-                            groups_changed = True
+						if selected_choice[current] == 'admin_g':
+							grp = Group.objects.get(name='admin_g')
+							user_list[counter-1].groups.add(grp)#admin group
+							groups_changed = True
+						elif selected_choice[current] == 'project_managers':
+							grp = Group.objects.get(name='project_managers')
+							user_list[counter-1].groups.add(grp)#manager  group                     
+							groups_changed = True
+						elif selected_choice[current] == 'team_member':
+							grp = Group.objects.get(name='team_member')
+							user_list[counter-1].groups.add(grp)
+							groups_changed = True
 
-                        user_list[counter-1].save()
+						user_list[counter-1].save()
 
-                    counter = counter+1
+					counter = counter+1
 
-                return render_to_response('taskManager/manage_groups.html', 
-                    {'users':user_list,'choices':selected_choice, 'groups_changed':groups_changed, 'logged_in':logged_in}, RequestContext(request))
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list,'choices':selected_choice, 'groups_changed':groups_changed, 'logged_in':logged_in}, RequestContext(request))
 
-            else:	
-                return render_to_response('taskManager/manage_groups.html', 
-				    {'users':user_list, 'logged_in':logged_in}, RequestContext(request))
-        else:
-            return redirect('/taskManager/', {'permission':False})
-    else:
-        redirect('/taskManager/', {'logged_in':False})
+			else:	
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list, 'logged_in':logged_in}, RequestContext(request))
+		else:
+			return redirect('/taskManager/', {'permission':False})
+	else:
+		redirect('/taskManager/', {'logged_in':False})
 
 def newtask(request, project_id):
 
-    if request.method == 'POST':
-       
-        proj = Project.objects.get(pk = project_id)
+	if request.method == 'POST':
+	   
+		proj = Project.objects.get(pk = project_id)
 
-        task_text = request.POST.get('task_text', False)
-        task_title = request.POST.get('task_title', False)
-        now = datetime.datetime.now()
-       
-        task = Task(
-        task_text = task_text,
-        title = task_title,
-        pub_date = now,
-        assoc_project = proj)
-        
-        task.save()
+		task_text = request.POST.get('task_text', False)
+		task_title = request.POST.get('task_title', False)
+		now = datetime.datetime.now()
+	   
+		task = Task(
+		task_text = task_text,
+		title = task_title,
+		pub_date = now,
+		assoc_project = proj)
+		
+		task.save()
 
-        return redirect('/taskManager/' + project_id + '/', {'new_task_added':True})
-    else:
-        return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
+		return redirect('/taskManager/' + project_id + '/', {'new_task_added':True})
+	else:
+		return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
 
 def newproj(request):
 
-    if request.method == 'POST':
-       
-        project_title = request.POST.get('project_title', False)
-        project_text = request.POST.get('project_text', False)
-        now = datetime.datetime.now()
-       
-        project = Project(project_title = project_title,
-        project_text = project_text,
-        start_date = now)
-        project.save()
-        project.users_assigned = [request.user]
-        
-        return redirect('/taskManager/', {'new_project_added':True})
-    else:
-        return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
+	if request.method == 'POST':
+	   
+		project_title = request.POST.get('project_title', False)
+		project_text = request.POST.get('project_text', False)
+		now = datetime.datetime.now()
+	   
+		project = Project(project_title = project_title,
+		project_text = project_text,
+		start_date = now)
+		project.save()
+		project.users_assigned = [request.user]
+		
+		return redirect('/taskManager/', {'new_project_added':True})
+	else:
+		return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
 
 def logout_view(request):
-    logout(request)
-    latest_Project_list = Project.objects.order_by('-start_date')
-    return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
-    # Redirect to a success page.
+	logout(request)
+	latest_Project_list = Project.objects.order_by('-start_date')
+	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
+	# Redirect to a success page.
 
 def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username', False)
-        password = request.POST.get('password', False)
+	if request.method == 'POST':
+		username = request.POST.get('username', False)
+		password = request.POST.get('password', False)
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                # Redirect to a success page.
-                return redirect('/taskManager/')
-            else:
-                # Return a 'disabled account' error message
-                return redirect('/taskManager/', {'disabled_user':True})
-        else:
-            # Return an 'invalid login' error message.
-            return render(request, 'taskManager/login.html', {'failed_login': False})
-    else:
-            # Return an 'invalid login' error message.
-            return render_to_response('taskManager/login.html', {}, RequestContext(request))
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				# Redirect to a success page.
+				return redirect('/taskManager/')
+			else:
+				# Return a 'disabled account' error message
+				return redirect('/taskManager/', {'disabled_user':True})
+		else:
+			# Return an 'invalid login' error message.
+			return render(request, 'taskManager/login.html', {'failed_login': False})
+	else:
+			# Return an 'invalid login' error message.
+			return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
 def register(request):
 
-    context = RequestContext(request)
+	context = RequestContext(request)
 
-    registered = False
+	registered = False
 
-    if request.method == 'POST':
+	if request.method == 'POST':
 
-        user_form = UserForm(data=request.POST)
+		user_form = UserForm(data=request.POST)
 
-        # If the two forms are valid...
-        if user_form.is_valid():
-            # Save the user's form data to the database.
-            user = user_form.save()
+		# If the two forms are valid...
+		if user_form.is_valid():
+			# Save the user's form data to the database.
+			user = user_form.save()
 
-            user.set_password(user.password)
+			user.set_password(user.password)
 
-            #add user to lowest permission group
-            #grp = Group.objects.get(name='team_member')
-            #user.groups.add(grp)
+			#add user to lowest permission group
+			#grp = Group.objects.get(name='team_member')
+			#user.groups.add(grp)
 
-            user.save()
+			user.save()
 
-            # Update our variable to tell the template registration was successful.
-            registered = True
-        
-        #else:
-         #   print user_form.errors
+			# Update our variable to tell the template registration was successful.
+			registered = True
+		
+		#else:
+		 #   print user_form.errors
 
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
-    else:
-        user_form = UserForm()
+	# Not a HTTP POST, so we render our form using two ModelForm instances.
+	# These forms will be blank, ready for user input.
+	else:
+		user_form = UserForm()
 
-    # Render the template depending on the context.
-    return render_to_response(
-            'taskManager/register.html',
-            {'user_form': user_form, 'registered': registered},
-            context)
+	# Render the template depending on the context.
+	return render_to_response(
+			'taskManager/register.html',
+			{'user_form': user_form, 'registered': registered},
+			context)
 
 def index(request):
-    latest_Project_list = Project.objects.order_by('-start_date')
+	latest_Project_list = Project.objects.order_by('-start_date')
 	
-    admin_level = False
+	admin_level = False
 
-    # #debugging
-    # group = Group.objects.get(name='admin_g')
-    # users = group.user_set.all()
+	# #debugging
+	# group = Group.objects.get(name='admin_g')
+	# users = group.user_set.all()
 
-    if request.user.groups.filter(name='admin_g').exists():
-        admin_level = True
+	if request.user.groups.filter(name='admin_g').exists():
+		admin_level = True
 
-    # #debugging end
+	# #debugging end
 
-    list_to_show = []
-    for project in latest_Project_list:
-        if(project.users_assigned.filter(username= request.user.username)).exists():
-            list_to_show.append(project)
+	list_to_show = []
+	for project in latest_Project_list:
+		if(project.users_assigned.filter(username= request.user.username)).exists():
+			list_to_show.append(project)
 
 	if request.user.is_authenticated():
-    	  return redirect("/taskManager/dashboard")
+		  return redirect("/taskManager/dashboard")
 	else:
 		return render(
 			request, 
@@ -338,70 +338,70 @@ def index(request):
 			)	
 
 def proj_details(request, project_id):
-    proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
-    if not proj:
-      messages.warning(request, 'You are not authorized to view this project')
-      return redirect('/taskManager/dashboard')
-    else:
-      proj = Project.objects.get(pk=project_id)
+	proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
+	if not proj:
+	  messages.warning(request, 'You are not authorized to view this project')
+	  return redirect('/taskManager/dashboard')
+	else:
+	  proj = Project.objects.get(pk=project_id)
 
-      return render(request, 'taskManager/proj_details.html', {'proj':proj})
+	  return render(request, 'taskManager/proj_details.html', {'proj':proj})
 
 
 def get_proj_by_name(project_title):
-        
+		
 
-        # tables = connection.introspection.table_names()
-        # seen_models = connection.introspection.installed_models(tables)
+		# tables = connection.introspection.table_names()
+		# seen_models = connection.introspection.installed_models(tables)
 
-        # print(tables)
+		# print(tables)
 
-        cursor = connection.cursor()
-        cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
-        row = cursor.fetchone() 
-        return row
+		cursor = connection.cursor()
+		cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
+		row = cursor.fetchone() 
+		return row
 
 def detail(request, task_id, project_title):
 
-    task = Task.objects.get(pk = task_id)
+	task = Task.objects.get(pk = task_id)
 
-    print(get_proj_by_name(project_title))
+	print(get_proj_by_name(project_title))
 
-    logged_in = True
+	logged_in = True
 
-    if not request.user.is_authenticated():
-        logged_in =False
+	if not request.user.is_authenticated():
+		logged_in =False
 
-    admin_level = False
-    if request.user.groups.filter(name='admin_g').exists():
-        admin_level = True
+	admin_level = False
+	if request.user.groups.filter(name='admin_g').exists():
+		admin_level = True
 
-    pmanager_level = False
-    if request.user.groups.filter(name='project_managers').exists():
-        pmanager_level = True
+	pmanager_level = False
+	if request.user.groups.filter(name='project_managers').exists():
+		pmanager_level = True
 
-    assigned_to = False
-    if task.users_assigned.filter(username= request.user.username).exists():
-        assigned_to = True
-    elif admin_level == True:
-        assigned_to = True
-    elif pmanager_level == True and proj.users_assigned.filter(username= request.user.username).exists():
-        assigned_to = True
-
-
-    if request.method == 'POST':
-        
-        notes_input = request.POST.get('comment', False)
-        image_url = request.POST.get('image', False)
-
-        newNote = Notes()
-        #if notes_input != "" and image_url != "":
-        newNote = Notes(note_text = notes_input, image_url = image_url, task = task, user = request.user.username)
-
-        newNote.save()
+	assigned_to = False
+	if task.users_assigned.filter(username= request.user.username).exists():
+		assigned_to = True
+	elif admin_level == True:
+		assigned_to = True
+	elif pmanager_level == True and proj.users_assigned.filter(username= request.user.username).exists():
+		assigned_to = True
 
 
-    return render(request, 'taskManager/detail.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in})
+	if request.method == 'POST':
+		
+		notes_input = request.POST.get('comment', False)
+		image_url = request.POST.get('image', False)
+
+		newNote = Notes()
+		#if notes_input != "" and image_url != "":
+		newNote = Notes(note_text = notes_input, image_url = image_url, task = task, user = request.user.username)
+
+		newNote.save()
+
+
+	return render(request, 'taskManager/detail.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in})
 
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
