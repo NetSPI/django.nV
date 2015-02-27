@@ -404,26 +404,8 @@ def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})
 	
 def show_tutorial(request, vuln_id):
-	if vuln_id == "injection":
-		return render(request, 'taskManager/tutorials/injection.html')
-	elif vuln_id == "brokenauth":
-		return render(request, 'taskManager/tutorials/broken_auth.html')
-	elif vuln_id == "xss":
-		return render(request, 'taskManager/tutorials/xss.html')
-	elif vuln_id == "idor":
-		return render(request, 'taskManager/tutorials/idor.html')
-	elif vuln_id == "misconfig":
-		return render(request, 'taskManager/tutorials/misconfig.html')
-	elif vuln_id == "exposure":
-		return render(request, 'taskManager/tutorials/exposure.html')
-	elif vuln_id == "access":
-		return render(request, 'taskManager/tutorials/access.html')	
-	elif vuln_id == "csrf":
-		return render(request, 'taskManager/tutorials/csrf.html')
-	elif vuln_id == "componentns":
-		return render(request, 'taskManager/tutorials/components.html')	
-	elif vuln_id == "redirects":
-		return render(request, 'taskManager/tutorials/redirects.html')				
+	if vuln_id in ["injection", "brokenauth", "xss", "idor", "misconfig", "exposure", "access", "csrf"< "components", "redirects"]:
+		return render(request, 'taskManager/tutorials/' + vuln_id+'.html')
 	else:
 		return render(request, 'taskManager/tutorials.html', {'user':request.user});
 
