@@ -1,0 +1,30 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Edit Task
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label >Enter Task Title</label>
+                      <input name="task_title" class="form-control" value ="{{task.title}}">
+                      <label >Enter Task Information</label>
+                      <textarea name="task_text" class="form-control">{{task.task_text}}</textarea>
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+
+{% endblock %}

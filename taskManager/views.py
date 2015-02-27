@@ -220,6 +220,35 @@ def newtask(request, project_id):
 	else:
 		return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
 
+def editTask(request, project_id, task_id):
+
+	proj = Project.objects.get(pk = project_id)
+	task = Task.objects.get(pk = task_id)
+
+	if request.method == 'POST':
+
+		if task.assoc_project == proj:
+
+			task_text = request.POST.get('task_text', False)
+			task_title = request.POST.get('task_title', False)
+		   
+			task.title = task_title
+			task.task_text = task_text
+			task.save()
+
+		return redirect('/taskManager/' + project_id + '/')
+	else:
+		return render_to_response('taskManager/editTask.html', {'task':task,}, RequestContext(request))
+
+def deleteTask(request, project_id, task_id):	   
+	proj = Project.objects.get(pk = project_id)
+	task = Task.objects.get(pk = task_id)
+	if proj != None:
+		if task != None and task.assoc_project == proj:
+			task.delete()
+
+	return redirect('/taskManager/' + project_id + '/')
+
 def newproj(request):
 
 	if request.method == 'POST':

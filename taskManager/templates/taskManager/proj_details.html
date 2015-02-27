@@ -60,6 +60,8 @@
                         <th>Description</th>
                         <th>Notes</th>
                         <th>Status</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -89,6 +91,8 @@
                               {% endif %}
                              
                           </td>
+                          <td><a href="{% url 'taskManager:edit_task' project_id=proj.id task_id=task.id %}">Edit</a></td>
+                          <td><a href="{% url 'taskManager:delete_task' project_id=proj.id task_id=task.id %}">Delete</a></td>
                       </tr>
                     {% endfor %}  
                 </tbody>
