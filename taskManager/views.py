@@ -350,23 +350,15 @@ def proj_details(request, project_id):
 
 
 def get_proj_by_name(project_title):
-		
-
-		# tables = connection.introspection.table_names()
-		# seen_models = connection.introspection.installed_models(tables)
-
-		# print(tables)
 
 		cursor = connection.cursor()
 		cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
 		row = cursor.fetchone() 
 		return row
 
-def detail(request, task_id, project_title):
+def detail(request, project_id, task_id):
 
 	task = Task.objects.get(pk = task_id)
-
-	print(get_proj_by_name(project_title))
 
 	logged_in = True
 
