@@ -1,0 +1,58 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content   %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                Task Details
+            </header>
+
+        </section>
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <div class="bio-graph-heading project-heading">
+                        <strong>{{task.title}}</strong>
+                    </div>
+                    <div class="panel-body bio-graph-info">
+                        <!--<h1>New Dashboard BS3 </h1>-->
+                        <div class="row p-details">
+                            <div class="bio-row">
+                                <p><span class="bold">Completed </span>: <span class="label label-primary">{{completed_task}}</span></p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Created </span>: {{task.pub_date}} </p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Participants </span>:
+                                <span class="p-team">
+                                    {% for u in task.users_assigned.all%}
+                                      <a href="#"><img alt="image" class="" src="{{u.userprofile.profile_img}}"></a>
+                                    {% endfor %}
+                                </span>
+                                </p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Description</span>:
+                                <span class="p-team">
+                                  {{task.task_text}}
+                                </span>
+                                </p>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+
+{% endblock %}

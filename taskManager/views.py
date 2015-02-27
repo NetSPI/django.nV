@@ -215,8 +215,9 @@ def newtask(request, project_id):
 		title = task_title,
 		pub_date = now,
 		assoc_project = proj)
-		
+
 		task.save()
+		task.users_assigned = [request.user]
 
 		return redirect('/taskManager/' + project_id + '/', {'new_task_added':True})
 	else:
@@ -401,7 +402,7 @@ def detail(request, task_id, project_title):
 		newNote.save()
 
 
-	return render(request, 'taskManager/detail.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in})
+	return render(request, 'taskManager/task_details.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in, 'completed_task': "Yes" if task.completed else "No"})
 
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
