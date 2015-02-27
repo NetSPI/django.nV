@@ -1,13 +1,10 @@
 import datetime
 
-
 from django.contrib.auth.models import User
 
 from django.utils import timezone
 from django.db import models
 from django import forms
-
-# Create your models here.
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
@@ -52,5 +49,3 @@ class Notes(models.Model):
 
 	def __str__(self):
 		return self.note_text
-
-

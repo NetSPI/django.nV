@@ -49,13 +49,10 @@ def manageTasks(request, project_id):
 
 					task.users_assigned.add(user)
 					
-
 				return render_to_response('taskManager/manage_tasks.html', 
 					{'task':form.errors, 'valid':valid, 'logged_in':logged_in}, RequestContext(request))
 
 			else:   
-
-
 				form = ManageTask(current_proj = proj)
 
 				return render_to_response('taskManager/manage_tasks.html', 
@@ -245,9 +242,8 @@ def logout_view(request):
 	logout(request)
 	latest_Project_list = Project.objects.order_by('-start_date')
 	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
-	# Redirect to a success page.
 
-def login_view(request):
+def login(request):
 	if request.method == 'POST':
 		username = request.POST.get('username', False)
 		password = request.POST.get('password', False)
@@ -313,14 +309,8 @@ def index(request):
 	
 	admin_level = False
 
-	# #debugging
-	# group = Group.objects.get(name='admin_g')
-	# users = group.user_set.all()
-
 	if request.user.groups.filter(name='admin_g').exists():
 		admin_level = True
-
-	# #debugging end
 
 	list_to_show = []
 	for project in latest_Project_list:
@@ -348,15 +338,7 @@ def proj_details(request, project_id):
 
 	  return render(request, 'taskManager/proj_details.html', {'proj':proj})
 
-
-def get_proj_by_name(project_title):
-
-		cursor = connection.cursor()
-		cursor.execute("SELECT id FROM taskManager_project WHERE project_title = %s", [project_title])
-		row = cursor.fetchone() 
-		return row
-
-def detail(request, project_id, task_id):
+def task_details(request, project_id, task_id):
 
 	task = Task.objects.get(pk = task_id)
 
