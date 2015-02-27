@@ -241,7 +241,7 @@ def newproj(request):
 def logout_view(request):
 	logout(request)
 	latest_Project_list = Project.objects.order_by('-start_date')
-	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
+	return redirect('/taskManager')
 
 def login_view(request):
 	if request.method == 'POST':
