@@ -243,7 +243,7 @@ def logout_view(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
 	return render(request, 'taskManager/index.html', {'latest_Project_list': latest_Project_list})
 
-def login(request):
+def login_view(request):
 	if request.method == 'POST':
 		username = request.POST.get('username', False)
 		password = request.POST.get('password', False)
