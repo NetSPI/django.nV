@@ -1,13 +1,3 @@
-"""
-Django settings for projmanager project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -49,9 +39,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'projmanager.urls'
+ROOT_URLCONF = 'taskManager.urls'
 
-WSGI_APPLICATION = 'projmanager.wsgi.application'
+WSGI_APPLICATION = 'taskManager.wsgi.application'
 
 
 # Database
