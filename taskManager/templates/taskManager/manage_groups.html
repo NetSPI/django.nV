@@ -2,14 +2,13 @@
 {% extends 'taskManager/base.html' %}
 <html>
     <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
     </head>
 
     <body>
         {% block menu %}
         {% if logged_in == True %}
         <ul class="nav pull-right">
-            <li><a href="/taskManager/"><--- Return Home</a></li>
+            <li><a href="/taskManager/">&lt;--- Return Home</a></li>
         </ul>
         {% endif %}
 
@@ -21,21 +20,22 @@
         <h1>Manage Groups</h1>
 
         {% if groups_changed = True %}
-        <h4> groups have been changed</h4>
+        <h4>Access levels have been updated</h4>
         {% endif %}
 
         <form method = "post">
-        {% csrf_token %}
-        {% for user in users %}
-            <h4>{{user.username}}</h4> 
-            <input type="checkbox" name = "radio_bool{{forloop.counter}}" id = "user_bool{{forloop.counter}}" value = "change_group"><u>Change this user's permissions</u><br /><br />
-            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="admin_g">Admin Access<br />
-            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="project_managers">Project Manager Access<br /> 
-            <input type="radio" name="radio{{forloop.counter}}" id="user{{forloop.counter}}" value="team_member" checked>Project Member Access<br />
-        {% endfor %}
-        <br />
-        <input type="submit" value="Submit" />
-
+            {% csrf_token %}
+            <b>User:</b> <select name="userid" id="userid">
+            {% for user in users %}
+                <option value="{{user.id}}">{{user.username}} - {{user}}</option>
+            {% endfor %}
+            </select>
+            <br />
+            <input type="radio" name="accesslevel" id="accesslevel" value="admin_g"> Admin Access<br />
+            <input type="radio" name="accesslevel" id="accesslevel" value="project_managers"> Project Manager Access<br /> 
+            <input type="radio" name="accesslevel" id="accesslevel" value="team_member" checked> Project Member Access<br />
+            <br />
+            <input type="submit" value="Submit" />
         </form>
         
         {% endif %}
