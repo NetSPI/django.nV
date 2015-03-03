@@ -26,7 +26,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 def manageTasks(request, project_id):
 
-	print('here')
 	user  = request.user
 	proj = Project.objects.get(pk = project_id)
 
@@ -146,10 +145,9 @@ def deleteProject(request, project_id):
 
 def manageGroups(request):
 
-	user  = request.user
+	user = request.user
 
 	if user.is_authenticated():
-		logged_in = True
 
 		if user.has_perm('can_change_group'):
 			
@@ -157,43 +155,30 @@ def manageGroups(request):
 
 			if request.method == 'POST':
 
-				selected_choice = request.POST.dict()
+				post_data = request.POST.dict()
 
-				counter = 1
-				groups_changed = False
+				accesslevel = post_data["accesslevel"].strip()
 
-				while counter < len(selected_choice):
-
-					current = "radio" + str(counter)
-					current_bool = "radio_bool" + str(counter)
-					
-					if current in selected_choice.keys() and current_bool in selected_choice.keys():
-
-						user_list[counter-1].groups.clear()
-
-						if selected_choice[current] == 'admin_g':
-							grp = Group.objects.get(name='admin_g')
-							user_list[counter-1].groups.add(grp)#admin group
-							groups_changed = True
-						elif selected_choice[current] == 'project_managers':
-							grp = Group.objects.get(name='project_managers')
-							user_list[counter-1].groups.add(grp)#manager  group                     
-							groups_changed = True
-						elif selected_choice[current] == 'team_member':
-							grp = Group.objects.get(name='team_member')
-							user_list[counter-1].groups.add(grp)
-							groups_changed = True
-
-						user_list[counter-1].save()
-
-					counter = counter+1
-
-				return render_to_response('taskManager/manage_groups.html', 
-					{'users':user_list,'choices':selected_choice, 'groups_changed':groups_changed, 'logged_in':logged_in}, RequestContext(request))
+				if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+					try:
+						grp = Group.objects.get(name=accesslevel)
+					except:
+						grp = Group.objects.create(name=accesslevel)
+					user = User.objects.get(pk=post_data["userid"])
+					# Check if the user even exists
+					if user == None:
+						return redirect('/taskManager/', {'permission':False})
+					user.groups.add(grp)
+					user.save()
+					return render_to_response('taskManager/manage_groups.html', 
+						{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
+				else:
+					return render_to_response('taskManager/manage_groups.html', 
+						{'users':user_list, 'logged_in':True}, RequestContext(request))					
 
 			else:	
 				return render_to_response('taskManager/manage_groups.html', 
-					{'users':user_list, 'logged_in':logged_in}, RequestContext(request))
+					{'users':user_list, 'logged_in':True}, RequestContext(request))
 		else:
 			return redirect('/taskManager/', {'permission':False})
 	else:
@@ -292,8 +277,7 @@ def login_view(request):
 			# Return an 'invalid login' error message.
 			return render(request, 'taskManager/login.html', {'failed_login': False})
 	else:
-			# Return an 'invalid login' error message.
-			return render_to_response('taskManager/login.html', {}, RequestContext(request))
+		return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
 def register(request):
 
