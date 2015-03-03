@@ -24,7 +24,6 @@ from taskManager.models import Task, Project, Notes
 
 def manageTasks(request, project_id):
 
-	print('here')
 	user  = request.user
 	proj = Project.objects.get(pk = project_id)
 
@@ -276,8 +275,7 @@ def login_view(request):
 			# Return an 'invalid login' error message.
 			return render(request, 'taskManager/login.html', {'failed_login': False})
 	else:
-			# Return an 'invalid login' error message.
-			return render_to_response('taskManager/login.html', {}, RequestContext(request))
+		return render_to_response('taskManager/login.html', {}, RequestContext(request))
 
 def register(request):
 
