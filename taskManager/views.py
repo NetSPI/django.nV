@@ -1,4 +1,5 @@
 import datetime
+import pprint
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -15,6 +16,7 @@ from django.contrib.auth import logout
 from django.db import connection
 from django.contrib import messages
 from taskManager.models import Task, Project, Notes
+from django.views.decorators.csrf import csrf_exempt
 
 #20821e4abaea95268880f020c9f6768288f3725a
 #add completed status, due date
@@ -405,4 +407,44 @@ def show_tutorial(request, vuln_id):
 		return render(request, 'taskManager/tutorials.html', {'user':request.user});
 
 def profile(request):
-	return HttpResponse('..')
+	return render(request,'taskManager/profile.html',{'user':request.user})
+
+@csrf_exempt
+def profile_by_id(request, user_id):
+	user = User.objects.get(pk = user_id)
+	
+	if request.method == 'POST':
+		if request.POST.get('first_name') != user.first_name:
+			user.first_name = request.POST.get('first_name')
+		if request.POST.get('last_name') != user.last_name:
+			user.last_name = request.POST.get('last_name')
+		if request.POST.get('email') != user.email:
+			user.email = request.POST.get('email')
+		if request.POST.get('password'):
+			user.set_password(request.POST.get('password'))
+		user.save()
+		messages.info(request, "User Updated")
+
+	return render(request,'taskManager/profile.html',{'user':user})
+
+@csrf_exempt
+def change_password(request):
+	
+	if request.method == 'POST':
+		user = request.user
+		old_password = request.POST.get('old_password')
+		new_password = request.POST.get('new_password')
+		confirm_passwrd = request.POST.get('confirm_password')
+		
+		u = authenticate(username=user.username, password=old_password)
+		if u is not None:
+			if new_password == confirm_passwrd:
+				user.set_password(new_password)
+				user.save()
+				messages.success(request,'Password Updated')
+			else:
+				messages.warning(request,'Passwords do not match')
+		else:
+			messages.warning(request,'Invalid Password')
+	
+	return render(request,'taskManager/change_password.html',{'user':request.user})
