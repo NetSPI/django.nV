@@ -412,6 +412,10 @@ def task_details(request, project_id, task_id):
 def dashboard(request):
 	latest_Project_list = Project.objects.order_by('-start_date')
 	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
+
+def my_projects(request):
+	my_project_list = Project.objects.filter(users_assigned=request.user.id)
+	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': my_project_list, 'user':request.user })
 	
 def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})
