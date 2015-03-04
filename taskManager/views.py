@@ -353,6 +353,26 @@ def proj_details(request, project_id):
 
 	  return render(request, 'taskManager/proj_details.html', {'proj':proj})
 
+def newNote(request, project_id, task_id):
+	if request.method == 'POST':
+	   
+		parent_task = Task.objects.get(pk = task_id)
+
+		note_title = request.POST.get('note_title', False)
+		note_text = request.POST.get('note_text', False)
+		now = datetime.datetime.now()
+	   
+		note = Notes(
+		title = note_title,
+		note_text = note_text,
+		user = request.user,
+		task = parent_task)
+
+		note.save()
+		return redirect('/taskManager/' + project_id + '/', {'new_note_added':True})
+	else:
+		return render_to_response('taskManager/createNote.html', {'task_id':task_id}, RequestContext(request))
+
 def task_details(request, project_id, task_id):
 
 	task = Task.objects.get(pk = task_id)
