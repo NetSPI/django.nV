@@ -9,6 +9,9 @@
         <section class="panel">
             <header class="panel-heading">
                 Task Details
+                <span class="pull-right">
+                  <a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-success btn-xs">Add Note</a>
+                </span>
             </header>
 
         </section>
@@ -46,7 +49,11 @@
                             <div class="bio-row">
                                 <p><span class="bold">Notes</span>:
                                 <span class="p-team">
-                                  {{task.task_text}}
+                                    {% for u in task.notes_set.all%}
+                                    <div class="bio-row">
+                                        <b>{{u.title}}</b> - {{u.note_text}}
+                                    </div>
+                                    {% endfor %}
                                 </span>
                                 </p>
                             </div>

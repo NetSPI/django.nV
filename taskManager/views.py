@@ -369,7 +369,7 @@ def newNote(request, project_id, task_id):
 		task = parent_task)
 
 		note.save()
-		return redirect('/taskManager/' + project_id + '/', {'new_note_added':True})
+		return redirect('/taskManager/' + project_id + '/' + task_id, {'new_note_added':True})
 	else:
 		return render_to_response('taskManager/createNote.html', {'task_id':task_id}, RequestContext(request))
 
@@ -397,19 +397,6 @@ def task_details(request, project_id, task_id):
 		assigned_to = True
 	elif pmanager_level == True and proj.users_assigned.filter(username= request.user.username).exists():
 		assigned_to = True
-
-
-	if request.method == 'POST':
-		
-		notes_input = request.POST.get('comment', False)
-		image_url = request.POST.get('image', False)
-
-		newNote = Notes()
-		#if notes_input != "" and image_url != "":
-		newNote = Notes(note_text = notes_input, image_url = image_url, task = task, user = request.user.username)
-
-		newNote.save()
-
 
 	return render(request, 'taskManager/task_details.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in, 'completed_task': "Yes" if task.completed else "No"})
 
