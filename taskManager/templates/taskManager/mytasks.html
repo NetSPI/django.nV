@@ -1,0 +1,66 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+          {% include 'taskManager/messages.html'%}
+            <header class="panel-heading">
+                Projects
+                <span class="pull-right">
+                    <a href="/taskManager/dashboard/" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                </span>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="input-group"><input type="text" placeholder="Search Here" class="input-sm form-control"> <span class="input-group-btn">
+                        <button type="button" class="btn btn-sm btn-success"> Go!</button> </span></div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Title</th>
+                    <th>Created At</th>
+                    <th>Notes</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if task_list %}
+                    {% for task in task_list %}
+                      <tr>
+                        <td><a href="{% url 'taskManager:proj_details' task.assoc_project.id %}">{{task.assoc_project.project_title}}</a></td>
+                          <td>
+                              <a href="{% url 'taskManager:task_details' project_id=task.assoc_project.id task_id=task.id %}">{{task.title}}</a>
+                          </td>
+                          <td>
+                              {{task.pub_date}}
+                          </td>
+                          <td>
+                            {{task.task_text}}
+                          </td>
+                          <td><a href="{% url 'taskManager:edit_task' project_id=task.assoc_project.id task_id=task.id %}">Edit</a></td>
+                          <td><a href="{% url 'taskManager:delete_task' project_id=task.assoc_project.id task_id=task.id %}">Delete</a></td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <div class="col-md-12">
+                      <p>No tasks are assigned to you.</p>
+                    </div>
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <!-- page end-->
+    </section>
+
+<!--main content end-->
+{% endblock %}
