@@ -49,3 +49,11 @@ class Notes(models.Model):
 
 	def __str__(self):
 		return self.note_text
+
+class File(models.Model):
+	project = models.ForeignKey(Project)
+	name = models.CharField(max_length=300, default="")
+	path = models.CharField(max_length=3000, default="")
+
+	def __str__(self):
+		return self.name

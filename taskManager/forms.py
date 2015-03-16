@@ -93,5 +93,6 @@ class AssignemntForm(forms.Form):
     class Meta:
         model = Project
     
-
-
+class ProjectFileForm(forms.Form):
+    name = forms.CharField(max_length=300)
+    file = forms.FileField()

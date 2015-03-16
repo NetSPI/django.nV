@@ -9,14 +9,16 @@ from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group, Permission, User
-from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask
+from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db import connection
 from django.contrib import messages
-from taskManager.models import Task, Project, Notes
+from taskManager.models import Task, Project, Notes, File
+from taskManager.misc import store_uploaded_file
 from django.views.decorators.csrf import csrf_exempt
+import mimetypes
 
 #20821e4abaea95268880f020c9f6768288f3725a
 #add completed status, due date
@@ -183,6 +185,40 @@ def manageGroups(request):
 			return redirect('/taskManager/', {'permission':False})
 	else:
 		redirect('/taskManager/', {'logged_in':False})
+
+def newfile(request, project_id):
+
+	if request.method == 'POST':
+	   
+		proj = Project.objects.get(pk = project_id)
+		form = ProjectFileForm(request.POST, request.FILES)
+
+		if form.is_valid():
+			name = request.POST.get('name', False)
+			upload_path = store_uploaded_file(name, request.FILES['file'])
+		   
+			file = File(
+			name = name,
+			path = upload_path,
+			project = proj)
+
+			file.save()
+
+			return redirect('/taskManager/' + project_id + '/', {'new_file_added':True})
+		else:
+			form = ProjectFileForm()
+	else:
+		form = ProjectFileForm()
+	return render_to_response('taskManager/newfile.html', {'form': form}, RequestContext(request))
+
+def downloadfile(request, file_id):
+
+	file = File.objects.get(pk = file_id)
+	abspath = open(file.path,'rb')
+	response = HttpResponse(content=abspath.read())
+	response['Content-Type']= mimetypes.guess_type(file.path)[0]
+	response['Content-Disposition'] = 'attachment; filename=%s' % file.name
+	return response
 
 def newtask(request, project_id):
 
