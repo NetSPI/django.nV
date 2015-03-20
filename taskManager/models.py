@@ -28,6 +28,7 @@ class Task(models.Model):
 	task_text = models.CharField(max_length = 200)
 	title = models.CharField(max_length = 200, default="N/A")
 	pub_date = models.DateTimeField('date created')
+	due_date = models.DateTimeField('date due', default=(timezone.now() + datetime.timedelta(weeks=1)))
 	completed = models.NullBooleanField(default = False)
 	users_assigned = models.ManyToManyField(User)
 

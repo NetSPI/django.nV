@@ -223,17 +223,21 @@ def downloadfile(request, file_id):
 def newtask(request, project_id):
 
 	if request.method == 'POST':
+
+		print ([x for x in request.POST.values()])
 	   
 		proj = Project.objects.get(pk = project_id)
 
 		task_text = request.POST.get('task_text', False)
 		task_title = request.POST.get('task_title', False)
 		now = datetime.datetime.now()
+		task_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('task_duedate', False)))
 	   
 		task = Task(
 		task_text = task_text,
 		title = task_title,
 		pub_date = now,
+		due_date = task_duedate,
 		assoc_project = proj)
 
 		task.save()
@@ -446,6 +450,7 @@ def my_projects(request):
 
 def my_tasks(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
+	print ([x.due_date.time() for x in my_task_list])
 	return render(request, 'taskManager/mytasks.html',  {'task_list': my_task_list, 'user':request.user })
 
 def tutorials(request):

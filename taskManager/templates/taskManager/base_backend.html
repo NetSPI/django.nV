@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/bootstrap-reset.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "taskManager/css/jquery.datetimepicker.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style-responsive.css" %}"/>
     
@@ -120,6 +121,7 @@
 <script src="{% static "taskManager/js/backend/jquery.nicescroll.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.sparkline.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.customSelect.min.js" %}"></script>
+<script src="{% static "taskManager/js/backend/jquery.datetimepicker.js" %}"></script>
 <script src="{% static "taskManager/js/backend/respond.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/slidebars.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/common-scripts.js" %}"></script>
@@ -130,6 +132,7 @@
 
     $(function(){
         $('select.styled').customSelect();
+        $('#datetimepicker').datetimepicker({format:"unixtime", inline:true});
     });
 
 </script>
