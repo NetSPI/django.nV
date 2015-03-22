@@ -20,8 +20,6 @@ from taskManager.misc import store_uploaded_file
 from django.views.decorators.csrf import csrf_exempt
 import mimetypes
 
-#20821e4abaea95268880f020c9f6768288f3725a
-#add completed status, due date
 #pmem can only see his tasks
 #pman can only see his projects
 #admin can see all tasks
@@ -275,6 +273,16 @@ def deleteTask(request, project_id, task_id):
 			task.delete()
 
 	return redirect('/taskManager/' + project_id + '/')
+
+def completeTask(request, project_id, task_id):
+	proj = Project.objects.get(pk = project_id)
+	task = Task.objects.get(pk = task_id)
+	if proj != None:
+		if task != None and task.assoc_project == proj:
+			task.completed = True
+			task.save()
+
+	return redirect('/taskManager/' + project_id + '/' + task_id)
 
 def newproj(request):
 
