@@ -56,7 +56,8 @@
                     <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Created At</th>
+                        <th>Created</th>
+                        <th>Due Date</th>
                         <th>Description</th>
                         <th>Notes</th>
                         <th>Status</th>
@@ -72,6 +73,13 @@
                           </td>
                           <td>
                               {{task.pub_date}}
+                          </td>
+                          <td>
+                          {% if task.is_overdue %}
+                            <b style="color:red">{{task.due_date}}</b>
+                          {% else %}
+                            {{task.due_date}}
+                          {% endif %}
                           </td>
                           <td>
                             {{task.task_text}}

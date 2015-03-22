@@ -2,8 +2,8 @@ import datetime
 import pprint
 
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import Http404
+from django.http import HttpResponse, Http404
+from django.utils import timezone
 from django.template import RequestContext, loader
 from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
@@ -391,7 +391,7 @@ def proj_details(request, project_id):
 	else:
 	  proj = Project.objects.get(pk=project_id)
 
-	  return render(request, 'taskManager/proj_details.html', {'proj':proj})
+	  return render(request, 'taskManager/proj_details.html', {'proj': proj})
 
 def newNote(request, project_id, task_id):
 	if request.method == 'POST':

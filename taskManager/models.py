@@ -41,6 +41,9 @@ class Task(models.Model):
 	def was_created_recently(self):
 		return self.pub_date >=timezone.now() - datetime.timedelta(days =1)
 
+	def is_overdue(self):
+		return self.due_date <= timezone.now()
+
 class Notes(models.Model):
 	task = models.ForeignKey(Task, default=1)
 	title = models.CharField(max_length = 200, default = "N/A")
