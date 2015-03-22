@@ -421,6 +421,40 @@ def newNote(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/createNote.html', {'task_id':task_id}, RequestContext(request))
 
+def editNote(request, project_id, task_id, note_id):
+
+	proj = Project.objects.get(pk = project_id)
+	task = Task.objects.get(pk = task_id)
+	note = Notes.objects.get(pk = note_id)
+
+	if request.method == 'POST':
+
+		if task.assoc_project == proj:
+
+			if note.task == task:
+
+				note_text = request.POST.get('note_text', False)
+				note_title = request.POST.get('note_title', False)
+			   
+				note.title = note_title
+				note.note_text = note_text
+				note.save()
+
+		return redirect('/taskManager/' + project_id + '/' + task_id)
+	else:
+		return render_to_response('taskManager/editNote.html', {'note': note}, RequestContext(request))
+
+def deleteNote(request, project_id, task_id, note_id):	   
+	proj = Project.objects.get(pk = project_id)
+	task = Task.objects.get(pk = task_id)
+	note = Notes.objects.get(pk = note_id)
+	if proj != None:
+		if task != None and task.assoc_project == proj:
+			if note != None and note.task == task:
+				note.delete()
+
+	return redirect('/taskManager/' + project_id + '/' + task_id)
+
 def task_details(request, project_id, task_id):
 
 	task = Task.objects.get(pk = task_id)

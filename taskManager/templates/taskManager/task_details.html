@@ -48,13 +48,32 @@
                                 </p>
                             </div>
                             <div class="bio-row">
-                                <p><span class="bold">Notes</span>:
+                                <p><span class="bold">Notes</span>
                                 <span class="p-team">
-                                    {% for u in task.notes_set.all%}
-                                    <div class="bio-row">
-                                        <b>{{u.title}}</b> - {{u.note_text}}
-                                    </div>
-                                    {% endfor %}
+                                    <table class="table table-hover p-table">
+                                      <thead>
+                                        <tr>
+                                          <th>Title</th>
+                                          <th>Text</th>
+                                          <th>Edit</th>
+                                          <th>Del</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for note in task.notes_set.all%}
+                                        <tr>
+                                          <td>
+                                            {{note.title}}
+                                          </td>
+                                          <td>
+                                            {{note.note_text}}
+                                          </td>
+                                          <td><a href="{% url 'taskManager:edit_note' project_id=task.assoc_project.id task_id=task.id note_id=note.id %}">Edit</a></td>
+                                          <td><a href="{% url 'taskManager:delete_note' project_id=task.assoc_project.id task_id=task.id note_id=note.id %}">Delete</a></td>
+                                        </tr>
+                                        {% endfor %}  
+                                      </tbody>
+                                    </table>
                                 </span>
                                 </p>
                             </div>
