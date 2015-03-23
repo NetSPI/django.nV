@@ -263,7 +263,7 @@ def editTask(request, project_id, task_id):
 
 		return redirect('/taskManager/' + project_id + '/')
 	else:
-		return render_to_response('taskManager/editTask.html', {'task':task,}, RequestContext(request))
+		return render_to_response('taskManager/editTask.html', {'task': task}, RequestContext(request))
 
 def deleteTask(request, project_id, task_id):	   
 	proj = Project.objects.get(pk = project_id)
@@ -303,6 +303,25 @@ def newproj(request):
 		return redirect('/taskManager/', {'new_project_added':True})
 	else:
 		return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
+
+def editProject(request, project_id):
+
+	proj = Project.objects.get(pk = project_id)
+
+	if request.method == 'POST':
+
+		project_title = request.POST.get('project_title', False)
+		project_text = request.POST.get('project_text', False)
+		project_priority = int(request.POST.get('project_priority', False))
+	   
+		proj.title = project_title
+		proj.project_text = project_text
+		proj.priority = project_priority
+		proj.save()
+
+		return redirect('/taskManager/' + project_id + '/')
+	else:
+		return render_to_response('taskManager/editProject.html', {'proj': proj}, RequestContext(request))
 
 def logout_view(request):
 	logout(request)

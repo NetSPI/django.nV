@@ -58,6 +58,7 @@
                           </td>
                           <td>
                               <a href="{% url 'taskManager:proj_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                              <a href="{% url 'taskManager:edit_project' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                               <a href="{% url 'taskManager:delete_project' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                           </td>
                       </tr>
