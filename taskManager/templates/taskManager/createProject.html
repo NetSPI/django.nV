@@ -11,12 +11,22 @@
               <form method="post" role="form">
                   {% csrf_token %}
                   <div class="form-group">
-                      <label >Enter Project Title</label>
+                      <label> Enter Project Title</label>
                       <input name="project_title" class="form-control" placeholder="">
                   </div>
                   <div class="form-group">
-                      <label >Enter Project Information</label>
+                      <label>Enter Project Information</label>
                       <textarea name="project_text" class="form-control" placeholder=""></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label>Project Priority</label><br />
+                      <select name="project_priority">
+                        <option value="5">(!!) SUPER URGENT</option>
+                        <option value="4">(!) Urgent</option>
+                        <option value="3">High</option>
+                        <option value="2">Medium</option>
+                        <option value="1" selected="selected">Low</option>
+                      </select>
                   </div>
                   <button type="submit" class="btn btn-info">Finish</button>
               </form>

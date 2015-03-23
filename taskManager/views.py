@@ -290,13 +290,15 @@ def newproj(request):
 	   
 		project_title = request.POST.get('project_title', False)
 		project_text = request.POST.get('project_text', False)
+		project_priority = int(request.POST.get('project_priority', False))
 		now = datetime.datetime.now()
 	   
 		project = Project(project_title = project_title,
 		project_text = project_text,
+		priority = project_priority,
 		start_date = now)
 		project.save()
-		project.users_assigned = [request.user]
+		project.users_assigned = [request.user.id]
 		
 		return redirect('/taskManager/', {'new_project_added':True})
 	else:

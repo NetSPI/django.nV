@@ -122,7 +122,19 @@
                         <br/>
                         <h5 class="bold">Priority</h5>
                         <ul class="nav nav-pills nav-stacked labels-info ">
-                            <li><i class=" fa fa-circle text-danger"></i> High Priority</p></li>
+                          {% if proj.priority == 1 %}
+                            <li><i class=" fa fa-circle text-primary"></i> Low Priority</li>
+                          {% elif proj.priority = 2 %}
+                            <li><i class=" fa fa-circle text-success"></i> Medium Priority</li>
+                          {% elif proj.priority = 3 %}
+                            <li><i class=" fa fa-circle text-danger"></i> High Priority</li>
+                          {% elif proj.priority = 4 %}
+                            <li class="text-danger"><i class="fa fa-circle"></i> Urgent Priority</li>
+                          {% elif proj.priority = 5 %}
+                            <li class="text-danger"><strong><i class=" fa fa-circle"></i> SUPER URGENT Priority</strong></li>
+                          {% else %}
+                            <li><i class=" fa fa-circle text-muted"></i> No Priority</li>
+                          {% endif %}
                         </ul>
 
                         <br/>
