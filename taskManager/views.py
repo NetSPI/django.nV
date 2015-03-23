@@ -254,12 +254,14 @@ def editTask(request, project_id, task_id):
 
 			task_text = request.POST.get('task_text', False)
 			task_title = request.POST.get('task_title', False)
+			task_completed = request.POST.get('task_completed', False)
 		   
 			task.title = task_title
 			task.task_text = task_text
+			task.completed = True if task_completed == "1" else False
 			task.save()
 
-		return redirect('/taskManager/' + project_id + '/')
+		return redirect('/taskManager/' + project_id + '/' + task_id)
 	else:
 		return render_to_response('taskManager/editTask.html', {'task': task}, RequestContext(request))
 

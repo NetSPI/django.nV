@@ -10,7 +10,8 @@
             <header class="panel-heading">
                 Task Details
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-info btn-xs">Add Note</a>
+                  <a href="{% url 'taskManager:edit_task' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
+                  <a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-primary btn-xs"> Add Note</a>
                   {% if task.completed %}
                   <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i> Task is Completed</a>
                   {% else %}
