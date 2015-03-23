@@ -221,8 +221,6 @@ def downloadfile(request, file_id):
 def newtask(request, project_id):
 
 	if request.method == 'POST':
-
-		print ([x for x in request.POST.values()])
 	   
 		proj = Project.objects.get(pk = project_id)
 
@@ -282,7 +280,7 @@ def completeTask(request, project_id, task_id):
 			task.completed = True
 			task.save()
 
-	return redirect('/taskManager/' + project_id + '/' + task_id)
+	return redirect('/taskManager/' + project_id)
 
 def newproj(request):
 
@@ -325,7 +323,7 @@ def editProject(request, project_id):
 
 def logout_view(request):
 	logout(request)
-	latest_Project_list = Project.objects.order_by('-start_date')
+	project_list = Project.objects.order_by('-start_date')
 	return redirect('/taskManager')
 
 def login_view(request):
@@ -389,7 +387,7 @@ def register(request):
 			context)
 
 def index(request):
-	latest_Project_list = Project.objects.order_by('-start_date')
+	project_list = Project.objects.order_by('-start_date')
 	
 	admin_level = False
 
@@ -397,7 +395,7 @@ def index(request):
 		admin_level = True
 
 	list_to_show = []
-	for project in latest_Project_list:
+	for project in project_list:
 		if(project.users_assigned.filter(username= request.user.username)).exists():
 			list_to_show.append(project)
 
@@ -407,7 +405,7 @@ def index(request):
 		return render(
 			request, 
 			'taskManager/index.html', 
-			{'latest_Project_list': latest_Project_list, 
+			{'project_list': project_list, 
 			'user':request.user , 
 			'admin_level':admin_level }
 			)	
@@ -504,16 +502,15 @@ def task_details(request, project_id, task_id):
 	return render(request, 'taskManager/task_details.html', {'task':task, 'assigned_to':assigned_to, 'logged_in':logged_in, 'completed_task': "Yes" if task.completed else "No"})
 
 def dashboard(request):
-	latest_Project_list = Project.objects.order_by('-start_date')
-	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': latest_Project_list, 'user':request.user })
+	project_list = Project.objects.order_by('-start_date')
+	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user })
 
 def my_projects(request):
-	my_project_list = Project.objects.filter(users_assigned=request.user.id)
-	return render(request, 'taskManager/dashboard.html',  {'latest_Project_list': my_project_list, 'user':request.user })
+	project_list = Project.objects.filter(users_assigned=request.user.id)
+	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user })
 
 def my_tasks(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
-	print ([x.due_date.time() for x in my_task_list])
 	return render(request, 'taskManager/mytasks.html',  {'task_list': my_task_list, 'user':request.user })
 
 def tutorials(request):

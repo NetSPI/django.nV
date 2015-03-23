@@ -23,6 +23,14 @@ class Project(models.Model):
 	def was_created_recently(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days =1)
 
+	def percent_complete(self):
+		counter = 0
+		for a in self.task_set.all():
+			counter = counter + (1 if a.completed else 0)
+		try:
+			return round(float(counter) / self.task_set.count() * 100)
+		except:
+			return 0
 
 class Task(models.Model):
 	assoc_project = models.ForeignKey(Project, default=1)
