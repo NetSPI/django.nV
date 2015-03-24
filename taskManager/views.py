@@ -1,5 +1,4 @@
-import datetime
-import pprint
+import datetime, pprint, mimetypes, os
 
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
@@ -18,7 +17,6 @@ from django.contrib import messages
 from taskManager.models import Task, Project, Notes, File
 from taskManager.misc import store_uploaded_file
 from django.views.decorators.csrf import csrf_exempt
-import mimetypes
 
 #pmem can only see his tasks
 #pman can only see his projects
@@ -212,7 +210,7 @@ def newfile(request, project_id):
 def downloadfile(request, file_id):
 
 	file = File.objects.get(pk = file_id)
-	abspath = open(file.path,'rb')
+	abspath = open(os.path.dirname(os.path.realpath(__file__)) + file.path,'rb')
 	response = HttpResponse(content=abspath.read())
 	response['Content-Type']= mimetypes.guess_type(file.path)[0]
 	response['Content-Disposition'] = 'attachment; filename=%s' % file.name
@@ -222,12 +220,15 @@ def downloadprofilepic(request, user_id):
 
 	user = User.objects.get(pk = user_id)
 	filepath = user.userprofile.profile_img
+	return redirect(filepath)
 	#filename = user.get_full_name()+"."+filepath.split(".")[-1]
-	abspath = open(filepath, 'rb')
-	response = HttpResponse(content=abspath.read())
-	response['Content-Type']= mimetypes.guess_type(filepath)[0]
-	response['Content-Disposition'] = 'attachment; filename=%s' % filename
-	return response
+	#try:
+	#	abspath = open(filepath, 'rb')
+	#except:
+	#	abspath = open("./taskmanager"+filepath, 'rb')
+	#response = HttpResponse(content=abspath.read())
+	#response['Content-Type']= mimetypes.guess_type(filepath)[0]
+	#return response
 
 def newtask(request, project_id):
 
