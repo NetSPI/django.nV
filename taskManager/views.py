@@ -535,7 +535,7 @@ def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})
 	
 def show_tutorial(request, vuln_id):
-	if vuln_id in ["injection", "brokenauth", "xss", "idor", "misconfig", "exposure", "access", "csrf"< "components", "redirects"]:
+	if vuln_id in ["injection", "brokenauth", "xss", "idor", "misconfig", "exposure", "access", "csrf", "components", "redirects"]:
 		return render(request, 'taskManager/tutorials/' + vuln_id+'.html')
 	else:
 		return render(request, 'taskManager/tutorials.html', {'user':request.user});
