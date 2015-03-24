@@ -11,6 +11,7 @@
                 Projects Details
                 <span class="pull-right">
                   <a href="{% url 'taskManager:proj_details' proj.id %}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                  <a href="{% url 'taskManager:edit_project' proj.id %}" id="loading-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
                 </span>
             </header>
 
@@ -29,6 +30,9 @@
                             </div>
                             <div class="bio-row">
                                 <p><span class="bold">Created </span>: {{proj.start_date}} </p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Due </span>: {% if proj.is_overdue %}<b style="color:red">{{proj.due_date}}</b>{% else %}{{proj.due_date}}{% endif %} </p>
                             </div>
                             <div class="bio-row">
                                 <p><span class="bold">Participants </span>:
@@ -89,13 +93,13 @@
                                 <span class="badge bg-success">{{task.notes_set.count}}</span>
                               {% else %}
                               <span class="badge">0</span>
-                              {% endif %}
+                              {% endif %}<a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}">(add)</a>
                           </td>
                           <td>
                              {% if task.completed == True %}
-                              	 <span class="label label-info"><i class="fa fa-check"></i> Completed</span>
+                              	 <a href="{% url 'taskManager:complete_task' project_id=proj.id task_id=task.id %}"><span class="label label-info"><i class="fa fa-check"></i> Completed</span></a>
                               {% else %}
-                              	 <span class="label label-warning"><i class="fa fa-tasks"></i> In Progress</span>
+                              	 <a href="{% url 'taskManager:complete_task' project_id=proj.id task_id=task.id %}"><span class="label label-warning"><i class="fa fa-tasks"></i> In Progress</span></a>
                               {% endif %}
                              
                           </td>

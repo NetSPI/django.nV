@@ -14,6 +14,7 @@ class Project(models.Model):
 	project_title = models.CharField(max_length = 50, default = 'Default')
 	project_text = models.CharField(max_length = 500)
 	start_date = models.DateTimeField('date started')
+	due_date = models.DateTimeField('date due', default=(timezone.now() + datetime.timedelta(weeks=1)))
 	users_assigned = models.ManyToManyField(User)
 	priority = models.IntegerField(default = 1)
 
@@ -22,6 +23,9 @@ class Project(models.Model):
 
 	def was_created_recently(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days =1)
+
+	def is_overdue(self):
+		return self.due_date <= timezone.now()
 
 	def percent_complete(self):
 		counter = 0

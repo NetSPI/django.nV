@@ -279,7 +279,7 @@ def completeTask(request, project_id, task_id):
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
 		if task != None and task.assoc_project == proj:
-			task.completed = True
+			task.completed = not task.completed
 			task.save()
 
 	return redirect('/taskManager/' + project_id)
@@ -292,10 +292,12 @@ def newproj(request):
 		project_text = request.POST.get('project_text', False)
 		project_priority = int(request.POST.get('project_priority', False))
 		now = datetime.datetime.now()
+		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
 	   
 		project = Project(project_title = project_title,
 		project_text = project_text,
 		priority = project_priority,
+		due_date = project_duedate,
 		start_date = now)
 		project.save()
 		project.users_assigned = [request.user.id]
@@ -313,10 +315,12 @@ def editProject(request, project_id):
 		project_title = request.POST.get('project_title', False)
 		project_text = request.POST.get('project_text', False)
 		project_priority = int(request.POST.get('project_priority', False))
+		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
 	   
 		proj.title = project_title
 		proj.project_text = project_text
 		proj.priority = project_priority
+		proj.due_date = project_duedate
 		proj.save()
 
 		return redirect('/taskManager/' + project_id + '/')
