@@ -8,7 +8,7 @@ from django import forms
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	profile_img = models.TextField()
+	profile_img = models.CharField(max_length=3000, default="")
 
 class Project(models.Model):
 	project_title = models.CharField(max_length = 50, default = 'Default')

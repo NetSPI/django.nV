@@ -12,16 +12,18 @@
               Edit Profile ({{user.username}})
           </header>
           <div class="panel-body">
-              <form method="post" role="form" action="/taskManager/profile/{{user.id}}">
+              <form method="post" role="form" action="/taskManager/profile/{{user.id}}" enctype="multipart/form-data">
                   <div class="form-group col-lg-7 col-sm-7">
-                      <label >First Name</label>
+                      <label>First Name</label>
                       <input name="first_name" class="form-control" value ="{{user.first_name}}">
-                      <label >Last Name</label>
+                      <label>Last Name</label>
                       <input name="last_name" class="form-control" value="{{user.last_name}}">
-                      <label >Email</label>
+                      <label>Email</label>
                       <input name="email" class="form-control" value="{{user.email}}">
-                      <label >Password</label>
+                      <label>Password</label>
                       <!-- <input type="password" name="password" class="form-control"> -->
+                      <label>Profile Picture</label>
+                      <input id="picture" name="picture" type="file" />
                       <hr>
                       <button type="submit" class="btn btn-info">Save</button>
                   </div>

@@ -48,7 +48,7 @@
                           </td>
                           <td class="p-team">
                             {% for u in proj.users_assigned.all%}
-                              <a href="#"><img alt="image" class="" src="{{u.userprofile.profile_img}}"></a>
+                              <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                             {% endfor %}
                           </td>
                           <td class="p-progress">

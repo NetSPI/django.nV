@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group, Permission, User
-from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm
+from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -216,6 +216,17 @@ def downloadfile(request, file_id):
 	response = HttpResponse(content=abspath.read())
 	response['Content-Type']= mimetypes.guess_type(file.path)[0]
 	response['Content-Disposition'] = 'attachment; filename=%s' % file.name
+	return response
+
+def downloadprofilepic(request, user_id):
+
+	user = User.objects.get(pk = user_id)
+	filepath = user.userprofile.profile_img
+	#filename = user.get_full_name()+"."+filepath.split(".")[-1]
+	abspath = open(filepath, 'rb')
+	response = HttpResponse(content=abspath.read())
+	response['Content-Type']= mimetypes.guess_type(filepath)[0]
+	response['Content-Disposition'] = 'attachment; filename=%s' % filename
 	return response
 
 def newtask(request, project_id):
@@ -534,18 +545,23 @@ def profile(request):
 @csrf_exempt
 def profile_by_id(request, user_id):
 	user = User.objects.get(pk = user_id)
-	
+
 	if request.method == 'POST':
-		if request.POST.get('first_name') != user.first_name:
-			user.first_name = request.POST.get('first_name')
-		if request.POST.get('last_name') != user.last_name:
-			user.last_name = request.POST.get('last_name')
-		if request.POST.get('email') != user.email:
-			user.email = request.POST.get('email')
-		if request.POST.get('password'):
-			user.set_password(request.POST.get('password'))
-		user.save()
-		messages.info(request, "User Updated")
+		form = ProfileForm(request.POST, request.FILES)
+		if form.is_valid():
+			print("made it!")
+			if request.POST.get('first_name') != user.first_name:
+				user.first_name = request.POST.get('first_name')
+			if request.POST.get('last_name') != user.last_name:
+				user.last_name = request.POST.get('last_name')
+			if request.POST.get('email') != user.email:
+				user.email = request.POST.get('email')
+			if request.POST.get('password'):
+				user.set_password(request.POST.get('password'))
+			user.userprofile.profile_img = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
+			user.userprofile.save()
+			user.save()
+			messages.info(request, "User Updated")
 
 	return render(request,'taskManager/profile.html',{'user':user})
 
