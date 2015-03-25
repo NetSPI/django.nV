@@ -109,6 +109,11 @@
                             {{proj.text}}
                         </p>
                         <br/>
+                        <small>{{proj.percent_complete}}% Complete</small>
+                        <div class="progress progress-xs">
+                            <div style="width: {{proj.percent_complete}}%;" class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <br />
                         <h5 class="bold">Priority</h5>
                         <ul class="nav nav-pills nav-stacked labels-info ">
                           {% if proj.priority == 1 %}
