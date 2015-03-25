@@ -22,7 +22,7 @@ def get_my_choices_tasks(current_proj):
     task_list = []
     tasks = Task.objects.all()
     for task in tasks:
-        if task.assoc_project == current_proj:
+        if task.project == current_proj:
             task_list.append(task)
 
     task_tuple = []

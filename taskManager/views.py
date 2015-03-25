@@ -1,22 +1,26 @@
 import datetime, pprint, mimetypes, os
 
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from django.template import RequestContext, loader
-from django.shortcuts import render_to_response, redirect
+from django.db import connection
+
 from django.views.generic import RedirectView
+from django.views.decorators.csrf import csrf_exempt
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group, Permission, User
-from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.db import connection
-from django.contrib import messages
+
+
 from taskManager.models import Task, Project, Notes, File
-from taskManager.misc import store_uploaded_file
-from django.views.decorators.csrf import csrf_exempt
+from taskManager.misc import *
+from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
+
 
 #pmem can only see his tasks
 #pman can only see his projects
@@ -44,7 +48,7 @@ def manageTasks(request, project_id):
 					task_tuples = get_my_choices_tasks(proj)
 
 					user = User.objects.get(username= user_tuples[int(username_input)-1][1])
-					task = Task.objects.get(task_text = task_tuples[int(task_input)-1][1])
+					task = Task.objects.get(text = task_tuples[int(task_input)-1][1])
 
 					task.users_assigned.add(user)
 					
@@ -62,43 +66,6 @@ def manageTasks(request, project_id):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-
-def get_my_choices_users():
-	# you place some logic here
-	user_list = User.objects.order_by('date_joined')
-	user_tuple = []
-	counter = 1
-	for user in user_list:
-		user_tuple.append((counter, user))
-		counter = counter +1
-	return user_tuple
-
-
-def get_my_choices_projects():
-	# you place some logic here
-	proj_list = Project.objects.all()
-	proj_tuple = []
-	counter = 1
-	for proj in proj_list:
-		proj_tuple.append((counter, proj))
-		counter = counter +1
-	return proj_tuple
-
-def get_my_choices_tasks(current_proj):
-	# you place some logic here
-	task_list = []
-	tasks = Task.objects.all()
-	# for task in tasks:
-	#     if task.assoc_project == current_proj:
-	#         task_list.append(task)
-	task_tuple = []
-	counter = 1
-	for task in tasks:
-		task_tuple.append((counter, task))
-		counter = counter +1
-	return task_tuple
-
-
 def manageProjects(request):
 
 	user  = request.user
@@ -113,13 +80,13 @@ def manageProjects(request):
 				if form.is_valid():
 
 					username_input = form.cleaned_data['User']
-					project_title_input = form.cleaned_data['Project']
+					title_input = form.cleaned_data['Project']
 
 					user_tuples = get_my_choices_users()
 					project_tuples = get_my_choices_projects()
 
 					user = User.objects.get(username=user_tuples[int(username_input)-1][1])
-					project = Project.objects.get(project_title = project_tuples[int(project_title_input)-1][1])
+					project = Project.objects.get(title = project_tuples[int(title_input)-1][1])
 
 					project.users_assigned.add(user)
 
@@ -134,12 +101,6 @@ def manageProjects(request):
 			return redirect('/taskManager/', {'permission':False})
 	else:
 		redirect('/taskManager/', {'logged_in':False})
-
-def deleteProject(request, project_id):
-	# IDOR
-	project = Project.objects.get(pk=project_id)
-	project.delete()
-	return redirect('/taskManager/dashboard')
 
 def manageGroups(request):
 
@@ -182,7 +143,7 @@ def manageGroups(request):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-def newfile(request, project_id):
+def newFile(request, project_id):
 
 	if request.method == 'POST':
 	   
@@ -219,7 +180,7 @@ def downloadfile(request, file_id):
 def downloadprofilepic(request, user_id):
 
 	user = User.objects.get(pk = user_id)
-	filepath = user.userprofile.profile_img
+	filepath = user.userprofile.image
 	return redirect(filepath)
 	#filename = user.get_full_name()+"."+filepath.split(".")[-1]
 	#try:
@@ -230,23 +191,23 @@ def downloadprofilepic(request, user_id):
 	#response['Content-Type']= mimetypes.guess_type(filepath)[0]
 	#return response
 
-def newtask(request, project_id):
+def newTask(request, project_id):
 
 	if request.method == 'POST':
 	   
 		proj = Project.objects.get(pk = project_id)
 
-		task_text = request.POST.get('task_text', False)
+		text = request.POST.get('text', False)
 		task_title = request.POST.get('task_title', False)
 		now = datetime.datetime.now()
 		task_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('task_duedate', False)))
 	   
 		task = Task(
-		task_text = task_text,
+		text = text,
 		title = task_title,
-		pub_date = now,
+		start_date = now,
 		due_date = task_duedate,
-		assoc_project = proj)
+		project = proj)
 
 		task.save()
 		task.users_assigned = [request.user]
@@ -262,14 +223,14 @@ def editTask(request, project_id, task_id):
 
 	if request.method == 'POST':
 
-		if task.assoc_project == proj:
+		if task.project == proj:
 
-			task_text = request.POST.get('task_text', False)
+			text = request.POST.get('text', False)
 			task_title = request.POST.get('task_title', False)
 			task_completed = request.POST.get('task_completed', False)
 		   
 			task.title = task_title
-			task.task_text = task_text
+			task.text = text
 			task.completed = True if task_completed == "1" else False
 			task.save()
 
@@ -281,7 +242,7 @@ def deleteTask(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
-		if task != None and task.assoc_project == proj:
+		if task != None and task.project == proj:
 			task.delete()
 
 	return redirect('/taskManager/' + project_id + '/')
@@ -290,24 +251,24 @@ def completeTask(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
-		if task != None and task.assoc_project == proj:
+		if task != None and task.project == proj:
 			task.completed = not task.completed
 			task.save()
 
 	return redirect('/taskManager/' + project_id)
 
-def newproj(request):
+def newProject(request):
 
 	if request.method == 'POST':
 	   
-		project_title = request.POST.get('project_title', False)
-		project_text = request.POST.get('project_text', False)
+		title = request.POST.get('title', False)
+		text = request.POST.get('text', False)
 		project_priority = int(request.POST.get('project_priority', False))
 		now = datetime.datetime.now()
 		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
 	   
-		project = Project(project_title = project_title,
-		project_text = project_text,
+		project = Project(title = title,
+		text = text,
 		priority = project_priority,
 		due_date = project_duedate,
 		start_date = now)
@@ -324,13 +285,13 @@ def editProject(request, project_id):
 
 	if request.method == 'POST':
 
-		project_title = request.POST.get('project_title', False)
-		project_text = request.POST.get('project_text', False)
+		title = request.POST.get('title', False)
+		text = request.POST.get('text', False)
 		project_priority = int(request.POST.get('project_priority', False))
 		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
 	   
-		proj.title = project_title
-		proj.project_text = project_text
+		proj.title = title
+		proj.text = text
 		proj.priority = project_priority
 		proj.due_date = project_duedate
 		proj.save()
@@ -338,6 +299,12 @@ def editProject(request, project_id):
 		return redirect('/taskManager/' + project_id + '/')
 	else:
 		return render_to_response('taskManager/editProject.html', {'proj': proj}, RequestContext(request))
+
+def deleteProject(request, project_id):
+	# IDOR
+	project = Project.objects.get(pk=project_id)
+	project.delete()
+	return redirect('/taskManager/dashboard')
 
 def logout_view(request):
 	logout(request)
@@ -444,12 +411,12 @@ def newNote(request, project_id, task_id):
 		parent_task = Task.objects.get(pk = task_id)
 
 		note_title = request.POST.get('note_title', False)
-		note_text = request.POST.get('note_text', False)
+		text = request.POST.get('text', False)
 		now = datetime.datetime.now()
 	   
 		note = Notes(
 		title = note_title,
-		note_text = note_text,
+		text = text,
 		user = request.user,
 		task = parent_task)
 
@@ -466,15 +433,15 @@ def editNote(request, project_id, task_id, note_id):
 
 	if request.method == 'POST':
 
-		if task.assoc_project == proj:
+		if task.project == proj:
 
 			if note.task == task:
 
-				note_text = request.POST.get('note_text', False)
+				text = request.POST.get('text', False)
 				note_title = request.POST.get('note_title', False)
 			   
 				note.title = note_title
-				note.note_text = note_text
+				note.text = text
 				note.save()
 
 		return redirect('/taskManager/' + project_id + '/' + task_id)
@@ -486,7 +453,7 @@ def deleteNote(request, project_id, task_id, note_id):
 	task = Task.objects.get(pk = task_id)
 	note = Notes.objects.get(pk = note_id)
 	if proj != None:
-		if task != None and task.assoc_project == proj:
+		if task != None and task.project == proj:
 			if note != None and note.task == task:
 				note.delete()
 
@@ -559,7 +526,7 @@ def profile_by_id(request, user_id):
 				user.email = request.POST.get('email')
 			if request.POST.get('password'):
 				user.set_password(request.POST.get('password'))
-			user.userprofile.profile_img = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
+			user.userprofile.image = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
 			user.userprofile.save()
 			user.save()
 			messages.info(request, "User Updated")

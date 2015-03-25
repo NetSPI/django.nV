@@ -15,12 +15,12 @@
                       <label>Enter Task Title</label>
                       <input name="task_title" class="form-control" value ="{{task.title}}">
                       <label>Enter Task Information</label>
-                      <textarea name="task_text" class="form-control">{{task.task_text}}</textarea>
+                      <textarea name="text" class="form-control">{{task.text}}</textarea>
                       <label>Task Completion</label>
                       <input type="radio" name="task_completed" value="1" {% if task.completed %}checked{% endif %}> Yes&nbsp;
                       <input type="radio" name="task_completed" value="0" {% if not task.completed %}checked{% endif %}> No
                       <br />
-                      <a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-primary btn-xs"> Add Note</a>
+                      <a href="{% url 'taskManager:new_note' project_id=task.project.id task_id=task.id %}" id="loading-btn" class="btn btn-primary btn-xs"> Add Note</a>
                   </div>
                   <button type="submit" class="btn btn-info">Finish</button>
               </form>

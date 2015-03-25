@@ -10,12 +10,12 @@
             <header class="panel-heading">
                 Task Details
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:edit_task' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
-                  <a href="{% url 'taskManager:new_note' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-primary btn-xs"> Add Note</a>
+                  <a href="{% url 'taskManager:edit_task' project_id=task.project.id task_id=task.id %}" id="loading-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
+                  <a href="{% url 'taskManager:new_note' project_id=task.project.id task_id=task.id %}" id="loading-btn" class="btn btn-primary btn-xs"> Add Note</a>
                   {% if task.completed %}
                   <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i> Task is Completed</a>
                   {% else %}
-                  <a href="{% url 'taskManager:complete_task' project_id=task.assoc_project.id task_id=task.id %}" id="loading-btn" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Complete Task</a>
+                  <a href="{% url 'taskManager:complete_task' project_id=task.project.id task_id=task.id %}" id="loading-btn" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Complete Task</a>
                   {% endif %}
                 </span>
             </header>
@@ -34,7 +34,7 @@
                                 <p><span class="bold">Completed </span>: <span class="label label-primary">{{completed_task}}</span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span class="bold">Created </span>: {{task.pub_date}} </p>
+                                <p><span class="bold">Created </span>: {{task.start_date}} </p>
                             </div>
                             <div class="bio-row">
                                 <p><span class="bold">Participants </span>:
@@ -48,7 +48,7 @@
                             <div class="bio-row">
                                 <p><span class="bold">Description</span>:
                                 <span class="p-team">
-                                  {{task.task_text}}
+                                  {{task.text}}
                                 </span>
                                 </p>
                             </div>
@@ -71,10 +71,10 @@
                                             {{note.title}}
                                           </td>
                                           <td>
-                                            {{note.note_text}}
+                                            {{note.text}}
                                           </td>
-                                          <td><a href="{% url 'taskManager:edit_note' project_id=task.assoc_project.id task_id=task.id note_id=note.id %}">Edit</a></td>
-                                          <td><a href="{% url 'taskManager:delete_note' project_id=task.assoc_project.id task_id=task.id note_id=note.id %}">Delete</a></td>
+                                          <td><a href="{% url 'taskManager:edit_note' project_id=task.project.id task_id=task.id note_id=note.id %}">Edit</a></td>
+                                          <td><a href="{% url 'taskManager:delete_note' project_id=task.project.id task_id=task.id note_id=note.id %}">Delete</a></td>
                                         </tr>
                                         {% endfor %}  
                                       </tbody>

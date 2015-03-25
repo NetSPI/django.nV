@@ -10,8 +10,8 @@
             <header class="panel-heading">
                 Projects
                 <span class="pull-right">
-                    <a href="/taskManager/dashboard/" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
-                    <a href="/taskManager/newproj/" class=" btn btn-success btn-xs"> Create New Project</a>
+                    <a href="{% url 'taskManager:dashboard' %}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                    <a href="{% url 'taskManager:new_project' %}" class=" btn btn-success btn-xs"> Create New Project</a>
                 </span>
             </header>
             <div class="panel-body">
@@ -38,7 +38,7 @@
                     {% for proj in project_list %}
                       <tr>
                           <td class="p-name">
-                              <a href="{% url 'taskManager:proj_details' proj.id %}">{{proj.project_title}}</a>
+                              <a href="{% url 'taskManager:proj_details' proj.id %}">{{proj.title}}</a>
                               <br>
                               <small>Due {% if proj.is_overdue %}
                             <b style="color:red">{{proj.due_date}}</b>
@@ -81,13 +81,3 @@
 
 
 {% endblock %}
-
-<!--
-	<ul>
-	
-		<a href="{% url 'taskManager:proj_details' proj.id %}"/><li class='btn'>{{proj.project_title}}</li></a>
-	
-	</ul>
-
-	
--->

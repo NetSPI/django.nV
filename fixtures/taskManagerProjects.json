@@ -4,8 +4,8 @@
          "users_assigned":[
             1
          ],
-         "project_text":"This is the first project",
-         "project_title":"Default",
+         "text":"This is the first project",
+         "title":"Default",
          "start_date":"2014-10-10T20:56:42Z"
       },
       "model":"taskManager.project",
@@ -17,8 +17,8 @@
           1,
           2
          ],
-         "project_text":"number 2",
-         "project_title":"Default 2",
+         "text":"number 2",
+         "title":"Default 2",
          "start_date":"2014-10-10T21:16:26Z"
       },
       "model":"taskManager.project",
@@ -30,8 +30,8 @@
           1,
           2
          ],
-         "project_text":"wkjfn",
-         "project_title":"kwjdnf",
+         "text":"wkjfn",
+         "title":"kwjdnf",
          "start_date":"2014-10-24T21:08:53.942Z"
       },
       "model":"taskManager.project",
@@ -43,8 +43,8 @@
             1,
             2
          ],
-         "project_text":"the trunk",
-         "project_title":"the elephant",
+         "text":"the trunk",
+         "title":"the elephant",
          "start_date":"2014-10-24T21:11:43.812Z"
       },
       "model":"taskManager.project",
@@ -56,8 +56,8 @@
             3,
             4
          ],
-         "project_text":"little dogs",
-         "project_title":"the punks",
+         "text":"little dogs",
+         "title":"the punks",
          "start_date":"2014-10-28T14:54:59.075Z"
       },
       "model":"taskManager.project",
@@ -71,8 +71,8 @@
             3,
             4
          ],
-         "project_text":"A new marketing campaign needs to be created to promote our new vacuum cleaner product. It will include television, radio, and social media as well as promotions at department stores.",
-         "project_title":"Marketing Campaign",
+         "text":"A new marketing campaign needs to be created to promote our new vacuum cleaner product. It will include television, radio, and social media as well as promotions at department stores.",
+         "title":"Marketing Campaign",
          "start_date":"2014-11-11T18:30:45.830Z"
       },
       "model":"taskManager.project",
@@ -83,8 +83,8 @@
          "users_assigned":[
           5
          ],
-         "project_text":"This is a test project",
-         "project_title":"test2",
+         "text":"This is a test project",
+         "title":"test2",
          "start_date":"2014-12-11T19:04:22.365Z"
       },
       "model":"taskManager.project",
