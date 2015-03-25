@@ -24,19 +24,13 @@
                             <input name="email" class="form-control" value="{{user.email}}">
                         </div>
                         <div class="form-group col-lg-7 col-sm-7">
-                            <label>Profile Picture</label>
-                            <input id="picture" name="picture" type="file" />
+                            <label>Icon</label>
+                            <p><img style="max-width: 200px;" src="{% url 'taskManager:download_profile_pic' user.id %}" /></p>
+                                <input class="btn btn-sm btn-info" id="picture" name="picture" type="file">
                             <hr />
                         </div>
                         <div class="form-group col-lg-7 col-sm-7">
                             <button type="submit" class="btn btn-info">Save</button>
-                        </div>
-                        <div class="form-group">
-                            <img style="max-width: 200px;" src="{% url 'taskManager:download_profile_pic' user.id %}" />
-                            <br />
-                            <label>
-                                <small>Current Picture</small>
-                            </label>
                         </div>
                     </form>
                 </div>
