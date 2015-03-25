@@ -42,7 +42,7 @@
             <ul class="nav pull-right top-menu">
                 <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
                 <li>
-                    <form action="/taskManager/search/">
+                    <form action="{% url 'taskManager:search' %}">
                         <input type="text" name="q" class="form-control search" placeholder="Search">
                     </form>
                 </li>

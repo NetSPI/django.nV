@@ -236,7 +236,7 @@ def edit_task(request, project_id, task_id):
 
 		return redirect('/taskManager/' + project_id + '/' + task_id)
 	else:
-		return render_to_response('taskManager/editTask.html', {'task': task}, RequestContext(request))
+		return render_to_response('taskManager/task_edit.html', {'task': task}, RequestContext(request))
 
 def delete_task(request, project_id, task_id):	   
 	proj = Project.objects.get(pk = project_id)
