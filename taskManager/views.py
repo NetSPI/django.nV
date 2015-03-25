@@ -26,7 +26,7 @@ from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, Pr
 #pman can only see his projects
 #admin can see all tasks
 
-def manageTasks(request, project_id):
+def manage_tasks(request, project_id):
 
 	user  = request.user
 	proj = Project.objects.get(pk = project_id)
@@ -66,7 +66,7 @@ def manageTasks(request, project_id):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-def manageProjects(request):
+def manage_projects(request):
 
 	user  = request.user
 
@@ -102,7 +102,7 @@ def manageProjects(request):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-def manageGroups(request):
+def manage_groups(request):
 
 	user = request.user
 
@@ -143,7 +143,7 @@ def manageGroups(request):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-def newFile(request, project_id):
+def new_file(request, project_id):
 
 	if request.method == 'POST':
 	   
@@ -168,7 +168,7 @@ def newFile(request, project_id):
 		form = ProjectFileForm()
 	return render_to_response('taskManager/newfile.html', {'form': form}, RequestContext(request))
 
-def downloadfile(request, file_id):
+def download_file(request, file_id):
 
 	file = File.objects.get(pk = file_id)
 	abspath = open(os.path.dirname(os.path.realpath(__file__)) + file.path,'rb')
@@ -177,7 +177,7 @@ def downloadfile(request, file_id):
 	response['Content-Disposition'] = 'attachment; filename=%s' % file.name
 	return response
 
-def downloadprofilepic(request, user_id):
+def download_profile_pic(request, user_id):
 
 	user = User.objects.get(pk = user_id)
 	filepath = user.userprofile.image
@@ -191,7 +191,7 @@ def downloadprofilepic(request, user_id):
 	#response['Content-Type']= mimetypes.guess_type(filepath)[0]
 	#return response
 
-def newTask(request, project_id):
+def new_task(request, project_id):
 
 	if request.method == 'POST':
 	   
@@ -216,7 +216,7 @@ def newTask(request, project_id):
 	else:
 		return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
 
-def editTask(request, project_id, task_id):
+def edit_task(request, project_id, task_id):
 
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -238,7 +238,7 @@ def editTask(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/editTask.html', {'task': task}, RequestContext(request))
 
-def deleteTask(request, project_id, task_id):	   
+def delete_task(request, project_id, task_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
@@ -247,7 +247,7 @@ def deleteTask(request, project_id, task_id):
 
 	return redirect('/taskManager/' + project_id + '/')
 
-def completeTask(request, project_id, task_id):
+def complete_task(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
@@ -257,7 +257,7 @@ def completeTask(request, project_id, task_id):
 
 	return redirect('/taskManager/' + project_id)
 
-def newProject(request):
+def new_project(request):
 
 	if request.method == 'POST':
 	   
@@ -279,7 +279,7 @@ def newProject(request):
 	else:
 		return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
 
-def editProject(request, project_id):
+def edit_project(request, project_id):
 
 	proj = Project.objects.get(pk = project_id)
 
@@ -300,7 +300,7 @@ def editProject(request, project_id):
 	else:
 		return render_to_response('taskManager/editProject.html', {'proj': proj}, RequestContext(request))
 
-def deleteProject(request, project_id):
+def delete_project(request, project_id):
 	# IDOR
 	project = Project.objects.get(pk=project_id)
 	project.delete()
@@ -405,7 +405,7 @@ def proj_details(request, project_id):
 
 	  return render(request, 'taskManager/proj_details.html', {'proj': proj})
 
-def newNote(request, project_id, task_id):
+def new_note(request, project_id, task_id):
 	if request.method == 'POST':
 	   
 		parent_task = Task.objects.get(pk = task_id)
@@ -425,7 +425,7 @@ def newNote(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/createNote.html', {'task_id':task_id}, RequestContext(request))
 
-def editNote(request, project_id, task_id, note_id):
+def edit_note(request, project_id, task_id, note_id):
 
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -448,7 +448,7 @@ def editNote(request, project_id, task_id, note_id):
 	else:
 		return render_to_response('taskManager/editNote.html', {'note': note}, RequestContext(request))
 
-def deleteNote(request, project_id, task_id, note_id):	   
+def delete_note(request, project_id, task_id, note_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	note = Notes.objects.get(pk = note_id)
@@ -497,6 +497,13 @@ def my_projects(request):
 def my_tasks(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
 	return render(request, 'taskManager/mytasks.html',  {'task_list': my_task_list, 'user':request.user })
+
+def search(request):
+	q =  request.GET.get('q')
+	if not q: q = ''
+	my_project_list = Project.objects.filter(users_assigned=request.user.id).filter(title__icontains=q).order_by('title')
+	my_task_list = Task.objects.filter(users_assigned=request.user.id).filter(title__icontains=q).order_by('title')
+	return render(request, 'taskManager/search.html',  {'q':q, 'task_list':my_task_list, 'project_list':my_project_list, 'user':request.user })
 
 def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})

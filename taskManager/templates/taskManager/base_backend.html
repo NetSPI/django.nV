@@ -40,9 +40,11 @@
           <div class="top-nav ">
             <!--search & user info start-->
             <ul class="nav pull-right top-menu">
-               <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
+                <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
                 <li>
-                    <input type="text" class="form-control search" placeholder="Search">
+                    <form action="/taskManager/search/">
+                        <input type="text" name="q" class="form-control search" placeholder="Search">
+                    </form>
                 </li>
                 <!-- user login dropdown start-->
                 <li class="dropdown">
@@ -72,7 +74,7 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li>
-                <a class="active" href="/taskManager/dashboard">
+                <a href="/taskManager/dashboard">
                     <i class="fa fa-dashboard"></i>
                     <span>Dashboard</span>
                 </a>
@@ -83,6 +85,10 @@
                 <a href="/taskManager/my_tasks">
                     <i class="fa fa-check-square"></i>
                     <span>My Tasks</span>
+                </a>
+                <a href="/taskManager/search">
+                    <i class="fa fa-search"></i>
+                    <span>Search</span>
                 </a>
             </li>
         </ul>
