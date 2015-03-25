@@ -10,19 +10,19 @@
             <header class="panel-heading">
                 Projects
                 <span class="pull-right">
-                    <a href="{% url 'taskManager:dashboard' %}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
-                    <a href="{% url 'taskManager:new_project' %}" class=" btn btn-success btn-xs"> Create New Project</a>
+		  <a href="{% url 'taskManager:project_create' %}" class=" btn btn-success btn-xs">New Project</a>
+                  <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i>Refresh</a>
                 </span>
             </header>
 
             <table class="table table-hover p-table">
                 <thead>
                 <tr>
-                    <th>Project Name</th>
-                    <th>Team Member</th>
-                    <th>Project Progress</th>
-                    <th>Project Status</th>
-                    <th>Custom</th>
+                    <th>Project</th>
+                    <th>Members</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,7 @@
                     {% for proj in project_list %}
                       <tr>
                           <td class="p-name">
-                              <a href="{% url 'taskManager:proj_details' proj.id %}">{{proj.title}}</a>
+                              <a href="{% url 'taskManager:project_details' proj.id %}">{{proj.title}}</a>
                               <br>
                               <small>Due {% if proj.is_overdue %}
                             <b style="color:red">{{proj.due_date}}</b>
@@ -53,9 +53,9 @@
                               <span class="label label-primary">Active</span>
                           </td>
                           <td>
-                              <a href="{% url 'taskManager:proj_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                              <a href="{% url 'taskManager:edit_project' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                              <a href="{% url 'taskManager:delete_project' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>View</a>
+                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit</a>
+                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>Delete </a>
                           </td>
                       </tr>
                     {% endfor %}

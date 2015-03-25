@@ -143,7 +143,7 @@ def manage_groups(request):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
-def new_file(request, project_id):
+def upload(request, project_id):
 
 	if request.method == 'POST':
 	   
@@ -166,9 +166,9 @@ def new_file(request, project_id):
 			form = ProjectFileForm()
 	else:
 		form = ProjectFileForm()
-	return render_to_response('taskManager/newfile.html', {'form': form}, RequestContext(request))
+	return render_to_response('taskManager/upload.html', {'form': form}, RequestContext(request))
 
-def download_file(request, file_id):
+def download(request, file_id):
 
 	file = File.objects.get(pk = file_id)
 	abspath = open(os.path.dirname(os.path.realpath(__file__)) + file.path,'rb')
@@ -191,7 +191,7 @@ def download_profile_pic(request, user_id):
 	#response['Content-Type']= mimetypes.guess_type(filepath)[0]
 	#return response
 
-def new_task(request, project_id):
+def task_create(request, project_id):
 
 	if request.method == 'POST':
 	   
@@ -200,7 +200,9 @@ def new_task(request, project_id):
 		text = request.POST.get('text', False)
 		task_title = request.POST.get('task_title', False)
 		now = datetime.datetime.now()
-		task_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('task_duedate', False)))
+		task_duedate = timezone.now() + datetime.timedelta(weeks=1)
+		if request.POST.get('task_duedate') != '':
+			task_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('task_duedate', False)))
 	   
 		task = Task(
 		text = text,
@@ -214,9 +216,9 @@ def new_task(request, project_id):
 
 		return redirect('/taskManager/' + project_id + '/', {'new_task_added':True})
 	else:
-		return render_to_response('taskManager/createTask.html', {'proj_id':project_id}, RequestContext(request))
+		return render_to_response('taskManager/task_create.html', {'proj_id':project_id}, RequestContext(request))
 
-def edit_task(request, project_id, task_id):
+def task_edit(request, project_id, task_id):
 
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -238,7 +240,7 @@ def edit_task(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/task_edit.html', {'task': task}, RequestContext(request))
 
-def delete_task(request, project_id, task_id):	   
+def task_delete(request, project_id, task_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
@@ -247,7 +249,7 @@ def delete_task(request, project_id, task_id):
 
 	return redirect('/taskManager/' + project_id + '/')
 
-def complete_task(request, project_id, task_id):
+def task_complete(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
@@ -257,7 +259,7 @@ def complete_task(request, project_id, task_id):
 
 	return redirect('/taskManager/' + project_id)
 
-def new_project(request):
+def project_create(request):
 
 	if request.method == 'POST':
 	   
@@ -277,9 +279,9 @@ def new_project(request):
 		
 		return redirect('/taskManager/', {'new_project_added':True})
 	else:
-		return render_to_response('taskManager/createProject.html', {}, RequestContext(request))
+		return render_to_response('taskManager/project_create.html', {}, RequestContext(request))
 
-def edit_project(request, project_id):
+def project_edit(request, project_id):
 
 	proj = Project.objects.get(pk = project_id)
 
@@ -298,20 +300,20 @@ def edit_project(request, project_id):
 
 		return redirect('/taskManager/' + project_id + '/')
 	else:
-		return render_to_response('taskManager/editProject.html', {'proj': proj}, RequestContext(request))
+		return render_to_response('taskManager/project_edit.html', {'proj': proj}, RequestContext(request))
 
-def delete_project(request, project_id):
+def project_delete(request, project_id):
 	# IDOR
 	project = Project.objects.get(pk=project_id)
 	project.delete()
 	return redirect('/taskManager/dashboard')
 
-def logout_view(request):
+def logout(request):
 	logout(request)
 	project_list = Project.objects.order_by('-start_date')
 	return redirect('/taskManager')
 
-def login_view(request):
+def login(request):
 	if request.method == 'POST':
 		username = request.POST.get('username', False)
 		password = request.POST.get('password', False)
@@ -395,7 +397,7 @@ def index(request):
 			'admin_level':admin_level }
 			)	
 
-def proj_details(request, project_id):
+def project_details(request, project_id):
 	proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
 	if not proj:
 	  messages.warning(request, 'You are not authorized to view this project')
@@ -403,9 +405,9 @@ def proj_details(request, project_id):
 	else:
 	  proj = Project.objects.get(pk=project_id)
 
-	  return render(request, 'taskManager/proj_details.html', {'proj': proj})
+	  return render(request, 'taskManager/project_details.html', {'proj': proj})
 
-def new_note(request, project_id, task_id):
+def note_create(request, project_id, task_id):
 	if request.method == 'POST':
 	   
 		parent_task = Task.objects.get(pk = task_id)
@@ -423,9 +425,9 @@ def new_note(request, project_id, task_id):
 		note.save()
 		return redirect('/taskManager/' + project_id + '/' + task_id, {'new_note_added':True})
 	else:
-		return render_to_response('taskManager/createNote.html', {'task_id':task_id}, RequestContext(request))
+		return render_to_response('taskManager/note_create.html', {'task_id':task_id}, RequestContext(request))
 
-def edit_note(request, project_id, task_id, note_id):
+def note_edit(request, project_id, task_id, note_id):
 
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -446,9 +448,9 @@ def edit_note(request, project_id, task_id, note_id):
 
 		return redirect('/taskManager/' + project_id + '/' + task_id)
 	else:
-		return render_to_response('taskManager/editNote.html', {'note': note}, RequestContext(request))
+		return render_to_response('taskManager/note_edit.html', {'note': note}, RequestContext(request))
 
-def delete_note(request, project_id, task_id, note_id):	   
+def note_delete(request, project_id, task_id, note_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	note = Notes.objects.get(pk = note_id)
@@ -490,13 +492,13 @@ def dashboard(request):
 	project_list = Project.objects.order_by('-start_date')
 	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user })
 
-def my_projects(request):
+def project_list(request):
 	project_list = Project.objects.filter(users_assigned=request.user.id)
 	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user })
 
-def my_tasks(request):
+def task_list(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
-	return render(request, 'taskManager/mytasks.html',  {'task_list': my_task_list, 'user':request.user })
+	return render(request, 'taskManager/task_list.html',  {'task_list': my_task_list, 'user':request.user })
 
 def search(request):
 	q =  request.GET.get('q')

@@ -74,19 +74,19 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li>
-                <a href="/taskManager/dashboard">
+                <a href="{% url 'taskManager:dashboard' %}">
                     <i class="fa fa-dashboard"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="/taskManager/my_projects">
+                <a href="{% url 'taskManager:project_list' %}">
                     <i class="fa fa-list"></i>
                     <span>My Projects</span>
                 </a>
-                <a href="/taskManager/my_tasks">
+                <a href="{% url 'taskManager:task_list' %}">
                     <i class="fa fa-check-square"></i>
                     <span>My Tasks</span>
                 </a>
-                <a href="/taskManager/search">
+                <a href="{% url 'taskManager:search' %}">
                     <i class="fa fa-search"></i>
                     <span>Search</span>
                 </a>

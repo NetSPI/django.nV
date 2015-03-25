@@ -8,7 +8,7 @@
           <header class="panel-heading">
               Edit Task
                   <span class="pull-right">
-                  <a href="{% url 'taskManager:new_note' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs">Add Note</a>
+                  <a href="{% url 'taskManager:note_create' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs">Add Note</a>
                   {% if task.completed %}
                   <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i>Task is Completed</a>
                   {% endif %}

@@ -8,10 +8,10 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                Projects Details
+                {{proj.title}}
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:proj_details' proj.id %}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
-                  <a href="{% url 'taskManager:edit_project' proj.id %}" id="loading-btn" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
+                  <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit Project</a>
+		  <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i>Refresh</a>
                 </span>
             </header>
 
@@ -19,23 +19,20 @@
         <div class="row">
             <div class="col-md-8">
                 <section class="panel">
-                    <div class="bio-graph-heading project-heading">
-                        <strong> [{{proj.title}}]</strong>
-                    </div>
                     <div class="panel-body bio-graph-info">
                         <!--<h1>New Dashboard BS3 </h1>-->
                         <div class="row p-details">
                             <div class="bio-row">
-                                <p><span class="bold">Status </span>: <span class="label label-primary">Active</span></p>
+                                <p><span class="bold">Status:</span> <span class="label label-primary">Active</span></p>
                             </div>
                             <div class="bio-row">
-                                <p><span class="bold">Created </span>: {{proj.start_date}} </p>
+                                <p><span class="bold">Created:</span>{{proj.start_date}} </p>
                             </div>
                             <div class="bio-row">
-                                <p><span class="bold">Due </span>: {% if proj.is_overdue %}<b style="color:red">{{proj.due_date}}</b>{% else %}{{proj.due_date}}{% endif %} </p>
+                                <p><span class="bold">Due:</span>{% if proj.is_overdue %}<b style="color:red">{{proj.due_date}}</b>{% else %}{{proj.due_date}}{% endif %} </p>
                             </div>
                             <div class="bio-row">
-                                <p><span class="bold">Participants </span>:
+                                <p><span class="bold">Participants:</span>
                                 <span class="p-team">
                                     {% for u in proj.users_assigned.all%}
                                       <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
@@ -54,19 +51,18 @@
                 <section class="panel">
                   <header class="panel-heading">
                     Tasks
+		    <span class="pull-right">	
+			<a href="{% url 'taskManager:task_create' proj.id %}" class="btn btn-xs btn-primary">Add task</a>
+		    </span>
                   </header>
                   <div class="panel-body">
                       <table class="table table-hover p-table">
                     <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Created</th>
                         <th>Due Date</th>
-                        <th>Description</th>
-                        <th>Notes</th>
                         <th>Status</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -76,9 +72,6 @@
                               <a href="{% url 'taskManager:task_details' project_id=proj.id task_id=task.id %}">{{task.title}}</a>
                           </td>
                           <td>
-                              {{task.start_date}}
-                          </td>
-                          <td>
                           {% if task.is_overdue %}
                             <b style="color:red">{{task.due_date}}</b>
                           {% else %}
@@ -86,25 +79,17 @@
                           {% endif %}
                           </td>
                           <td>
-                            {{task.text}}
-                          </td>
-                          <td>
-                              {% if task.notes_set.count > 0 %}
-                                <span class="badge bg-success">{{task.notes_set.count}}</span>
-                              {% else %}
-                              <span class="badge">0</span>
-                              {% endif %}<a href="{% url 'taskManager:new_note' project_id=task.project.id task_id=task.id %}">(add)</a>
-                          </td>
-                          <td>
                              {% if task.completed == True %}
-                              	 <a href="{% url 'taskManager:complete_task' project_id=proj.id task_id=task.id %}"><span class="label label-info"><i class="fa fa-check"></i> Completed</span></a>
+                              	 <a href="{% url 'taskManager:task_complete' project_id=proj.id task_id=task.id %}"><span class="label label-info"><i class="fa fa-check"></i> Completed</span></a>
                               {% else %}
-                              	 <a href="{% url 'taskManager:complete_task' project_id=proj.id task_id=task.id %}"><span class="label label-warning"><i class="fa fa-tasks"></i> In Progress</span></a>
+                              	 <a href="{% url 'taskManager:task_complete' project_id=proj.id task_id=task.id %}"><span class="label label-warning"><i class="fa fa-tasks"></i> In Progress</span></a>
                               {% endif %}
                              
                           </td>
-                          <td><a href="{% url 'taskManager:edit_task' project_id=proj.id task_id=task.id %}">Edit</a></td>
-                          <td><a href="{% url 'taskManager:delete_task' project_id=proj.id task_id=task.id %}">Delete</a></td>
+			  <td>
+			    <a href="{% url 'taskManager:task_edit' project_id=proj.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit</a>
+                            <a href="{% url 'taskManager:task_delete' project_id=proj.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>Delete</a>
+			  </td>
                       </tr>
                     {% endfor %}  
                 </tbody>
@@ -116,7 +101,7 @@
             <div class="col-md-4">
                 <section class="panel">
                     <header class="panel-heading">
-                        Projects Description
+                        Project Description
                     </header>
 
                     <div class="panel-body">
@@ -142,18 +127,15 @@
                         </ul>
 
                         <br/>
-                        <h5 class="bold">Project files</h5>
+                        <h5 class="bold">Files</h5>
                           <span class="p-team">
                               {% for u in proj.file_set.all %}
                                 <a href="{% url 'taskManager:download_file' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br />
                               {% endfor %}
                           </span>
-
-                        <h5 class="bold">Project Tags</h5>
                         
                         <div class="text-center mtop20">
-                            <a href="{% url 'taskManager:new_task' proj.id %}" class="btn btn-sm btn-primary">Add task</a>
-                            <a href="{% url 'taskManager:new_file' proj.id %}" class="btn btn-sm btn-primary">Add files</a>
+                            <a href="{% url 'taskManager:upload' proj.id %}" class="btn btn-sm btn-primary">Add files</a>
                         </div>
                     </div>
 
