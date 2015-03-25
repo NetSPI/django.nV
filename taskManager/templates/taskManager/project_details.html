@@ -10,8 +10,8 @@
             <header class="panel-heading">
                 {{proj.title}}
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit Project</a>
-		  <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i>Refresh</a>
+                  <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
+		  <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>
 
@@ -87,8 +87,8 @@
                              
                           </td>
 			  <td>
-			    <a href="{% url 'taskManager:task_edit' project_id=proj.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit</a>
-                            <a href="{% url 'taskManager:task_delete' project_id=proj.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>Delete</a>
+			    <a href="{% url 'taskManager:task_edit' project_id=proj.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="{% url 'taskManager:task_delete' project_id=proj.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
 			  </td>
                       </tr>
                     {% endfor %}  

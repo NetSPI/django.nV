@@ -11,7 +11,7 @@
                 Projects
                 <span class="pull-right">
 		  <a href="{% url 'taskManager:project_create' %}" class=" btn btn-success btn-xs">New Project</a>
-                  <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i>Refresh</a>
+                  <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>
 
@@ -53,9 +53,9 @@
                               <span class="label label-primary">Active</span>
                           </td>
                           <td>
-                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>View</a>
-                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit</a>
-                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i>Delete </a>
+                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
+                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                           </td>
                       </tr>
                     {% endfor %}

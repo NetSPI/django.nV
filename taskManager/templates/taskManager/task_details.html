@@ -10,11 +10,11 @@
             <header class="panel-heading">
                 {{task.title|safe}}
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i>Edit Task</a>
+                  <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
                   {% if task.completed %}
-                  <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i>Task is Completed</a>
+                  <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i> Task is Completed</a>
                   {% else %}
-                  <a href="{% url 'taskManager:task_complete' project_id=task.project.id task_id=task.id %}" class="btn btn-success btn-xs"><i class="fa fa-check"></i>Complete Task</a>
+                  <a href="{% url 'taskManager:task_complete' project_id=task.project.id task_id=task.id %}" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Complete Task</a>
                   {% endif %}
                 </span>
             </header>
