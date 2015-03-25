@@ -10,7 +10,8 @@ from django.views.generic import RedirectView
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
@@ -321,7 +322,7 @@ def login(request):
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
-				login(request, user)
+				auth_login(request, user)
 				# Redirect to a success page.
 				return redirect('/taskManager/')
 			else:
