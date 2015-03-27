@@ -1,46 +1,39 @@
-<!DOCTYPE html>
-{% extends 'taskManager/base.html' %}
-<html>
-    <head>
-    </head>
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Manage User Groups
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label>User</label>
+                        <select name="userid" id="userid">
+                        {% for user in users %}
+                            <option value="{{user.id}}">{{user.get_full_name}} ({{user}})</option>
+                        {% endfor %}
+                        </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Access Level</label>
+                        <input type="radio" name="accesslevel" id="accesslevel" value="admin_g"> Admin Access<br />
+                        <input type="radio" name="accesslevel" id="accesslevel" value="project_managers"> Project Manager Access<br /> 
+                        <input type="radio" name="accesslevel" id="accesslevel" value="team_member" checked> Project Member Access<br />
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-info">Finish</button>
+                  </div>
+              </form>
 
-    <body>
-        {% block menu %}
-        {% if logged_in == True %}
-        <ul class="nav pull-right">
-            <li><a href="/taskManager/">&lt;--- Return Home</a></li>
-        </ul>
-        {% endif %}
-
-        {% endblock %}
-        {% block content %}
-
-        {% if logged_in == True %}
-
-        <h1>Manage Groups</h1>
-
-        {% if groups_changed = True %}
-        <h4>Access levels have been updated</h4>
-        {% endif %}
-
-        <form method = "post">
-            {% csrf_token %}
-            <b>User:</b> <select name="userid" id="userid">
-            {% for user in users %}
-                <option value="{{user.id}}">{{user.username}} - {{user}}</option>
-            {% endfor %}
-            </select>
-            <br />
-            <input type="radio" name="accesslevel" id="accesslevel" value="admin_g"> Admin Access<br />
-            <input type="radio" name="accesslevel" id="accesslevel" value="project_managers"> Project Manager Access<br /> 
-            <input type="radio" name="accesslevel" id="accesslevel" value="team_member" checked> Project Member Access<br />
-            <br />
-            <input type="submit" value="Submit" />
-        </form>
-        
-        {% endif %}
-        {% endblock %}
-
-        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
-    </body>
-</html>
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+             
+{% endblock %}

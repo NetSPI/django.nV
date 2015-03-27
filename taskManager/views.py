@@ -33,34 +33,23 @@ def manage_tasks(request, project_id):
 	proj = Project.objects.get(pk = project_id)
 
 	if user.is_authenticated():
-		logged_in = True
 
-		if user.has_perm('can_change_project'):
+		if user.has_perm('can_change_task'):
 
 			if request.method == 'POST':
-				form = ManageTask(request.POST)
-				valid = False
-				if form.is_valid():
-					valid = True
-					username_input = form.cleaned_data['User']
-					task_input = form.cleaned_data['Task']
 
-					user_tuples = get_my_choices_users()
-					task_tuples = get_my_choices_tasks(proj)
+				userid = request.POST.get("userid")
+				taskid = request.POST.get("taskid")
 
-					user = User.objects.get(username= user_tuples[int(username_input)-1][1])
-					task = Task.objects.get(text = task_tuples[int(task_input)-1][1])
+				user = User.objects.get(pk=userid)
+				task = Task.objects.get(pk=taskid)
 
-					task.users_assigned.add(user)
+				task.users_assigned.add(user)
 					
-				return render_to_response('taskManager/manage_tasks.html', 
-					{'task':form.errors, 'valid':valid, 'logged_in':logged_in}, RequestContext(request))
-
+				return redirect('/taskManager/')
 			else:   
-				form = ManageTask(current_proj = proj)
-
 				return render_to_response('taskManager/manage_tasks.html', 
-					{'form':form,'logged_in':logged_in}, RequestContext(request))
+					{'tasks':Task.objects.order_by('title'), 'users':User.objects.order_by('date_joined')}, RequestContext(request))
 
 		else:
 			return redirect('/taskManager/', {'permission':False})
@@ -77,26 +66,20 @@ def manage_projects(request):
 		if user.has_perm('can_change_group'):
 
 			if request.method == 'POST':
-				form = AssignProject(request.POST)
-				if form.is_valid():
 
-					username_input = form.cleaned_data['User']
-					title_input = form.cleaned_data['Project']
+				userid = request.POST.get("userid")
+				projectid = request.POST.get("projectid")
 
-					user_tuples = get_my_choices_users()
-					project_tuples = get_my_choices_projects()
+				user = User.objects.get(pk=userid)
+				project = Project.objects.get(pk=projectid)
 
-					user = User.objects.get(username=user_tuples[int(username_input)-1][1])
-					project = Project.objects.get(title = project_tuples[int(title_input)-1][1])
-
-					project.users_assigned.add(user)
+				project.users_assigned.add(user)
 
 				return redirect('/taskManager/')
 			else:   
 
-				form = AssignProject()
-
-				return redirect('/taskManager/')
+				return render_to_response('taskManager/manage_projects.html', 
+					{'projects':Project.objects.order_by('title'), 'users':User.objects.order_by('date_joined'),'logged_in':logged_in}, RequestContext(request))
 
 		else:
 			return redirect('/taskManager/', {'permission':False})
