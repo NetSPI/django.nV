@@ -309,10 +309,12 @@ def project_delete(request, project_id):
 	project.delete()
 	return redirect('/taskManager/dashboard')
 
-def logout(request):
+def logout_view(request):
 	logout(request)
+	url =  request.GET.get('redirect')
+	if not url: url = '/taskManager/'
 	project_list = Project.objects.order_by('-start_date')
-	return redirect('/taskManager')
+	return redirect(url)
 
 def login(request):
 	if request.method == 'POST':

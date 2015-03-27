@@ -15,7 +15,7 @@ urlpatterns = patterns('',
         # Authentication & Authorization
 	url(r'^register/$', views.register, name = 'register'),
 	url(r'^login/$', views.login, name = 'login'),
-        url(r'^logout/$', views.logout, name = 'logout'),
+        url(r'^logout/$', views.logout_view, name = 'logout'),
         url(r'^manage_groups/$', views.manage_groups, name = 'manage_groups'),
         url(r'^profile/$', views.profile, name = 'profile'),
         url(r'^change_password/$', views.change_password, name = 'change_password'),
