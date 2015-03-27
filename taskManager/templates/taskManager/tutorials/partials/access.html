@@ -9,7 +9,7 @@
                  <div class="panel-heading">
                      <h4 class="panel-title">
                          <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
-                             XSS - Safe Annotation
+                            Missing Function Level Access Control
                          </a>
                      </h4>
                  </div>
@@ -17,7 +17,9 @@
                      <div class="panel-body">
                        <h6><strong>Description</strong></h6>
                         <p>
-                          TODO
+                          Function Level Access Control is a concept where web functions or calls are properly protected against unauthorized access by making the appropriate checks against the requestee. Missing Function Level Access Control results when an application does not properly protect these paths. Such vulnerabilites can be easy to overlook for a developer (as they are often as simple as a missed check) but are also easy to exploit and detect for an attacker. By changing a parameter in the URL, a vulnerable function has no protection against a hacker.<br />
+                          <br />
+                          Remember that any code executing on the client cannot be trusted to protect such paths - always be sure to double check user authorization on the server!
                         </p>
                      </div>
                  </div>
