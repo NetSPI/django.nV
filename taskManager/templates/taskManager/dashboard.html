@@ -27,6 +27,7 @@
                 </thead>
                 <tbody>
                   {% if project_list %}
+
                     {% for proj in project_list %}
                       <tr>
                           <td class="p-name">
@@ -54,8 +55,10 @@
                           </td>
                           <td>
                               <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
+                              {% if user_permission %}
                               <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
                               <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                              {% endif %}
                           </td>
                       </tr>
                     {% endfor %}

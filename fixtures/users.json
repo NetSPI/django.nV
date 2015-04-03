@@ -10,7 +10,8 @@
       "is_superuser" : true,
       "email" : "admin@tm.com",
       "is_staff" : true,
-      "is_active" : true
+      "is_active" : true,
+      "user_permissions": ""
     }
   },
   {
@@ -24,7 +25,8 @@
       "is_superuser" : true,
       "email" : "seth@tm.com",
       "is_staff" : true,
-      "is_active" : true
+      "is_active" : true,
+      "user_permissions" : ""
     }
   },
   {
@@ -38,7 +40,8 @@
       "is_superuser" : false,
       "email" : "chris@tm.com",
       "is_staff" : true,
-      "is_active" : true
+      "is_active" : true,
+      "user_permissions" : ""
     }
   },
   {
@@ -52,7 +55,8 @@
       "is_superuser" : false,
       "email" : "ken@tm.com",
       "is_staff" : true,
-      "is_active" : true
+      "is_active" : true,
+      "user_permissions" : ""
     }
   },
   {
@@ -66,7 +70,8 @@
       "is_superuser" : false,
       "email" : "dade@zerocool.net",
       "is_staff" : false,
-      "is_active" : true
+      "is_active" : true,
+      "user_permissions" : ""
     }
   }
   
