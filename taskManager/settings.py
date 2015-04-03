@@ -81,3 +81,5 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 LOGIN_URL = '/taskManager/login/'
+
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
