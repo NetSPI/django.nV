@@ -135,7 +135,7 @@
                         <h5 class="bold">Files</h5>
                           <span class="p-team">
                               {% for u in proj.file_set.all %}
-                                <a href="{% url 'taskManager:download_file' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br />
+                                <a href="{% url 'taskManager:download' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br />
                               {% endfor %}
                           </span>
                         
