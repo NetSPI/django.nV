@@ -49,6 +49,7 @@
                 <!-- user login dropdown start-->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <!--A3: Cross Site Scripting (XSS) -->
                         <span class="username"><i class="fa fa-user fa-fw"></i> {{ user.username|safe }}</span>
                         <b class="caret"></b>
                     </a>
