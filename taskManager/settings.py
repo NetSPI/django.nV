@@ -9,9 +9,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0yxzudryd8)-%)(fz&7q-!v&cq1u6vbfoc4u7@u_&i)b@4eh^q'
 
+#A5: Security Misconfiguration
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -81,3 +81,5 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 LOGIN_URL = '/taskManager/login/'
+
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']

@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 
-from taskManager.models import Task, Project, Notes, File
+from taskManager.models import Task, Project, Notes, File, UserProfile
 from taskManager.misc import *
 from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
 
@@ -86,47 +86,48 @@ def manage_projects(request):
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
+#A7 - Missing Function Level Access Control
 def manage_groups(request):
 
 	user = request.user
 
 	if user.is_authenticated():
 
-		if user.has_perm('can_change_group'):
-			
-			user_list = User.objects.order_by('date_joined')
+		user_list = User.objects.order_by('date_joined')
 
-			if request.method == 'POST':
+		if request.method == 'POST':
 
-				post_data = request.POST.dict()
+			post_data = request.POST.dict()
 
-				accesslevel = post_data["accesslevel"].strip()
+			accesslevel = post_data["accesslevel"].strip()
 
-				if accesslevel in ['admin_g', 'project_managers', 'team_member']:
-					try:
-						grp = Group.objects.get(name=accesslevel)
-					except:
-						grp = Group.objects.create(name=accesslevel)
-					user = User.objects.get(pk=post_data["userid"])
-					# Check if the user even exists
-					if user == None:
-						return redirect('/taskManager/', {'permission':False})
-					user.groups.add(grp)
-					user.save()
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
-				else:
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'logged_in':True}, RequestContext(request))					
+			if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+				try:
+					grp = Group.objects.get(name=accesslevel)
+				except:
+					grp = Group.objects.create(name=accesslevel)
+				user = User.objects.get(pk=post_data["userid"])
+				# Check if the user even exists
+				if user == None:
+					return redirect('/taskManager/', {'permission':False})
+				user.groups.add(grp)
+				user.save()
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
+			else:
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list, 'logged_in':True}, RequestContext(request))					
 
-			else:	
+		else:
+			if user.has_perm('can_change_group'):
 				return render_to_response('taskManager/manage_groups.html', 
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
-		else:
-			return redirect('/taskManager/', {'permission':False})
+			else:
+				return redirect('/taskManager/', {'permission':False})
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
+#A4: Insecure Direct Object Reference (IDOR)
 def upload(request, project_id):
 
 	if request.method == 'POST':
@@ -137,13 +138,17 @@ def upload(request, project_id):
 		if form.is_valid():
 			name = request.POST.get('name', False)
 			upload_path = store_uploaded_file(name, request.FILES['file'])
-		   
-			file = File(
-			name = name,
-			path = upload_path,
-			project = proj)
 
-			file.save()
+			#A1 - Injection (SQLi)
+			curs = connection.cursor()
+			curs.execute("insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)"%(name,upload_path,project_id))
+		   
+			#file = File(
+			#name = name,
+			#path = upload_path,
+			#project = proj)
+
+			#file.save()
 
 			return redirect('/taskManager/' + project_id + '/', {'new_file_added':True})
 		else:
@@ -152,6 +157,7 @@ def upload(request, project_id):
 		form = ProjectFileForm()
 	return render_to_response('taskManager/upload.html', {'form': form}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def download(request, file_id):
 
 	file = File.objects.get(pk = file_id)
@@ -175,6 +181,7 @@ def download_profile_pic(request, user_id):
 	#response['Content-Type']= mimetypes.guess_type(filepath)[0]
 	#return response
 
+#A4: Insecure Direct Object Reference (IDOR)
 def task_create(request, project_id):
 
 	if request.method == 'POST':
@@ -202,6 +209,7 @@ def task_create(request, project_id):
 	else:
 		return render_to_response('taskManager/task_create.html', {'proj_id':project_id}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def task_edit(request, project_id, task_id):
 
 	proj = Project.objects.get(pk = project_id)
@@ -224,6 +232,7 @@ def task_edit(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/task_edit.html', {'task': task}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def task_delete(request, project_id, task_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -233,6 +242,7 @@ def task_delete(request, project_id, task_id):
 
 	return redirect('/taskManager/' + project_id + '/')
 
+#A4: Insecure Direct Object Reference (IDOR)
 def task_complete(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -265,6 +275,7 @@ def project_create(request):
 	else:
 		return render_to_response('taskManager/project_create.html', {}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def project_edit(request, project_id):
 
 	proj = Project.objects.get(pk = project_id)
@@ -286,12 +297,14 @@ def project_edit(request, project_id):
 	else:
 		return render_to_response('taskManager/project_edit.html', {'proj': proj}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def project_delete(request, project_id):
 	# IDOR
 	project = Project.objects.get(pk=project_id)
 	project.delete()
 	return redirect('/taskManager/dashboard')
 
+#A10: Open Redirect
 def logout_view(request):
 	logout(request)
 	url =  request.GET.get('redirect')
@@ -339,7 +352,8 @@ def register(request):
 			#add user to lowest permission group
 			#grp = Group.objects.get(name='team_member')
 			#user.groups.add(grp)
-
+			user.userProfile = UserProfile.objects.create(user=user)
+			user.userProfile.save()
 			user.save()
 
 			# Update our variable to tell the template registration was successful.
@@ -393,6 +407,7 @@ def project_details(request, project_id):
 
 	  return render(request, 'taskManager/project_details.html', {'proj': proj})
 
+#A4: Insecure Direct Object Reference (IDOR)
 def note_create(request, project_id, task_id):
 	if request.method == 'POST':
 	   
@@ -413,6 +428,7 @@ def note_create(request, project_id, task_id):
 	else:
 		return render_to_response('taskManager/note_create.html', {'task_id':task_id}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def note_edit(request, project_id, task_id, note_id):
 
 	proj = Project.objects.get(pk = project_id)
@@ -436,6 +452,7 @@ def note_edit(request, project_id, task_id, note_id):
 	else:
 		return render_to_response('taskManager/note_edit.html', {'note': note}, RequestContext(request))
 
+#A4: Insecure Direct Object Reference (IDOR)
 def note_delete(request, project_id, task_id, note_id):	   
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
@@ -505,6 +522,8 @@ def show_tutorial(request, vuln_id):
 def profile(request):
 	return render(request,'taskManager/profile.html',{'user':request.user})
 
+#A4: Insecure Direct Object Reference (IDOR)
+#A8: Cross Site Request Forgery (CSRF)
 @csrf_exempt
 def profile_by_id(request, user_id):
 	user = User.objects.get(pk = user_id)
@@ -521,13 +540,15 @@ def profile_by_id(request, user_id):
 				user.email = request.POST.get('email')
 			if request.POST.get('password'):
 				user.set_password(request.POST.get('password'))
-			user.userprofile.image = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
-			user.userprofile.save()
+			if request.FILES:
+				user.userprofile.image = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
+				user.userprofile.save()
 			user.save()
 			messages.info(request, "User Updated")
 
 	return render(request,'taskManager/profile.html',{'user':user})
 
+#A8: Cross Site Request Forgery (CSRF)
 @csrf_exempt
 def change_password(request):
 	
