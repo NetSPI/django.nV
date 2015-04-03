@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 
-from taskManager.models import Task, Project, Notes, File
+from taskManager.models import Task, Project, Notes, File, UserProfile
 from taskManager.misc import *
 from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
 
@@ -342,7 +342,8 @@ def register(request):
 			#add user to lowest permission group
 			#grp = Group.objects.get(name='team_member')
 			#user.groups.add(grp)
-
+			user.userProfile = UserProfile.objects.create(user=user)
+			user.userProfile.save()
 			user.save()
 
 			# Update our variable to tell the template registration was successful.
