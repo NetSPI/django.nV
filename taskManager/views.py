@@ -525,8 +525,9 @@ def profile_by_id(request, user_id):
 				user.email = request.POST.get('email')
 			if request.POST.get('password'):
 				user.set_password(request.POST.get('password'))
-			user.userprofile.image = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
-			user.userprofile.save()
+			if request.FILES:
+				user.userprofile.image = store_uploaded_file(user.get_full_name()+"."+request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
+				user.userprofile.save()
 			user.save()
 			messages.info(request, "User Updated")
 

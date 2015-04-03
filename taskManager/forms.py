@@ -101,4 +101,4 @@ class ProfileForm(forms.Form):
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
     email = forms.CharField(max_length=300, required=False)
-    picture = forms.FileField()
+    picture = forms.FileField(required=False)
