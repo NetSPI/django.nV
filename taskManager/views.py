@@ -92,38 +92,37 @@ def manage_groups(request):
 
 	if user.is_authenticated():
 
-		if user.has_perm('can_change_group'):
-			
-			user_list = User.objects.order_by('date_joined')
+		user_list = User.objects.order_by('date_joined')
 
-			if request.method == 'POST':
+		if request.method == 'POST':
 
-				post_data = request.POST.dict()
+			post_data = request.POST.dict()
 
-				accesslevel = post_data["accesslevel"].strip()
+			accesslevel = post_data["accesslevel"].strip()
 
-				if accesslevel in ['admin_g', 'project_managers', 'team_member']:
-					try:
-						grp = Group.objects.get(name=accesslevel)
-					except:
-						grp = Group.objects.create(name=accesslevel)
-					user = User.objects.get(pk=post_data["userid"])
-					# Check if the user even exists
-					if user == None:
-						return redirect('/taskManager/', {'permission':False})
-					user.groups.add(grp)
-					user.save()
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
-				else:
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'logged_in':True}, RequestContext(request))					
+			if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+				try:
+					grp = Group.objects.get(name=accesslevel)
+				except:
+					grp = Group.objects.create(name=accesslevel)
+				user = User.objects.get(pk=post_data["userid"])
+				# Check if the user even exists
+				if user == None:
+					return redirect('/taskManager/', {'permission':False})
+				user.groups.add(grp)
+				user.save()
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
+			else:
+				return render_to_response('taskManager/manage_groups.html', 
+					{'users':user_list, 'logged_in':True}, RequestContext(request))					
 
-			else:	
+		else:
+			if user.has_perm('can_change_group'):
 				return render_to_response('taskManager/manage_groups.html', 
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
-		else:
-			return redirect('/taskManager/', {'permission':False})
+			else:
+				return redirect('/taskManager/', {'permission':False})
 	else:
 		redirect('/taskManager/', {'logged_in':False})
 
