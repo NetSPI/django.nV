@@ -47,10 +47,10 @@ def manage_tasks(request, project_id):
 				task = Task.objects.get(pk=taskid)
 
 				task.users_assigned.add(user)
-					
+
 				return redirect('/taskManager/')
-			else:   
-				return render_to_response('taskManager/manage_tasks.html', 
+			else:
+				return render_to_response('taskManager/manage_tasks.html',
 					{'tasks':Task.objects.order_by('title'), 'users':User.objects.order_by('date_joined')}, RequestContext(request))
 
 		else:
@@ -78,9 +78,9 @@ def manage_projects(request):
 				project.users_assigned.add(user)
 
 				return redirect('/taskManager/')
-			else:   
+			else:
 
-				return render_to_response('taskManager/manage_projects.html', 
+				return render_to_response('taskManager/manage_projects.html',
 					{'projects':Project.objects.order_by('title'), 'users':User.objects.order_by('date_joined'),'logged_in':logged_in}, RequestContext(request))
 
 		else:
@@ -119,16 +119,16 @@ def manage_groups(request):
 				user.groups.add(grp)
 				groups.permission.add('project_edit', 'project_delete')
 				user.save()
-				return render_to_response('taskManager/manage_groups.html', 
+				return render_to_response('taskManager/manage_groups.html',
 					{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
 			else:
-				return render_to_response('taskManager/manage_groups.html', 
-					{'users':user_list, 'logged_in':True}, RequestContext(request))					
-				
+				return render_to_response('taskManager/manage_groups.html',
+					{'users':user_list, 'logged_in':True}, RequestContext(request))
+
 
 		else:
 			if user.has_perm('can_change_group'):
-				return render_to_response('taskManager/manage_groups.html', 
+				return render_to_response('taskManager/manage_groups.html',
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
 			else:
 				return redirect('/taskManager/', {'permission':False})
@@ -139,7 +139,7 @@ def manage_groups(request):
 def upload(request, project_id):
 
 	if request.method == 'POST':
-	   
+
 		proj = Project.objects.get(pk = project_id)
 		form = ProjectFileForm(request.POST, request.FILES)
 
@@ -150,7 +150,7 @@ def upload(request, project_id):
 			#A1 - Injection (SQLi)
 			curs = connection.cursor()
 			curs.execute("insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)"%(name,upload_path,project_id))
-		   
+
 			#file = File(
 			#name = name,
 			#path = upload_path,
@@ -193,7 +193,7 @@ def download_profile_pic(request, user_id):
 def task_create(request, project_id):
 
 	if request.method == 'POST':
-	   
+
 		proj = Project.objects.get(pk = project_id)
 
 		text = request.POST.get('text', False)
@@ -202,7 +202,7 @@ def task_create(request, project_id):
 		task_duedate = timezone.now() + datetime.timedelta(weeks=1)
 		if request.POST.get('task_duedate') != '':
 			task_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('task_duedate', False)))
-	   
+
 		task = Task(
 		text = text,
 		title = task_title,
@@ -230,7 +230,7 @@ def task_edit(request, project_id, task_id):
 			text = request.POST.get('text', False)
 			task_title = request.POST.get('task_title', False)
 			task_completed = request.POST.get('task_completed', False)
-		   
+
 			task.title = task_title
 			task.text = text
 			task.completed = True if task_completed == "1" else False
@@ -241,7 +241,7 @@ def task_edit(request, project_id, task_id):
 		return render_to_response('taskManager/task_edit.html', {'task': task}, RequestContext(request))
 
 #A4: Insecure Direct Object Reference (IDOR)
-def task_delete(request, project_id, task_id):	   
+def task_delete(request, project_id, task_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	if proj != None:
@@ -264,13 +264,13 @@ def task_complete(request, project_id, task_id):
 def project_create(request):
 
 	if request.method == 'POST':
-	   
+
 		title = request.POST.get('title', False)
 		text = request.POST.get('text', False)
 		project_priority = int(request.POST.get('project_priority', False))
 		now = datetime.datetime.now()
 		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
-	   
+
 		project = Project(title = title,
 		text = text,
 		priority = project_priority,
@@ -278,7 +278,7 @@ def project_create(request):
 		start_date = now)
 		project.save()
 		project.users_assigned = [request.user.id]
-		
+
 		return redirect('/taskManager/', {'new_project_added':True})
 	else:
 		return render_to_response('taskManager/project_create.html', {}, RequestContext(request))
@@ -288,15 +288,15 @@ def project_create(request):
 def project_edit(request, project_id):
 
 	proj = Project.objects.get(pk = project_id)
-	
-	
+
+
 	if request.method == 'POST':
 
 		title = request.POST.get('title', False)
 		text = request.POST.get('text', False)
 		project_priority = int(request.POST.get('project_priority', False))
 		project_duedate = datetime.datetime.fromtimestamp(int(request.POST.get('project_duedate', False)))
-	   
+
 		proj.title = title
 		proj.text = text
 		proj.priority = project_priority
@@ -368,7 +368,7 @@ def register(request):
 
 			# Update our variable to tell the template registration was successful.
 			registered = True
-		
+
 		#else:
 		 #   print user_form.errors
 
@@ -385,7 +385,7 @@ def register(request):
 
 def index(request):
 	project_list = Project.objects.order_by('-start_date')
-	
+
 	admin_level = False
 
 	if request.user.groups.filter(name='admin_g').exists():
@@ -400,12 +400,12 @@ def index(request):
 		  return redirect("/taskManager/dashboard")
 	else:
 		return render(
-			request, 
-			'taskManager/index.html', 
-			{'project_list': project_list, 
-			'user':request.user , 
+			request,
+			'taskManager/index.html',
+			{'project_list': project_list,
+			'user':request.user ,
 			'admin_level':admin_level }
-			)	
+			)
 
 def project_details(request, project_id):
 	proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
@@ -420,13 +420,13 @@ def project_details(request, project_id):
 #A4: Insecure Direct Object Reference (IDOR)
 def note_create(request, project_id, task_id):
 	if request.method == 'POST':
-	   
+
 		parent_task = Task.objects.get(pk = task_id)
 
 		note_title = request.POST.get('note_title', False)
 		text = request.POST.get('text', False)
 		now = datetime.datetime.now()
-	   
+
 		note = Notes(
 		title = note_title,
 		text = text,
@@ -453,7 +453,7 @@ def note_edit(request, project_id, task_id, note_id):
 
 				text = request.POST.get('text', False)
 				note_title = request.POST.get('note_title', False)
-			   
+
 				note.title = note_title
 				note.text = text
 				note.save()
@@ -463,7 +463,7 @@ def note_edit(request, project_id, task_id, note_id):
 		return render_to_response('taskManager/note_edit.html', {'note': note}, RequestContext(request))
 
 #A4: Insecure Direct Object Reference (IDOR)
-def note_delete(request, project_id, task_id, note_id):	   
+def note_delete(request, project_id, task_id, note_id):
 	proj = Project.objects.get(pk = project_id)
 	task = Task.objects.get(pk = task_id)
 	note = Notes.objects.get(pk = note_id)
@@ -507,7 +507,7 @@ def dashboard(request):
 	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'user_permission':user_permission})
 
 def user_permission(request):
-	user = request.user 
+	user = request.user
 	has_perm = user.objects.get(pk ='access_level')
 	if (has_perm == 'admin_g' or has_perm == 'project_managers'):
 		user.groups.permission.add({'project_edit':project_edit,'project_delete' : project_delete})
@@ -532,7 +532,7 @@ def search(request):
 
 def tutorials(request):
 	return render(request, 'taskManager/tutorials.html', {'user':request.user})
-	
+
 def show_tutorial(request, vuln_id):
 	if vuln_id in ["injection", "brokenauth", "xss", "idor", "misconfig", "exposure", "access", "csrf", "components", "redirects"]:
 		return render(request, 'taskManager/tutorials/' + vuln_id+'.html')
@@ -571,13 +571,13 @@ def profile_by_id(request, user_id):
 #A8: Cross Site Request Forgery (CSRF)
 @csrf_exempt
 def change_password(request):
-	
+
 	if request.method == 'POST':
 		user = request.user
 		old_password = request.POST.get('old_password')
 		new_password = request.POST.get('new_password')
 		confirm_passwrd = request.POST.get('confirm_password')
-		
+
 		u = authenticate(username=user.username, password=old_password)
 		if u is not None:
 			if new_password == confirm_passwrd:
@@ -588,5 +588,5 @@ def change_password(request):
 				messages.warning(request,'Passwords do not match')
 		else:
 			messages.warning(request,'Invalid Password')
-	
+
 	return render(request,'taskManager/change_password.html',{'user':request.user})

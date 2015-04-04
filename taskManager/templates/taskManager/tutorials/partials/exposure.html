@@ -34,7 +34,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        TaskManager makes a common mistake when storing passwords in the database; while the passwords are hashed, they are stored using the insecure hashing algorithm MD5. If an attacker compromises the database and reveals the password hashes, they will be able to quickly comproomise user passwords.
                     </div>
                  </div>
              </div>
@@ -48,7 +48,11 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         Instead of using the MD5 hashing algorithm to store passwords, use a hash designed to be computationally intensive, such as bcrypt or PBKDF2. These hashes will ensure that even if an attacker compromises your user database, the passwords cannot be feasibly cracked.
+                         <br /><br />
+                         In django, upgrading the password hash is as easy as changing <code>PASSWORD_HASHERS</code> in the <code>settings.py</code> line. Replace<pre>'django.contrib.auth.hashers.MD5PasswordHasher'</pre> with <pre>'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher'</pre> or <pre>'django.contrib.auth.hashers.BCryptPasswordHasher'</pre>
+
+                         MD5 is insecure because it was designed to be as fast as possible. Attackers are able to try millions or billions of passwords a second against the passwords in your database using readily-available hardware. In constrast, bcrypt and PBKDF2 are designed to be slow. For servers, a login may take 2 seconds rather than 1. But for an attacker, testing a million hashes now requires a million seconds!
                      </div>
                  </div>
              </div>
@@ -62,7 +66,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         How secure is this site anyways? Are my logins really protected?
                      </div>
                  </div>
              </div>

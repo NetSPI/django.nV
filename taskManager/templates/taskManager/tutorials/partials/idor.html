@@ -32,7 +32,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        Insecure Direct Object References can be found throughout the TaskManager source code. Straightforward examples can be found in most view functions that create, edit, or delete notes/tasks/projects. These view functions all fail to ensure the user is properly authorized to perform the action. You can find the appropriate functions labeled throughout the source code.
                     </div>
                  </div>
              </div>
@@ -46,7 +46,10 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         In each function that reads or writes from the database, validate the the user has the appropriate authorization and authentication to perform the action. Within django, there are some <a href="">useful functions</a> to ensure this, including
+                         <pre>user.is_authenticated()</pre> and <pre>user.has_perm('permission_name')</pre>. django.nV exhibits this functionality in some of the view functions as well. <pre>manage_tasks</pre> and <pre>manage_projects</pre>
+
+                         In general, user access must always be checked before any information can be added or changed in the database. Don't assume that just because a method is not linked, it won't be found!
                      </div>
                  </div>
              </div>
@@ -60,7 +63,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         Do any of these project updates even check if I am assigned to the project?
                      </div>
                  </div>
              </div>
