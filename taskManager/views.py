@@ -103,31 +103,10 @@ def manage_groups(request):
 
 			accesslevel = post_data["accesslevel"].strip()
 
-<<<<<<< HEAD
-				post_data = request.POST.dict()
+			post_data = request.POST.dict()
 
-				accesslevel = post_data["accesslevel"].strip()
+			accesslevel = post_data["accesslevel"].strip()
 
-				if accesslevel in ['admin_g', 'project_managers', 'team_member']:
-					try:
-						grp = Group.objects.get(name=accesslevel)
-					except:
-						grp = Group.objects.create(name=accesslevel)
-					user = User.objects.get(pk=post_data["userid"])
-					# Check if the user even exists
-					if user == None:
-						return redirect('/taskManager/', {'permission':False})
-					user.groups.add(grp)
-					groups.permission.add('project_edit', 'project_delete')
-					user.save()
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
-				else:
-					return render_to_response('taskManager/manage_groups.html', 
-						{'users':user_list, 'logged_in':True}, RequestContext(request))					
-
-			else:	
-=======
 			if accesslevel in ['admin_g', 'project_managers', 'team_member']:
 				try:
 					grp = Group.objects.get(name=accesslevel)
@@ -138,13 +117,14 @@ def manage_groups(request):
 				if user == None:
 					return redirect('/taskManager/', {'permission':False})
 				user.groups.add(grp)
+				groups.permission.add('project_edit', 'project_delete')
 				user.save()
->>>>>>> 5089a02d42f16b2e16bc6effd16306273634c07b
 				return render_to_response('taskManager/manage_groups.html', 
 					{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
 			else:
 				return render_to_response('taskManager/manage_groups.html', 
 					{'users':user_list, 'logged_in':True}, RequestContext(request))					
+				
 
 		else:
 			if user.has_perm('can_change_group'):
@@ -303,11 +283,8 @@ def project_create(request):
 	else:
 		return render_to_response('taskManager/project_create.html', {}, RequestContext(request))
 
-<<<<<<< HEAD
 
-=======
 #A4: Insecure Direct Object Reference (IDOR)
->>>>>>> 5089a02d42f16b2e16bc6effd16306273634c07b
 def project_edit(request, project_id):
 
 	proj = Project.objects.get(pk = project_id)

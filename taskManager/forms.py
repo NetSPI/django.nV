@@ -64,7 +64,6 @@ class AssignProject(forms.Form):
 
 #A2: Broken Authentication and Session Management
 class UserForm(forms.ModelForm):
-<<<<<<< HEAD
     username = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -77,19 +76,6 @@ class UserForm(forms.ModelForm):
     	model = User
     	fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_permissions')
     #look at mass assignments
-=======
-    #username = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    #first_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    #last_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    #email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    #password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
-
-    class Meta:
-        model = User
-        exclude = ('groups','user_permissions','is_staff','is_active','last_login','date_joined')
-        #fields = ('username', 'first_name', 'last_name', 'email', 'password')
-#look at mass assignments
->>>>>>> 5089a02d42f16b2e16bc6effd16306273634c07b
 
 _Choices = (
     (1,        'Admin Access'),
