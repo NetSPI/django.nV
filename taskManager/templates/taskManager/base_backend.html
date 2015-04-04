@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <!-- Styles
-    ================================================== -->  
+    ================================================== -->
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/bootstrap-reset.css" %}"/>
@@ -16,11 +16,11 @@
     <link rel="stylesheet" href="{% static "taskManager/css/jquery.datetimepicker.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style-responsive.css" %}"/>
-    
+
     <!-- Google Fonts
     ================================================== -->
 
-    
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -28,7 +28,7 @@
 
     </head>
 <body>
-  <section id="container">  
+  <section id="container">
 
 <!-- Header
 ================================================== -->
@@ -60,13 +60,13 @@
                         <li><a href="/taskManager/logout?redirect=/taskManager/"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>
-                
+
                 <!-- user login dropdown end -->
             </ul>
             <!--search & user info end-->
         </div>
     </header>
-  <!--header end--> 
+  <!--header end-->
 
 <!-- Sidebar
 ================================================== -->
@@ -106,7 +106,7 @@
 <section id="main-content">
     {% block content %}
     {% endblock %}
-</section>      
+</section>
 
 <!-- Body/content -->
 
@@ -134,9 +134,7 @@
 <script src="{% static "taskManager/js/backend/common-scripts.js" %}"></script>
 
 <script>
-
-    //custom select box
-
+    // Datepicker setup
     $(function(){
         $('select.styled').customSelect();
         $('#datetimepicker').datetimepicker({format:"unixtime", inline:true});
@@ -144,8 +142,8 @@
 
 </script>
 
-  
-  </section>   
-   
-</body>     
+
+  </section>
+
+</body>
 </html>

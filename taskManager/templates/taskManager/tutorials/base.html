@@ -8,20 +8,19 @@
     <meta name="author" content="">
 
     <!-- Styles
-    ================================================== -->  
+    ================================================== -->
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/bootstrap-reset.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "taskManager/css/railscasts.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style-responsive.css" %}"/>
-    <link rel="stylesheet" href="{% static "taskManager/css/shCore.css" %}"/>
-    <link rel="stylesheet" href="{% static "taskManager/css/shThemeDefault.css" %}"/>
-    
+
     <!-- Google Fonts
     ================================================== -->
 
-    
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -29,7 +28,7 @@
 
     </head>
 <body>
-  <section id="container">  
+  <section id="container">
 
 <!-- Header
 ================================================== -->
@@ -38,16 +37,16 @@
         <!--logo start-->
         <a href="/taskManager/" class="logo">Task<span>Manager</span></a>
         <!--logo end-->
-    
+
           <div class="top-nav ">
-            <!--search & user info start-->  
+            <!--search & user info start-->
             <ul class="nav pull-right top-menu">
                <li><a class="tutorial_creds" data-toggle="modal" href="#myModal">Tutorial Credentials</a></li>
                {% if user.is_authenticated %}
                   <li><a href="{% url 'taskManager:dashboard' %}">Back to App</a></li>
-               {% else %}    
+               {% else %}
                   <li><a href="{% url 'taskManager:login' %}">Login</a></li>
-               {% endif %}  
+               {% endif %}
                 {% if user.is_authenticated %}
                 <!-- user login dropdown start-->
                 <li class="dropdown">
@@ -67,7 +66,7 @@
             <!--search & user info end-->
         </div>
     </header>
-  <!--header end--> 
+  <!--header end-->
 
 <!-- Sidebar
 ================================================== -->
@@ -197,7 +196,7 @@
                             </section>
                         </div>
                     </div>
-                  
+
 
               </div>
               <div class="modal-footer">
@@ -216,7 +215,7 @@
     {% block content %}
     {% endblock %}
   </section>
-</section>      
+</section>
 
 <!-- Body/content -->
 
@@ -233,6 +232,7 @@
 ================================================== -->
 <script src="{% static "taskManager/js/jquery-1.8.3.min.js" %}"></script>
 <script src="{% static "taskManager/js/bootstrap.js" %}"></script>
+<script src="{% static "taskManager/js/highlight.pack.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.dcjqaccordion.2.7.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.scrollTo.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.nicescroll.js" %}"></script>
@@ -242,8 +242,6 @@
 <script src="{% static "taskManager/js/backend/slidebars.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/common-scripts.js" %}"></script>
 <script src="{% static "taskManager/js/backend/xregexp.js" %}"></script>
-<script src="{% static "taskManager/js/backend/shCore.js" %}"></script>
-<script src="{% static "taskManager/js/backend/shBrushPython.js" %}"></script>
 
 <style type="text/css">
 .top-nav ul.top-menu > li > a.tutorial_creds{
@@ -264,7 +262,7 @@ color: #fff !important;
 
 <script>
 
-//custom select box
+hljs.initHighlightingOnLoad();
 
 $(function(){
     $('select.styled').customSelect();
@@ -278,12 +276,10 @@ $('#show_creds').click(function(e){
    $('#show_creds').hide();
 });
 
-SyntaxHighlighter.all();
-
 </script>
 
 
-  </section>   
-   
-</body>     
+  </section>
+
+</body>
 </html>
