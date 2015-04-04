@@ -10,6 +10,7 @@
             <header class="panel-heading">
                 Search Results
                 <span class="pull-right">
+                    <!--A3: Cross Site Scripting (XSS) -->
                     <a href="/taskManager/search/?q={{q|safe}}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>
@@ -45,7 +46,7 @@
                     {% for proj in project_list %}
                       <tr>
                           <td class="p-name">
-                              <a href="{% url 'taskManager:proj_details' proj.id %}">{{proj.title}}</a>
+                              <a href="{% url 'taskManager:project_details' proj.id %}">{{proj.title}}</a>
                               <br>
                               <small>Due {% if proj.is_overdue %}
                             <b style="color:red">{{proj.due_date}}</b>
@@ -68,9 +69,11 @@
                               <span class="label label-primary">Active</span>
                           </td>
                           <td>
+                              {% if user_permission %}
                               <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
                               <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                               <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                              {% endif %}
                           </td>
                       </tr>
                     {% endfor %}
