@@ -37,9 +37,15 @@
                      </h4>
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
-                    <div class="panel-body">
-                        TODO
-                    </div>
+                     <div class="panel-body">
+                         The application directly concetanets user controllable input with a SQL query. Specifically, this ocurrs when a user uploads a file to an associated project.
+                     </div>
+                     <pre class="brush: python">
+name = request.POST.get('name', False)
+path = store_uploaded_file(name, request.FILES['file'])
+curs = connection.cursor()
+curs.execute("insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)"%(name,path,proj_id))
+                     </pre>
                  </div>
              </div>
              <div class="panel panel-success">
@@ -52,8 +58,16 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                        Leverage Django's querysets instead of making calls directly to the database. In this instance, a new File object can be created and a call to the save()
+                        method will put all data within the database.
                      </div>
+                    <pre class="brush: python">
+file = File(
+name = name,
+path = path,
+project = proj)
+file.save()
+                    </pre>
                  </div>
              </div>
              <div class="panel panel-warning">
@@ -66,7 +80,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                        Single quotes are a great way to find vanilla SQLi. Try them in different form fields within the app.
                      </div>
                  </div>
              </div>

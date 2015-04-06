@@ -32,8 +32,18 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        There are several instances of IDOR throughout this application. The example below is the method call for deleting tasks with an associated project. Note the lack of auth checks performed on the task_id before deleting the task.
                     </div>
+                    <pre class="brush: python">
+def task_delete(request, project_id, task_id):     
+    proj = Project.objects.get(pk = project_id)
+    task = Task.objects.get(pk = task_id)
+    if proj != None:
+        if task != None and task.project == proj:
+            task.delete()
+
+    return redirect('/taskManager/' + project_id + '/')
+                    </pre>
                  </div>
              </div>
              <div class="panel panel-success">
@@ -46,7 +56,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         Perform an authorization check prior to performing any state changing operation or returning any sensitive data to a user.
                      </div>
                  </div>
              </div>
@@ -60,7 +70,8 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         Try modifying ID values in requests made to the application. This is typically much easier to achieve using a client side proxy such as Burpsuite or Fiddler
+                         especially with POST requests.
                      </div>
                  </div>
              </div>

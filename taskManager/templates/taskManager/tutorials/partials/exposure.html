@@ -34,7 +34,8 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        Within the settings.py file, the application is configured to hash passwords with the MD5 algorithm. This is an extremely fast algorithm which allows attackers who
+                        steal the password hashes to perform offline attacks at a much quicker rate.
                     </div>
                  </div>
              </div>
@@ -48,7 +49,8 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         Remove the PASSWORD_HASHERS array from the settings.py config file. The default algorithm is PKDF2 (for password stretching) with a SHA256 hash which is secure enough 
+                         for the vast majority of applications. You can also specify another secure algorithm such as Bcrypt.
                      </div>
                  </div>
              </div>
@@ -62,7 +64,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         Find that injection vulnerability yet? Django stores user passwords in the auth_user table. Something isn't quite right about them.
                      </div>
                  </div>
              </div>

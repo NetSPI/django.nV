@@ -32,8 +32,16 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        After logging a user out, the application redirects the user to whatever value is passed to the 'redirect' URL parameter. This can be seen in the logout() function below.
                     </div>
+                    <pre class="brush: python">
+def logout_view(request):
+    logout(request)
+    url =  request.GET.get('redirect')
+    if not url: url = '/taskManager/'
+    project_list = Project.objects.order_by('-start_date')
+    return redirect(url)
+                    </pre>
                  </div>
              </div>
              <div class="panel panel-success">
@@ -60,7 +68,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         While using the application, look for any obvious input points which may be parsed by the application for redirecting a user (e.g. 'return_to' URL parameter).
                      </div>
                  </div>
              </div>
