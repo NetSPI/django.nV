@@ -82,4 +82,5 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 LOGIN_URL = '/taskManager/login/'
 
+#A6: Sensitive Data Exposure
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
