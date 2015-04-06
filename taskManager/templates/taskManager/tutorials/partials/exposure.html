@@ -34,7 +34,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TaskManager makes a common mistake when storing passwords in the database; while the passwords are hashed, they are stored using the insecure hashing algorithm MD5. If an attacker compromises the database and reveals the password hashes, they will be able to quickly comproomise user passwords.
+                        TaskManager makes a common mistake when storing passwords in the database; while the passwords are hashed, they are stored using the insecure hashing algorithm MD5. If an attacker compromises the database and reveals the password hashes, they will be able to quickly compromise user passwords.
                     </div>
                  </div>
              </div>
@@ -66,7 +66,9 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         How secure is this site anyways? Are my logins really protected?
+                         How secure is this site anyways? Are my credentials really protected?
+                         <br /> <br />
+                         Find that injection vulnerability yet? Django stores user passwords in the auth_user table. Something isn't quite right about them.
                      </div>
                  </div>
              </div>
