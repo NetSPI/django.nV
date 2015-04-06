@@ -80,11 +80,12 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         django's ORM provides us with very powerful tools to validate input and make database updates securely. Rather than using a the <code>curs.execute()</code> function directly on the database, we should use the ORM to create a new file object.
+                         Django's ORM provides us with very powerful tools to validate input and make database updates securely. Rather than using a the <code>curs.execute()</code> function directly on the database, we should use the ORM to create a new file object.
                          <pre><code class="lang-python">file = File(
 name = name,
 path = upload_path,
-project = proj)</code></pre>
+project = proj)
+file.save()</code></pre>
                         This will insure that the arguments passed are properly escaped. Users will still be able to create files with strange names, but they won't be able to perform SQL injection attacks using those names anymore.
 
                         On top of this, you may want to run checks using django's <a href="https://docs.djangoproject.com/en/1.8/topics/forms/">Form class</a> to run validations without hitting the database, and provide more immediate feedback.
@@ -102,6 +103,8 @@ project = proj)</code></pre>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
                          The TaskManager devs seem to have just thrown file uploads in at the last minute...
+                         <br /><br />
+                        Single quotes are a great way to find vanilla SQLi. Try them in different form fields within the app.
                      </div>
                  </div>
              </div>
