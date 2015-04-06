@@ -47,8 +47,8 @@
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
                          In each function that reads or writes from the database, validate the the user has the appropriate authorization and authentication to perform the action. Within django, there are some <a href="">useful functions</a> to ensure this, including
-                         <pre>user.is_authenticated()</pre> and <pre>user.has_perm('permission_name')</pre>. django.nV exhibits this functionality in some of the view functions as well. <pre>manage_tasks</pre> and <pre>manage_projects</pre>
-
+                         <i>user.is_authenticated()</i> and <i>user.has_perm('permission_name')</i>. django.nV exhibits this functionality in some of the view functions as well, including <i>manage_tasks</i> and <i>manage_projects</i>.
+                         <br /><br />
                          In general, user access must always be checked before any information can be added or changed in the database. Don't assume that just because a method is not linked, it won't be found!
                      </div>
                  </div>
