@@ -55,10 +55,12 @@
                           </td>
                           <td>
                               <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
-                              {% if user_permission %}
+                            {% if user_can_edit %}
                               <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+			    {% endif %}
+			    {% if user_can_delete %}
                               <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                              {% endif %}
+                            {% endif %}
                           </td>
                       </tr>
                     {% endfor %}
