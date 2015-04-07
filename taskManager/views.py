@@ -590,3 +590,13 @@ def change_password(request):
 			messages.warning(request,'Invalid Password')
 
 	return render(request,'taskManager/change_password.html',{'user':request.user})
+
+def tm_settings(request):
+	from django.conf import settings
+	#return render(request,'taskManager/settings.html',{'settings':settings})
+	settings_list = request.META
+	#for name in dir(settings):
+	#	settings_list[name] = "None"
+	#	settings_list[name] = getattr(settings,name)
+	#	print name, getattr(settings, name)
+	return render(request,'taskManager/settings.html',{'settings':settings_list})

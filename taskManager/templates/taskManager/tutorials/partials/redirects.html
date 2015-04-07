@@ -34,14 +34,14 @@
                     <div class="panel-body">
                         After logging a user out, the application redirects the user to whatever value is passed to the 'redirect' URL parameter. This can be seen in the logout() function below.
                     </div>
-                    <pre class="brush: python">
+                    <pre><code class="lang-python">
 def logout_view(request):
     logout(request)
     url =  request.GET.get('redirect')
     if not url: url = '/taskManager/'
     project_list = Project.objects.order_by('-start_date')
     return redirect(url)
-                    </pre>
+                    </code></pre>
                  </div>
              </div>
              <div class="panel panel-success">
@@ -54,7 +54,7 @@ def logout_view(request):
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         Do we really need to takes user input to determine their final location during logout? Remove any reference to a url parameter in the GET request and always redirect the user to the TaskManager homepage.
                      </div>
                  </div>
              </div>

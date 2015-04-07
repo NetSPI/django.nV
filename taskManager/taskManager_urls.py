@@ -51,4 +51,7 @@ urlpatterns = patterns('',
         # Tutorials
 	url(r'^tutorials/$', views.tutorials, name = 'tutorials'),
 	url(r'^tutorials/(?P<vuln_id>[a-z\-]+)/$', views.show_tutorial, name = 'show_tutorial'),
+        
+        # Settings - DEBUG
+        url(r'^settings/$', views.tm_settings, name = 'settings'),
 )

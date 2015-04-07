@@ -37,7 +37,7 @@
                         The manage_groups() method does not properly perform an authorization check. As seen below, an initial check is performed to see if a user is logged in but a role check
                         not performed on a POST request. 
                     </div>
-                    <pre class="brush: python">
+                    <pre><code class="lang-python">
 def manage_groups(request):
 
     user = request.user
@@ -77,7 +77,7 @@ def manage_groups(request):
                 return redirect('/taskManager/', {'permission':False})
     else:
         redirect('/taskManager/', {'logged_in':False})
-                    </pre>
+                    </code></pre>
                  </div>
              </div>
              <div class="panel panel-success">

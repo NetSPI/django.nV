@@ -50,8 +50,8 @@
                      <div class="panel-body">
                          Instead of using the MD5 hashing algorithm to store passwords, use a hash designed to be computationally intensive, such as bcrypt or PBKDF2. These hashes will ensure that even if an attacker compromises your user database, the passwords cannot be feasibly cracked.
                          <br /><br />
-                         In django, upgrading the password hash is as easy as changing <code>PASSWORD_HASHERS</code> in the <code>settings.py</code> line. Replace<pre>'django.contrib.auth.hashers.MD5PasswordHasher'</pre> with <pre>'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher'</pre> or <pre>'django.contrib.auth.hashers.BCryptPasswordHasher'</pre>
-
+                         In django, upgrading the password hash is as easy as changing <code>PASSWORD_HASHERS</code> in the <code>settings.py</code> line. Replace '<i>django.contrib.auth.hashers.MD5PasswordHasher</i>' with '<i>django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher</i>' or '<i>django.contrib.auth.hashers.BCryptPasswordHasher</i>'.
+                         <br /><br />
                          MD5 is insecure because it was designed to be as fast as possible. Attackers are able to try millions or billions of passwords a second against the passwords in your database using readily-available hardware. In constrast, bcrypt and PBKDF2 are designed to be slow. For servers, a login may take 2 seconds rather than 1. But for an attacker, testing a million hashes now requires a million seconds!
                      </div>
                  </div>

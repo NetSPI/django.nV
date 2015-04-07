@@ -84,3 +84,6 @@ LOGIN_URL = '/taskManager/login/'
 
 #A6: Sensitive Data Exposure
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
+
+#A2: Broken Auth and Session Management
+SESSION_COOKIE_HTTPONLY = False
