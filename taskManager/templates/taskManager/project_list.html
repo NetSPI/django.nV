@@ -10,7 +10,9 @@
             <header class="panel-heading">
                 Projects
                 <span class="pull-right">
+                    {% if user_can_add %}
 		  <a href="{% url 'taskManager:project_create' %}" class=" btn btn-success btn-xs">New Project</a>
+                {% endif %}
                   <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>

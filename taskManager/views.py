@@ -414,8 +414,9 @@ def project_details(request, project_id):
 	  return redirect('/taskManager/dashboard')
 	else:
 	  proj = Project.objects.get(pk=project_id)
+	  user_can_edit = request.user.has_perm('project_edit')
 
-	  return render(request, 'taskManager/project_details.html', {'proj': proj})
+	  return render(request, 'taskManager/project_details.html', {'proj': proj, 'user_can_edit': user_can_edit})
 
 #A4: Insecure Direct Object Reference (IDOR)
 def note_create(request, project_id, task_id):
@@ -512,7 +513,8 @@ def project_list(request):
 	project_list = Project.objects.filter(users_assigned=request.user.id).order_by('title')
 	user_can_edit = request.user.has_perm('project_edit')
 	user_can_delete = request.user.has_perm('project_delete')
-	return render(request, 'taskManager/project_list.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete})
+	user_can_add = request.user.has_perm('project_add')
+	return render(request, 'taskManager/project_list.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete, 'user_can_add': user_can_add})
 	
 
 

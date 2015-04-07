@@ -10,7 +10,9 @@
             <header class="panel-heading">
                 {{proj.title}}
                 <span class="pull-right">
-                  <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
+		    {% if user_can_edit %}
+			<a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
+		    {% endif %}
 		  <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>
