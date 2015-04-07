@@ -503,21 +503,16 @@ def task_details(request, project_id, task_id):
 
 def dashboard(request):
 	project_list = Project.objects.order_by('-start_date')
-	user_permission = request.user.has_perm('project_edit', 'project_delete')
-	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'user_permission':user_permission})
+	user_can_edit = request.user.has_perm('project_edit')
+	user_can_delete = request.user.has_perm('project_delete')
+	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete})
 
-def user_permission(request):
-	user = request.user
-	has_perm = user.objects.get(pk ='access_level')
-	if (has_perm == 'admin_g' or has_perm == 'project_managers'):
-		user.groups.permission.add({'project_edit':project_edit,'project_delete' : project_delete})
-		return render(request, 'taskManager/dashboard.html', {'has_perm': has_perm, 'user': request.user })
-	else:
-		return render(request, 'taskManager/dashboard.html', {'user' : request.user})
 
 def project_list(request):
 	project_list = Project.objects.filter(users_assigned=request.user.id)
-	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user })
+	user_can_edit = request.user.has_perm('project_edit')
+	user_can_delete = request.user.has_perm('project_delete')
+	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete})
 
 def task_list(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
