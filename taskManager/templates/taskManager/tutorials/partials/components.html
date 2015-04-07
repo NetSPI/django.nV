@@ -34,7 +34,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        TODO
+                        The application validation for redirects did not correctly validate some malformed URLs, which are accepted by some browsers. This allows a user to be redirected to an unsafe URL unexpectedly. In turn, this allows remote attackers to conduct cross-site scripting attacks via a control character in a URL. 
                     </div>
                  </div>
              </div>
@@ -48,7 +48,9 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         TODO
+                         The validation in is_safe_url() has been tightened in django versions before 1.7.7, and 1.8x before 1.8c1. Make sure that you have the latest version of Django installed.
+                         Django update for 1.7: https://github.com/django/django/commit/e7b0cace455c2da24492660636bfd48c45a19cdf
+                         Django update for 1.8: https://github.com/django/django/commit/255449c1ee61c14778658caae8c430fa4d76afd6
                      </div>
                  </div>
              </div>
@@ -62,7 +64,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         TODO
+                         Make sure that you have the latest version of django installed.
                      </div>
                  </div>
              </div>
