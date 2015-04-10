@@ -1,4 +1,4 @@
-  {% extends 'taskManager/base_backend.html' %}
+{% extends 'taskManager/base_backend.html' %}
 {% block content %}
 
 <!--main content start-->
@@ -10,6 +10,9 @@
             <header class="panel-heading">
                 Projects
                 <span class="pull-right">
+                    {% if user_can_add %}
+		  <a href="{% url 'taskManager:project_create' %}" class=" btn btn-success btn-xs">New Project</a>
+                {% endif %}
                   <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
                 </span>
             </header>
@@ -20,6 +23,8 @@
                     <th>Project</th>
                     <th>Members</th>
                     <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,7 +43,7 @@
                           </td>
                           <td class="p-team">
                             {% for u in proj.users_assigned.all%}
-                              <a href="{% url 'taskManager:profile_view' u.id %}"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                              <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                             {% endfor %}
                           </td>
                           <td class="p-progress">
@@ -47,6 +52,18 @@
                               </div>
                               <small>{{proj.percent_complete}}% Complete</small>
                           </td>
+                          <td>
+                              <span class="label label-primary">Active</span>
+                          </td>
+                          <td>
+                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
+                            {% if user_can_edit %}
+                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+			    {% endif %}
+			    {% if user_can_delete %}
+                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                            {% endif %}
+                          </td>
                       </tr>
                     {% endfor %}
                   {% else %}
@@ -54,50 +71,6 @@
                   {% endif %}
               </tbody>
             </table>
-	</section>
-        <section class="panel">
-	    <header class="panel-heading">
-                Tasks
-            </header>
-            <table class="table table-hover p-table">
-                <thead>
-                <tr>
-                    <th>Task</th>
-                    <th>Project</th>
-                </tr>
-                </thead>
-                <tbody>
-                  {% if task_list %}
-                    {% for task in task_list %}
-                      <tr>
-                          <td>
-                              <a href="{% url 'taskManager:task_details' project_id=task.project.id task_id=task.id %}">{{task.title}}</a>
-                          </td>
-                          <td>
-<<<<<<< HEAD
-                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
-                              {% if user_permission %}
-                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                              {% endif %}
-=======
-                              <a href="{% url 'taskManager:project_details' task.project.id %}">{{task.project.title}}</a>
->>>>>>> 2759d5f579cfc940a6528cb065ae7c2c48f7dfe1
-                          </td>
-                      </tr>
-                    {% endfor %}
-                  {% else %}
-                    <tr>
-                        <td class="span7">
-                            <p>No tasks found.</p>
-                        </td>
-                    </tr>
-                  {% endif %}
-              </tbody>
-            </table>
-        </section>
-        <!-- page end-->
-    </section>
         </section>
         <!-- page end-->
     </section>

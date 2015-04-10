@@ -36,9 +36,6 @@
                 <tr>
                     <th>Project</th>
                     <th>Members</th>
-                    <th>Progress</th>
-                    <th>Status</th>
-                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,22 +56,6 @@
                               <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                             {% endfor %}
                           </td>
-                          <td class="p-progress">
-                              <div class="progress progress-xs">
-                                  <div style="width: {{proj.percent_complete}}%;" class="progress-bar progress-bar-success"></div>
-                              </div>
-                              <small>{{proj.percent_complete}}% Complete</small>
-                          </td>
-                          <td>
-                              <span class="label label-primary">Active</span>
-                          </td>
-                          <td>
-                              {% if user_permission %}
-                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                              {% endif %}
-                          </td>
                       </tr>
                     {% endfor %}
                   {% else %}
@@ -86,6 +67,8 @@
                   {% endif %}
               </tbody>
             </table>
+        </section>
+        <section class="panel">
             <header class="panel-heading">
                 Tasks
             </header>
@@ -94,9 +77,6 @@
                 <tr>
                     <th>Task</th>
                     <th>Project</th>
-                    <th>Created</th>
-                    <th>Due</th>
-                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -108,17 +88,6 @@
                           </td>
                           <td>
                               <a href="{% url 'taskManager:project_details' task.project.id %}">{{task.project.title}}</a>
-                          </td>
-                          <td>
-                              {{task.start_date}}
-                          </td>
-                          <td>
-                              {{task.due_date}}
-                          </td>
-                          <td>
-                              <a href="{% url 'taskManager:task_details' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                              <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                              <a href="{% url 'taskManager:task_delete' project_id=task.project.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                           </td>
                       </tr>
                     {% endfor %}
