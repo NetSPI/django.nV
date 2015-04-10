@@ -1,4 +1,4 @@
-{% extends 'taskManager/base_backend.html' %}
+  {% extends 'taskManager/base_backend.html' %}
 {% block content %}
 
 <!--main content start-->
@@ -41,7 +41,7 @@
                           </td>
                           <td class="p-team">
                             {% for u in proj.users_assigned.all%}
-                              <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                              <a href="{% url 'taskManager:profile_view' u.id %}"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                             {% endfor %}
                           </td>
                           <td class="p-progress">
@@ -55,12 +55,10 @@
                           </td>
                           <td>
                               <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
-                            {% if user_can_edit %}
+                              {% if user_permission %}
                               <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-			    {% endif %}
-			    {% if user_can_delete %}
                               <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                            {% endif %}
+                              {% endif %}
                           </td>
                       </tr>
                     {% endfor %}

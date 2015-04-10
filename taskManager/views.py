@@ -407,6 +407,36 @@ def index(request):
 			'admin_level':admin_level }
 			)
 
+def profile_view(request, user_id):
+	user = User.objects.get(pk = user_id)
+
+	profile = User(
+	username = user.username,
+	first_name = user.first_name,
+	last_name = user.last_name,
+	email = user.email)
+
+	image = user.userprofile.image
+	role = ''
+
+	admin_level = False
+	if request.user.groups.filter(name='admin_g').exists():
+		admin_level = True
+
+	pmanager_level = False
+	if request.user.groups.filter(name='project_managers').exists():
+		pmanager_level = True
+
+	if admin_level == True:
+		role ='Admin'
+	elif pmanager_level == True: 
+		role = 'Project Manager'
+	else:
+		role = 'Team Member'
+		
+	return render(request, 'taskManager/profile_view.html', {'user':request.user, 'profile':profile, 'role':role, 'image':image})
+
+
 def project_details(request, project_id):
 	proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
 	if not proj:
@@ -481,7 +511,7 @@ def task_details(request, project_id, task_id):
 	logged_in = True
 
 	if not request.user.is_authenticated():
-		logged_in =False
+		logged_in = False
 
 	admin_level = False
 	if request.user.groups.filter(name='admin_g').exists():
@@ -595,3 +625,4 @@ def tm_settings(request):
 	#	settings_list[name] = getattr(settings,name)
 	#	print name, getattr(settings, name)
 	return render(request,'taskManager/settings.html',{'settings':settings_list})
+
