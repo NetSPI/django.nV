@@ -1,0 +1,30 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Edit Note
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label >Enter Note Title</label>
+                      <input name="note_title" class="form-control" value="{{note.title}}">
+                      <label >Enter Note Information</label>
+                      <textarea name="text" class="form-control">{{note.text}}</textarea>
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+
+{% endblock %}

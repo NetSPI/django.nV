@@ -1,0 +1,82 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+          {% include 'taskManager/messages.html'%}
+            <header class="panel-heading">
+                Projects
+                <span class="pull-right">
+                    {% if user_can_add %}
+		  <a href="{% url 'taskManager:project_create' %}" class=" btn btn-success btn-xs">New Project</a>
+                {% endif %}
+                  <a href="{% url 'taskManager:dashboard' %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                </span>
+            </header>
+
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Members</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if project_list %}
+
+                    {% for proj in project_list %}
+                      <tr>
+                          <td class="p-name">
+                              <a href="{% url 'taskManager:project_details' proj.id %}">{{proj.title}}</a>
+                              <br>
+                              <small>Due {% if proj.is_overdue %}
+                            <b style="color:red">{{proj.due_date}}</b>
+                          {% else %}
+                            {{proj.due_date}}
+                          {% endif %}</small>
+                          </td>
+                          <td class="p-team">
+                            {% for u in proj.users_assigned.all%}
+                              <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                            {% endfor %}
+                          </td>
+                          <td class="p-progress">
+                              <div class="progress progress-xs">
+                                  <div style="width: {{proj.percent_complete}}%;" class="progress-bar progress-bar-success"></div>
+                              </div>
+                              <small>{{proj.percent_complete}}% Complete</small>
+                          </td>
+                          <td>
+                              <span class="label label-primary">Active</span>
+                          </td>
+                          <td>
+                              <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View</a>
+                            {% if user_can_edit %}
+                              <a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+			    {% endif %}
+			    {% if user_can_delete %}
+                              <a href="{% url 'taskManager:project_delete' proj.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                            {% endif %}
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <p> No projects are available.</p>  
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <!-- page end-->
+    </section>
+
+<!--main content end-->
+
+
+
+{% endblock %}

@@ -1,0 +1,72 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Security Misconfiguration
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          Security misconfiguration is a class of vulnerability that occurs when software is set up incorrectly and left insecure. Misconfiguration can happen at any level of an application stack, including the platform, web server, application server, database, framework, or any custom code. Features such as debug pages, unused paths, unprotected files or directories, and default system logins are all classifed as security misconfigurations. Unfortunately, many applications and servers do not come secure out-of-the-box, so it is important to fully understand how to configure the software you use. Developers and system administrators both need to work together to ensure that the entire stack is configured properly. Automated scanners are useful in many cases for detecting this class of vulnerability, but it is also important to keep track of any features you enable in your own application.
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        Debug mode is enabled within the settings.py config file.
+                    </div>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Disable debug mode whenever pushing an application to a production or staging server.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         A common misconfiguration across many frameworks is to leave verbose error messaging enabled. Try submitting bad data to the application in an
+                         attempt to get an error page to display.
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

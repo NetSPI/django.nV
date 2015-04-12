@@ -56,8 +56,11 @@ docs/_build/
 # Virtualenv
 venv/
 
-#OSX created files
+# OSX created files
 .DS_Store
 
-#SQLite DB
+# SQLite DB
 db.sqlite3
+
+# Uploaded files
+ uploads/

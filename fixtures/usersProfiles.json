@@ -3,7 +3,7 @@
     "model": "taskManager.userprofile",
     "pk": 1,
     "fields": {
-      "profile_img" : "/static/taskManager/img/nVisium_Informal_nVisbot.png",
+      "image" : "/static/taskManager/img/nVisium_Informal_nVisbot.png",
       "user" : 1
     }
   },
@@ -11,7 +11,7 @@
     "model": "taskManager.userprofile",
     "pk": 2,
     "fields": {
-      "profile_img" : "/static/taskManager/img/nVisium_Informal_Seth.png",
+      "image" : "/static/taskManager/img/nVisium_Informal_Seth.png",
       "user" : 2
     }
   },
@@ -19,7 +19,7 @@
     "model": "taskManager.userprofile",
     "pk": 3,
     "fields": {
-      "profile_img" : "/static/taskManager/img/team/team_img1.jpg",
+      "image" : "/static/taskManager/img/team/team_img1.jpg",
       "user" : 3
     }
   },
@@ -27,7 +27,7 @@
     "model": "taskManager.userprofile",
     "pk": 4,
     "fields": {
-      "profile_img" : "/static/taskManager/img/nVisium_Informal_Ken.png",
+      "image" : "/static/taskManager/img/nVisium_Informal_Ken.png",
       "user" : 4
     }
   },
@@ -35,7 +35,7 @@
     "model": "taskManager.userprofile",
     "pk": 5,
     "fields": {
-      "profile_img" : "/static/taskManager/img/team/team_img3.jpg",
+      "image" : "/static/taskManager/img/team/team_img3.jpg",
       "user" : 5
     }
   }

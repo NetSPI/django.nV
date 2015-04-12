@@ -8,18 +8,19 @@
     <meta name="author" content="">
 
     <!-- Styles
-    ================================================== -->  
+    ================================================== -->
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static "taskManager/css/bootstrap.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/bootstrap-reset.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "taskManager/css/jquery.datetimepicker.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style.css" %}"/>
     <link rel="stylesheet" href="{% static "taskManager/css/backend/style-responsive.css" %}"/>
-    
+
     <!-- Google Fonts
     ================================================== -->
 
-    
+
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -27,7 +28,7 @@
 
     </head>
 <body>
-  <section id="container">  
+  <section id="container">
 
 <!-- Header
 ================================================== -->
@@ -39,29 +40,33 @@
           <div class="top-nav ">
             <!--search & user info start-->
             <ul class="nav pull-right top-menu">
-               <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
+                <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
                 <li>
-                    <input type="text" class="form-control search" placeholder="Search">
+                    <form action="{% url 'taskManager:search' %}">
+                        <input type="text" name="q" class="form-control search" placeholder="Search">
+                    </form>
                 </li>
                 <!-- user login dropdown start-->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="username">{{ user.username|safe }}</span>
+                        <!--A3: Cross Site Scripting (XSS) -->
+                        <span class="username"><i class="fa fa-user fa-fw"></i> {{ user.username|safe }}</span>
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu extended logout">
+                    <ul class="dropdown-menu">
                         <div class="log-arrow-up"></div>
-                        <li><a href="#"><i class="fa fa-cog"></i> Profile</a></li>
-                        <li><a href="/taskManager/logout"><i class="fa fa-key"></i> Log Out</a></li>
+                        <li><a href="/taskManager/profile"><i class="fa fa-pencil"></i> Profile</a></li>
+                        <li><a href="/taskManager/change_password"><i class="fa fa-lock"></i> Change Password</a></li>
+                        <li><a href="/taskManager/logout?redirect=/taskManager/"><i class="fa fa-sign-out"></i> Log Out</a></li>
                     </ul>
                 </li>
-                
+
                 <!-- user login dropdown end -->
             </ul>
             <!--search & user info end-->
         </div>
     </header>
-  <!--header end--> 
+  <!--header end-->
 
 <!-- Sidebar
 ================================================== -->
@@ -70,9 +75,21 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li>
-                <a class="active" href="/taskManager/dashboard">
+                <a href="{% url 'taskManager:dashboard' %}">
                     <i class="fa fa-dashboard"></i>
                     <span>Dashboard</span>
+                </a>
+                <a href="{% url 'taskManager:project_list' %}">
+                    <i class="fa fa-list"></i>
+                    <span>My Projects</span>
+                </a>
+                <a href="{% url 'taskManager:task_list' %}">
+                    <i class="fa fa-check-square"></i>
+                    <span>My Tasks</span>
+                </a>
+                <a href="{% url 'taskManager:search' %}">
+                    <i class="fa fa-search"></i>
+                    <span>Search</span>
                 </a>
             </li>
         </ul>
@@ -89,7 +106,7 @@
 <section id="main-content">
     {% block content %}
     {% endblock %}
-</section>      
+</section>
 
 <!-- Body/content -->
 
@@ -111,22 +128,22 @@
 <script src="{% static "taskManager/js/backend/jquery.nicescroll.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.sparkline.js" %}"></script>
 <script src="{% static "taskManager/js/backend/jquery.customSelect.min.js" %}"></script>
+<script src="{% static "taskManager/js/backend/jquery.datetimepicker.js" %}"></script>
 <script src="{% static "taskManager/js/backend/respond.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/slidebars.min.js" %}"></script>
 <script src="{% static "taskManager/js/backend/common-scripts.js" %}"></script>
 
 <script>
-
-    //custom select box
-
+    // Datepicker setup
     $(function(){
         $('select.styled').customSelect();
+        $('#datetimepicker').datetimepicker({format:"unixtime", inline:true});
     });
 
 </script>
 
-  
-  </section>   
-   
-</body>     
+
+  </section>
+
+</body>
 </html>

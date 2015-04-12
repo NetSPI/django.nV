@@ -3,9 +3,9 @@
       "fields":{
          "task" : 1,
          "title" : "All good",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"dade",
-         "note_text":"ok"
+         "text":"ok"
       },
       "model":"taskManager.notes",
       "pk":1
@@ -14,9 +14,9 @@
       "fields":{
          "task" : 2,
          "title" : "Question",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"dade",
-         "note_text":"what do you mean?"
+         "text":"what do you mean?"
       },
       "model":"taskManager.notes",
       "pk":2
@@ -25,9 +25,9 @@
       "fields":{
          "task" : 3,
          "title" : "Youth",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"dade",
-         "note_text":"I am young and beautiful but what is Twitter?"
+         "text":"I am young and beautiful but what is Twitter?"
       },
       "model":"taskManager.notes",
       "pk":3
@@ -36,9 +36,9 @@
       "fields":{
          "task" : 4,
          "title" : "Tech",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"admin",
-         "note_text":"because you don't know technology"
+         "text":"because you don't know technology"
       },
       "model":"taskManager.notes",
       "pk":4
@@ -47,9 +47,9 @@
       "fields":{
          "task" : 5,
          "title" : "Education",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"admin",
-         "note_text":"but you can leanr"
+         "text":"but you can leanr"
       },
       "model":"taskManager.notes",
       "pk":5
@@ -58,9 +58,9 @@
       "fields":{
          "task" : 6,
          "title" : "better edu",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"admin",
-         "note_text":"I mean learn"
+         "text":"I mean learn"
       },
       "model":"taskManager.notes",
       "pk":6
@@ -69,9 +69,9 @@
       "fields":{
          "task" : 7,
          "title" : "Planting",
-         "image_url":"2014-12-12",
+         "image":"2014-12-12",
          "user":"seth",
-         "note_text":"start with some seeds"
+         "text":"start with some seeds"
       },
       "model":"taskManager.notes",
       "pk":7
@@ -80,9 +80,9 @@
       "fields":{
          "task" : 8,
          "title" : "All your base are belong to us",
-         "image_url":"",
+         "image":"",
          "user":"admin",
-         "note_text":"<script>alert(document.cookie);</script>"
+         "text":"<script>alert(document.cookie);</script>"
       },
       "model":"taskManager.notes",
       "pk":18
@@ -91,9 +91,9 @@
       "fields":{
          "task" : 9,
          "title" : "Woooops",
-         "image_url":"",
+         "image":"",
          "user":"admin",
-         "note_text":"{% autoescape off %} <script>alert(document.cookie);</script> {% endautoescape %}"
+         "text":"{% autoescape off %} <script>alert(document.cookie);</script> {% endautoescape %}"
       },
       "model":"taskManager.notes",
       "pk":23
@@ -102,9 +102,9 @@
       "fields":{
          "task" : 10,
          "title" : "Nothing to see here",
-         "image_url":"<script>alert(document.cookie);</script> {% endautoescape %}",
+         "image":"<script>alert(document.cookie);</script> {% endautoescape %}",
          "user":"admin",
-         "note_text":"{% autoescape off %}"
+         "text":"{% autoescape off %}"
       },
       "model":"taskManager.notes",
       "pk":24

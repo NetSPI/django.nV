@@ -1,0 +1,45 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              New Project
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label> Enter Project Title</label>
+                      <input name="title" class="form-control" placeholder="">
+                  </div>
+                  <div class="form-group">
+                      <label>Enter Project Information</label>
+                      <textarea name="text" class="form-control" placeholder=""></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label>Enter Project Due Date</label><br />
+                      <input name="project_duedate" class="form-control" id="datetimepicker" type="text">
+                  </div>
+                  <div class="form-group">
+                      <label>Project Priority</label><br />
+                      <select name="project_priority">
+                        <option value="5">(!!) SUPER URGENT</option>
+                        <option value="4">(!) Urgent</option>
+                        <option value="3">High</option>
+                        <option value="2">Medium</option>
+                        <option value="1" selected="selected">Low</option>
+                      </select>
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+             
+{% endblock %}

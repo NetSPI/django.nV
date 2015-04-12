@@ -1,0 +1,79 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Insecure Redirect
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          An Insecure Redirect is a HTTP redirect that allows an arbitrary URL to be passed. Insecure Redirect vulnerabilities are often not recognized as problem, since they do not directly impact the website they are found in. However, they can be used by attackers to redirect users to malicious hosts, while still appearing to be on a trustworthy domain. Phishing attacks can also make use of insecure redirects to give the appearance of legitimacy.
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        After logging a user out, the application redirects the user to whatever value is passed to the 'redirect' URL parameter. This can be seen in the logout() function below.
+                    </div>
+                    <pre><code class="lang-python">
+def logout_view(request):
+    logout(request)
+    url =  request.GET.get('redirect')
+    if not url: url = '/taskManager/'
+    project_list = Project.objects.order_by('-start_date')
+    return redirect(url)
+                    </code></pre>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Do we really need to takes user input to determine their final location during logout? Remove any reference to a url parameter in the GET request and always redirect the user to the TaskManager homepage.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         While using the application, look for any obvious input points which may be parsed by the application for redirecting a user (e.g. 'return_to' URL parameter).
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

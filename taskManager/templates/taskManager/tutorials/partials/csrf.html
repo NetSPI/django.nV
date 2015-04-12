@@ -1,0 +1,74 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Cross-site Request Forgery (CSRF)
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          A Cross-site Request Forgery (CSRF) attack is one in which the user's browser is hijacking in order to submit a request to another website they are authenticated on. For example, if a form/request on a bank website to add money to their bank account is not protected by CSRF, an attacker could create an unrelated page, and submit a request to that endpoint when the user loads the attacker's page. Since the user's browser has a valid session cookie, the request would occur without the user even being aware anything had happened!
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                     <div class="panel-body">
+                         Both the profile_by_id() and change_password() functions have the @csrfexempt decorator. As the name indicates, Django will not check the validity or presence of
+                         the CSRF nonce when these functions are called. 
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Remove the @csrfexempt decorator from all sensitive functionality. An anti-CSRF nonce can be enabled application wide by including the django.middleware.csrf.CsrfViewMiddleware
+                         module in the MIDDLEWARE_CLASSES array within the settings.py config file.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         Try altering or removing the CSRF nonce on different requests to test if it truly is validated or not. This is easier to achieve with a client side proxy such
+                         as Burp or Fiddler.
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

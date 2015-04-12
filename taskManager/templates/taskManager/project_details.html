@@ -1,0 +1,155 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content   %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+            <header class="panel-heading">
+                {{proj.title}}
+                <span class="pull-right">
+		    {% if user_can_edit %}
+			<a href="{% url 'taskManager:project_edit' proj.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Project</a>
+		    {% endif %}
+		  <a href="{% url 'taskManager:project_details' proj.id %}" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                </span>
+            </header>
+
+        </section>
+        <div class="row">
+            <div class="col-md-8">
+                <section class="panel">
+                    <div class="panel-body bio-graph-info">
+                        <!--<h1>New Dashboard BS3 </h1>-->
+                        <div class="row p-details">
+                            <div class="bio-row">
+                                <p><span class="bold">Status:</span> <span class="label label-primary">Active</span></p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Created:</span>{{proj.start_date}} </p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Due:</span>{% if proj.is_overdue %}<b style="color:red">{{proj.due_date}}</b>{% else %}{{proj.due_date}}{% endif %} </p>
+                            </div>
+                            <div class="bio-row">
+                                <p><span class="bold">Participants:</span>
+                                <span class="p-team">
+                                    {% for u in proj.users_assigned.all%}
+                                      <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                                    {% endfor %}
+                                </span>
+                                </p>
+                            </div>
+
+                            
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="panel">
+                  <header class="panel-heading">
+                    Tasks
+		    <span class="pull-right">	
+			<a href="{% url 'taskManager:task_create' proj.id %}" class="btn btn-xs btn-primary">Add task</a>
+		    </span>
+                  </header>
+                  <div class="panel-body">
+                      <table class="table table-hover p-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for task in proj.task_set.all %}  
+                      <tr>
+                          <td>
+                              <a href="{% url 'taskManager:task_details' project_id=proj.id task_id=task.id %}">{{task.title}}</a>
+                          </td>
+                          <td>
+                          {% if task.is_overdue %}
+                            <b style="color:red">{{task.due_date}}</b>
+                          {% else %}
+                            {{task.due_date}}
+                          {% endif %}
+                          </td>
+                          <td>
+                             {% if task.completed == True %}
+                              	 <a href="{% url 'taskManager:task_complete' project_id=proj.id task_id=task.id %}"><span class="label label-info"><i class="fa fa-check"></i> Completed</span></a>
+                              {% else %}
+                              	 <a href="{% url 'taskManager:task_complete' project_id=proj.id task_id=task.id %}"><span class="label label-warning"><i class="fa fa-tasks"></i> In Progress</span></a>
+                              {% endif %}
+                             
+                          </td>
+			  <td>
+			    <a href="{% url 'taskManager:task_edit' project_id=proj.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="{% url 'taskManager:task_delete' project_id=proj.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
+			  </td>
+                      </tr>
+                    {% endfor %}  
+                </tbody>
+                    </table>
+                  </div>
+                </section>
+
+            </div>
+            <div class="col-md-4">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Project Description
+                    </header>
+
+                    <div class="panel-body">
+                        <p>
+                            {{proj.text}}
+                        </p>
+                        <br/>
+                        <small>{{proj.percent_complete}}% Complete</small>
+                        <div class="progress progress-xs">
+                            <div style="width: {{proj.percent_complete}}%;" class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <br />
+                        <h5 class="bold">Priority</h5>
+                        <ul class="nav nav-pills nav-stacked labels-info ">
+                          {% if proj.priority == 1 %}
+                            <li><i class=" fa fa-circle text-primary"></i> Low Priority</li>
+                          {% elif proj.priority = 2 %}
+                            <li><i class=" fa fa-circle text-success"></i> Medium Priority</li>
+                          {% elif proj.priority = 3 %}
+                            <li><i class=" fa fa-circle text-danger"></i> High Priority</li>
+                          {% elif proj.priority = 4 %}
+                            <li class="text-danger"><i class="fa fa-circle"></i> Urgent Priority</li>
+                          {% elif proj.priority = 5 %}
+                            <li class="text-danger"><strong><i class=" fa fa-circle"></i> SUPER URGENT Priority</strong></li>
+                          {% else %}
+                            <li><i class=" fa fa-circle text-muted"></i> No Priority</li>
+                          {% endif %}
+                        </ul>
+
+                        <br/>
+                        <h5 class="bold">Files</h5>
+                          <span class="p-team">
+                              {% for u in proj.file_set.all %}
+                                <a href="{% url 'taskManager:download' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br />
+                              {% endfor %}
+                          </span>
+                        
+                        <div class="text-center mtop20">
+                            <a href="{% url 'taskManager:upload' proj.id %}" class="btn btn-sm btn-primary">Add files</a>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+        <!-- page end-->
+    </section>
+
+{% endblock %}

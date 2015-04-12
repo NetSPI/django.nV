@@ -1,0 +1,32 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Create Task
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label>Task Title</label>
+                      <input name="task_title" class="form-control" placeholder="">
+                      <label>Task Information</label>
+                      <textarea name="text" class="form-control" placeholder=""></textarea>
+                      <label>Task Due Date</label><br />
+                      <input name="task_duedate" class="form-control" id="datetimepicker" type="text">
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+
+{% endblock %}

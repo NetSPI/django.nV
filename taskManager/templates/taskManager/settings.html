@@ -1,0 +1,46 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+          {% include 'taskManager/messages.html'%}
+            <header class="panel-heading">
+                Django TaskManager Settings (DEBUG)
+            </header>
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if settings %}
+                    {% for n,v in settings.items %}
+                      <tr>
+                          <td>
+                              {{n}}
+                          </td>
+                          <td>
+                              {{v|safe}}
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                        <td class="span7">
+                            <p>No settings found.</p>
+                        </td>
+                    </tr>
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <!-- page end-->
+    </section>
+
+<!--main content end-->
+{% endblock %}

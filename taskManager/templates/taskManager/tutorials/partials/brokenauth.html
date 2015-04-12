@@ -1,0 +1,74 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Broken Authentication and Session Management
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          User credentials may be stolen, sessions hijacked, and privileges escalated through implementation flaws in the authentication process, poor protections on session credentials, and insecure practices during the registration process.
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        The application is vulnerable to a mass assignment attack on the registration page. This is due to the UserForm found within the forms.py file. It includes an incomplete 
+                        blacklist of the User model attributes that cannot be set via this form; is_superuser is not included. Due to this, an attacker could manually enable the is_superuser flag
+                        by appending it to the form prior to submitting it to the application. 
+                    </div>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         It is almost always better to leverage a whitelist over a blacklist when restricting valid values. In this case, the 'exclude' blacklist array should be replaced with the
+                         'fields' whitelist array. This array should include only the User model attributes which can be modified by a user.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         Mass assignment is the hip new auth bypass. There's one in this app too.
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

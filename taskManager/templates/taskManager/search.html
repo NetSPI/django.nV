@@ -1,0 +1,108 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+          {% include 'taskManager/messages.html'%}
+            <header class="panel-heading">
+                Search Results
+                <span class="pull-right">
+                    <!--A3: Cross Site Scripting (XSS) -->
+                    <a href="/taskManager/search/?q={{q|safe}}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i> Refresh</a>
+                </span>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="/taskManager/search/">
+                        <div class="input-group">
+                            <input type="text" name="q" value="{{q}}" class="input-sm form-control">
+                            <span class="input-group-btn">
+                                <input type="submit" value="Go!" class="btn btn-sm btn-success">
+                            </span>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <header class="panel-heading">
+                Projects
+            </header>
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Members</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if project_list %}
+                    {% for proj in project_list %}
+                      <tr>
+                          <td class="p-name">
+                              <a href="{% url 'taskManager:project_details' proj.id %}">{{proj.title}}</a>
+                              <br>
+                              <small>Due {% if proj.is_overdue %}
+                            <b style="color:red">{{proj.due_date}}</b>
+                          {% else %}
+                            {{proj.due_date}}
+                          {% endif %}</small>
+                          </td>
+                          <td class="p-team">
+                            {% for u in proj.users_assigned.all%}
+                              <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                            {% endfor %}
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                        <td class="span5">
+                            <p>No projects found.</p>
+                        </td>
+                    </tr>
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <section class="panel">
+            <header class="panel-heading">
+                Tasks
+            </header>
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Project</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if task_list %}
+                    {% for task in task_list %}
+                      <tr>
+                          <td>
+                              <a href="{% url 'taskManager:task_details' project_id=task.project.id task_id=task.id %}">{{task.title}}</a>
+                          </td>
+                          <td>
+                              <a href="{% url 'taskManager:project_details' task.project.id %}">{{task.project.title}}</a>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                        <td class="span7">
+                            <p>No tasks found.</p>
+                        </td>
+                    </tr>
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <!-- page end-->
+    </section>
+
+<!--main content end-->
+{% endblock %}

@@ -1,28 +1,41 @@
-<!DOCTYPE html>
-<html>
-{% extends 'taskManager/base.html' %}
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Assign user to task
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label>User</label>
+                        <select name="userid" id="userid">
+                        {% for user in users %}
+                            <option value="{{user.id}}">{{user.get_full_name}} ({{user}})</option>
+                        {% endfor %}
+                        </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Task</label>
+                        <select name="taskid" id="taskid">
+                        {% for task in tasks %}
+                            <option value="{{task.id}}">{{task.title}}</option>
+                        {% endfor %}
+                        </select>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-info">Update</button>
+                  </div>
+              </form>
 
-    <head>
-        
-        <title>Manage Tasks</title>
-    </head>
-
-    <body>
-
-        {% block content %}
-
-        {% if logged_in == True %}
-
-        <h1>Manage Tasks</h1>
-
-        <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-        </form>
-        {% endif %}
-
-        {% endblock %}
-
-        <pre> {% filter force_escape %} {% debug %} {% endfilter %} </pre>
-    </body>
-</html>
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+             
+{% endblock %}

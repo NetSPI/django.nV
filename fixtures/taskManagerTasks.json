@@ -3,9 +3,9 @@
     "fields":{
        "title" : "News",
        "completed":false,
-       "pub_date":"2014-10-07T20:25:57.130Z",
-       "task_text":"What's news?",
-       "assoc_project":1
+       "start_date":"2014-10-07T20:25:57.130Z",
+       "text":"What's news?",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":1
@@ -14,9 +14,9 @@
     "fields":{
        "title" : "Django",
        "completed":false,
-       "pub_date":"2014-10-07T21:12:13Z",
-       "task_text":"Djangooo!",
-       "assoc_project":1
+       "start_date":"2014-10-07T21:12:13Z",
+       "text":"Djangooo!",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":2
@@ -25,9 +25,9 @@
     "fields":{
        "title" : "Hygiene",
        "completed":false,
-       "pub_date":"2014-10-10T20:57:02Z",
-       "task_text":"First Task: brush teeth",
-       "assoc_project":1
+       "start_date":"2014-10-10T20:57:02Z",
+       "text":"First Task: brush teeth",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":3
@@ -36,9 +36,9 @@
     "fields":{
        "title" : "Dress yourself",
        "completed":false,
-       "pub_date":"2014-10-10T20:57:13Z",
-       "task_text":"Second Task: get dressed",
-       "assoc_project":1
+       "start_date":"2014-10-10T20:57:13Z",
+       "text":"Second Task: get dressed",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":4
@@ -47,9 +47,9 @@
     "fields":{
        "title" : "Eat!",
        "completed":false,
-       "pub_date":"2014-10-10T20:57:24Z",
-       "task_text":"Third: Eat Dinner",
-       "assoc_project":1
+       "start_date":"2014-10-10T20:57:24Z",
+       "text":"Third: Eat Dinner",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":5
@@ -58,9 +58,9 @@
     "fields":{
        "title" : "Get up",
        "completed":false,
-       "pub_date":"2014-10-10T21:16:37Z",
-       "task_text":"rise and shine",
-       "assoc_project":2
+       "start_date":"2014-10-10T21:16:37Z",
+       "text":"rise and shine",
+       "project":2
     },
     "model":"taskManager.task",
     "pk":6
@@ -69,9 +69,9 @@
     "fields":{
        "title" : "new!",
        "completed":false,
-       "pub_date":"2014-10-28T17:10:11.970Z",
-       "task_text":"new",
-       "assoc_project":1
+       "start_date":"2014-10-28T17:10:11.970Z",
+       "text":"new",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":7
@@ -80,9 +80,9 @@
     "fields":{
        "title" : "what?",
        "completed":false,
-       "pub_date":"2014-10-28T17:45:21.392Z",
-       "task_text":"what what",
-       "assoc_project":1
+       "start_date":"2014-10-28T17:45:21.392Z",
+       "text":"what what",
+       "project":1
     },
     "model":"taskManager.task",
     "pk":8
@@ -91,9 +91,9 @@
     "fields":{
        "title" : "CAKE",
        "completed":false,
-       "pub_date":"2014-10-28T17:49:24.623Z",
-       "task_text":"Eat the cake",
-       "assoc_project":2
+       "start_date":"2014-10-28T17:49:24.623Z",
+       "text":"Eat the cake",
+       "project":2
     },
     "model":"taskManager.task",
     "pk":9
@@ -102,9 +102,9 @@
     "fields":{
        "title" : "How a-boot that",
        "completed":false,
-       "pub_date":"2014-10-28T17:50:48.961Z",
-       "task_text":"The CN Tower (French: Tour CN) is a 553.33 m-high (1,815.4 ft) concrete communications and observation tower in Downtown Toronto, Ontario, Canada.[3][6] Built on the former Railway Lands, it was completed in 1976, becoming the world's tallest free-standing structure and world's tallest tower at the time. It held both records for 34 years until the completion of Burj Khalifa and Canton Tower in 2010.",
-       "assoc_project":2
+       "start_date":"2014-10-28T17:50:48.961Z",
+       "text":"The CN Tower (French: Tour CN) is a 553.33 m-high (1,815.4 ft) concrete communications and observation tower in Downtown Toronto, Ontario, Canada.[3][6] Built on the former Railway Lands, it was completed in 1976, becoming the world's tallest free-standing structure and world's tallest tower at the time. It held both records for 34 years until the completion of Burj Khalifa and Canton Tower in 2010.",
+       "project":2
     },
     "model":"taskManager.task",
     "pk":10
@@ -113,9 +113,9 @@
     "fields":{
        "title" : "nonsense",
        "completed":false,
-       "pub_date":"2014-10-28T19:41:32.529Z",
-       "task_text":"kweflkwef",
-       "assoc_project":6
+       "start_date":"2014-10-28T19:41:32.529Z",
+       "text":"kweflkwef",
+       "project":6
     },
     "model":"taskManager.task",
     "pk":11
@@ -124,9 +124,9 @@
     "fields":{
        "title" : "$, yo",
        "completed":false,
-       "pub_date":"2014-10-28T20:52:00.339Z",
-       "task_text":"jdmoney",
-       "assoc_project":2
+       "start_date":"2014-10-28T20:52:00.339Z",
+       "text":"jdmoney",
+       "project":2
     },
     "model":"taskManager.task",
     "pk":12
@@ -135,9 +135,9 @@
     "fields":{
        "title" : "Advertising",
        "completed":false,
-       "pub_date":"2014-11-11T18:31:01.306Z",
-       "task_text":"Create TV ad",
-       "assoc_project":7
+       "start_date":"2014-11-11T18:31:01.306Z",
+       "text":"Create TV ad",
+       "project":7
     },
     "model":"taskManager.task",
     "pk":13
@@ -146,9 +146,9 @@
     "fields":{
        "title" : "Advertising (radio)",
        "completed":false,
-       "pub_date":"2014-11-11T18:31:16.568Z",
-       "task_text":"Record radio commercial",
-       "assoc_project":7
+       "start_date":"2014-11-11T18:31:16.568Z",
+       "text":"Record radio commercial",
+       "project":7
     },
     "model":"taskManager.task",
     "pk":14
@@ -157,9 +157,9 @@
     "fields":{
        "title" : "Marketing (tweeeterz)",
        "completed":false,
-       "pub_date":"2014-11-11T18:31:31.987Z",
-       "task_text":"Get a young person who knows what Tweeter is",
-       "assoc_project":7
+       "start_date":"2014-11-11T18:31:31.987Z",
+       "text":"Get a young person who knows what Tweeter is",
+       "project":7
     },
     "model":"taskManager.task",
     "pk":15
@@ -168,9 +168,9 @@
     "fields":{
        "title" : "Outreach",
        "completed":false,
-       "pub_date":"2014-11-11T18:31:52.686Z",
-       "task_text":"Contact local department store representatives",
-       "assoc_project":7
+       "start_date":"2014-11-11T18:31:52.686Z",
+       "text":"Contact local department store representatives",
+       "project":7
     },
     "model":"taskManager.task",
     "pk":16
@@ -179,9 +179,9 @@
     "fields":{
        "title" : "Number",
        "completed":false,
-       "pub_date":"2014-12-11T08:51:20.711Z",
-       "task_text":"1",
-       "assoc_project":6
+       "start_date":"2014-12-11T08:51:20.711Z",
+       "text":"1",
+       "project":6
     },
     "model":"taskManager.task",
     "pk":17
@@ -190,9 +190,9 @@
     "fields":{
        "title" : "Test",
        "completed":false,
-       "pub_date":"2014-12-11T19:04:35.175Z",
-       "task_text":"This is a test task",
-       "assoc_project":8
+       "start_date":"2014-12-11T19:04:35.175Z",
+       "text":"This is a test task",
+       "project":8
     },
     "model":"taskManager.task",
     "pk":18
@@ -201,9 +201,9 @@
     "fields":{
        "title" : "Lumberjack",
        "completed":false,
-       "pub_date":"2014-12-12T19:10:31.126Z",
-       "task_text":"find a tree",
-       "assoc_project":4
+       "start_date":"2014-12-12T19:10:31.126Z",
+       "text":"find a tree",
+       "project":4
     },
     "model":"taskManager.task",
     "pk":19
@@ -212,9 +212,9 @@
     "fields":{
        "title" : "XSS n Stuff",
        "completed":false,
-       "pub_date":"2014-12-12T19:46:37.723Z",
-       "task_text":"<img alt=<script>alert(document.cookie);</script>>",
-       "assoc_project":4
+       "start_date":"2014-12-12T19:46:37.723Z",
+       "text":"<img alt=<script>alert(document.cookie);</script>>",
+       "project":4
     },
     "model":"taskManager.task",
     "pk":20
@@ -223,9 +223,9 @@
     "fields":{
        "title" : "asdf",
        "completed":false,
-       "pub_date":"2014-12-18T02:23:05.081Z",
-       "task_text":"asdf",
-       "assoc_project":3
+       "start_date":"2014-12-18T02:23:05.081Z",
+       "text":"asdf",
+       "project":3
     },
     "model":"taskManager.task",
     "pk":21

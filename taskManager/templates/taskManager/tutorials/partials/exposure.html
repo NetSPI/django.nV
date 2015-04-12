@@ -1,0 +1,79 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Sensitive Data Exposure
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          Sensitive Data Exposure is a class of software vulnerability where important application or system data is not properly protected. Sensitive Data should be stored encrypted or protected wherever possible, with secure algorithms and strong key management. The most common flaw is simply not encrypting sensitive data. When crypto is employed, weak key generation and management, and weak algorithm usage are both common, particularly weak password hashing techniques.<br />
+                          <br />
+                          While attacks against this vulnerability are possible, they are often uncommon due to limited access by attackers and can be difficult to exploit remotely. However, using weak encryption means attackers will be able to compromise data captured after the fact.
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        TaskManager makes a common mistake when storing passwords in the database; while the passwords are hashed, they are stored using the insecure hashing algorithm MD5. If an attacker compromises the database and reveals the password hashes, they will be able to quickly compromise user passwords.
+                    </div>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Instead of using the MD5 hashing algorithm to store passwords, use a hash designed to be computationally intensive, such as bcrypt or PBKDF2. These hashes will ensure that even if an attacker compromises your user database, the passwords cannot be feasibly cracked.
+                         <br /><br />
+                         In django, upgrading the password hash is as easy as changing <code>PASSWORD_HASHERS</code> in the <code>settings.py</code> line. Replace '<i>django.contrib.auth.hashers.MD5PasswordHasher</i>' with '<i>django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher</i>' or '<i>django.contrib.auth.hashers.BCryptPasswordHasher</i>'.
+                         <br /><br />
+                         MD5 is insecure because it was designed to be as fast as possible. Attackers are able to try millions or billions of passwords a second against the passwords in your database using readily-available hardware. In constrast, bcrypt and PBKDF2 are designed to be slow. For servers, a login may take 2 seconds rather than 1. But for an attacker, testing a million hashes now requires a million seconds!
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         How secure is this site anyways? Are my credentials really protected?
+                         <br /> <br />
+                         Find that injection vulnerability yet? Django stores user passwords in the auth_user table. Something isn't quite right about them.
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

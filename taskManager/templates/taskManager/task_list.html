@@ -1,0 +1,62 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+
+<!--main content start-->
+
+    <section class="wrapper site-min-height">
+        <!-- page start-->
+        <section class="panel">
+          {% include 'taskManager/messages.html'%}
+            <header class="panel-heading">
+                My Tasks
+                <span class="pull-right">
+                    <a href="{% url 'taskManager:task_list' %}" id="loading-btn" class="btn btn-warning btn-xs"><i class="fa fa-refresh"></i>Refresh</a>
+                </span>
+            </header>
+
+            <table class="table table-hover p-table">
+                <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Project</th>
+                    <th>Created</th>
+                    <th>Due</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% if task_list %}
+                    {% for task in task_list %}
+                      <tr>
+                          <td>
+                              <a href="{% url 'taskManager:task_details' project_id=task.project.id task_id=task.id %}">{{task.title}}</a>
+                          </td>
+                          <td>
+                              <a href="{% url 'taskManager:project_details' task.project.id %}">{{task.project.title}}</a>
+                          </td>
+                          <td>
+                              {{task.start_date}}
+                          </td>
+                          <td>
+                              {{task.due_date}}
+                          </td>
+                          <td>
+                              <a href="{% url 'taskManager:task_details' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                              <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                              <a href="{% url 'taskManager:task_delete' project_id=task.project.id task_id=task.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                          </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <div class="col-md-12">
+                      <p>No tasks are assigned to you.</p>
+                    </div>
+                  {% endif %}
+              </tbody>
+            </table>
+        </section>
+        <!-- page end-->
+    </section>
+
+<!--main content end-->
+{% endblock %}

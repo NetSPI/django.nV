@@ -22,7 +22,7 @@ def get_my_choices_tasks(current_proj):
     task_list = []
     tasks = Task.objects.all()
     for task in tasks:
-        if task.assoc_project == current_proj:
+        if task.project == current_proj:
             task_list.append(task)
 
     task_tuple = []
@@ -62,16 +62,20 @@ class AssignProject(forms.Form):
         self.fields['Project'] = forms.ChoiceField(
             choices = get_my_choices_projects())
 
-
+#A2: Broken Authentication and Session Management
 class UserForm(forms.ModelForm):
-	username = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-	email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-	password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    user_permissions = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	
-	class Meta:
-		model = User
-		fields = ('username', 'email', 'password')
-#look at mass assignments
+
+    class Meta:
+    	model = User
+    	fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_permissions')
+    #look at mass assignments
 
 _Choices = (
     (1,        'Admin Access'),
@@ -91,5 +95,12 @@ class AssignemntForm(forms.Form):
     class Meta:
         model = Project
     
+class ProjectFileForm(forms.Form):
+    name = forms.CharField(max_length=300)
+    file = forms.FileField()
 
-
+class ProfileForm(forms.Form):
+    first_name = forms.CharField(max_length=30, required=False)
+    last_name = forms.CharField(max_length=30, required=False)
+    email = forms.CharField(max_length=300, required=False)
+    picture = forms.FileField(required=False)

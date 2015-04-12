@@ -1,0 +1,115 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Injection
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          SQL Injection is a class of vulnerability where queries given to a SQL database are modified by an attacker in order to perform unintended operations or retrieve sensitive information. For example, let's assume we use the following query to check if a user exists and is has an <code>access_level</code> of 1.
+                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = " + user_id + " AND access_level = 1</code></pre>
+                            However, if the user_id is not properly sanitized, the attacker can inject SQL code (where data should be) and bypass an ID check. If the attacker could pass <code>1 OR 1=1</code> as the <code>user_id</code>, they would transform the query into the following:
+                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1 OR 1=1 AND access_level = 1</code></pre>
+                            This transforms the query entirely. While it originally checked if the given user had an <code>access_level</code> of 1, it now checks if <i>any</i> user has an <code>access_level</code> of 1. Unfortunately, SQL injections can be far more malicious than simply bypassing a permissions check, which is already bad enough. Consider the following, where the user_id is passed as <code>1; DROP TABLE user; --</code>. Our simple query then becomes:
+                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1; DROP TABLE user; -- AND access_level = 1</code></pre>
+                            The attacker has now successfully dropped our entire users table!
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        In the TaskManager app, there are two types of file uploads - profile pictures, and files related to projects. One type, the project files, use the following view function to store said files.
+                        <pre><code>def upload(request, project_id):
+    if request.method == 'POST':
+
+        proj = Project.objects.get(pk = project_id)
+        form = ProjectFileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            name = request.POST.get('name', False)
+            upload_path = store_uploaded_file(name, request.FILES['file'])
+
+            curs = connection.cursor()
+            curs.execute("insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)"%(name,upload_path,project_id))
+
+            return redirect('/taskManager/' + project_id + '/', {'new_file_added':True})
+        else:
+            form = ProjectFileForm()
+    else:
+        form = ProjectFileForm()
+    return render_to_response('taskManager/upload.html', {'form': form}, RequestContext(request))</code></pre>
+                        This code uses the <code>curs.execute()</code> function directly, without any validation on the fields passed. If the user were to submit a file with the filename:
+
+                        <pre>testPic',(select password from auth_user where username='admin'),8);--</pre>
+
+                        The function would execute the following query:
+
+                        <pre>INSERT INTO taskManager_file ('name','path','project_id') VALUES (testPic',(SELECT password FROM auth_user WHERE username='admin'),8);--</pre>
+
+                        This would reveal the password of the admin user!
+                    </div>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Django's ORM provides us with very powerful tools to validate input and make database updates securely. Rather than using a the <code>curs.execute()</code> function directly on the database, we should use the ORM to create a new file object.
+                         <pre><code class="lang-python">file = File(
+name = name,
+path = upload_path,
+project = proj)
+file.save()</code></pre>
+                        This will insure that the arguments passed are properly escaped. Users will still be able to create files with strange names, but they won't be able to perform SQL injection attacks using those names anymore.
+
+                        On top of this, you may want to run checks using django's <a href="https://docs.djangoproject.com/en/1.8/topics/forms/">Form class</a> to run validations without hitting the database, and provide more immediate feedback.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                         The TaskManager devs seem to have just thrown file uploads in at the last minute...
+                         <br /><br />
+                        Single quotes are a great way to find vanilla SQLi. Try them in different form fields within the app.
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

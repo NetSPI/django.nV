@@ -1,0 +1,39 @@
+{% extends 'taskManager/base_backend.html' %}
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Edit Task
+                  <span class="pull-right">
+                  <a href="{% url 'taskManager:note_create' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs">Add Note</a>
+                  {% if task.completed %}
+                  <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i>Task is Completed</a>
+                  {% endif %}
+                </span>
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label>Enter Task Title</label>
+                      <input name="task_title" class="form-control" value ="{{task.title}}">
+                      <label>Enter Task Information</label>
+                      <textarea name="text" class="form-control">{{task.text}}</textarea>
+                      <label>Task Completion</label>
+                      <input type="radio" name="task_completed" value="1" {% if task.completed %}checked{% endif %}> Yes&nbsp;
+                      <input type="radio" name="task_completed" value="0" {% if not task.completed %}checked{% endif %}> No
+                  </div>
+                  <button type="submit" class="btn btn-info">Finish</button>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+
+{% endblock %}

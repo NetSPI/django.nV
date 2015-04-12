@@ -1,0 +1,46 @@
+{% extends 'taskManager/base_backend.html' %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+  <div class="col-lg-6">
+      <section class="panel">
+          <header class="panel-heading">
+              Edit Project
+          </header>
+          <div class="panel-body">
+              <form method="post" role="form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                      <label> Enter Project Title</label>
+                      <input name="title" class="form-control" value="{{proj.title}}">
+                  </div>
+                  <div class="form-group">
+                      <label>Enter Project Information</label>
+                      <textarea name="text" class="form-control">{{proj.text}}</textarea>
+                  </div>
+                      <label>Enter Project Due Date</label><br />
+                      <input name="project_duedate" class="form-control" id="datetimepicker" type="text">
+                  </div>
+                  <div class="form-group">
+                      <label>Project Priority</label><br />
+                      <select name="project_priority">
+                        <option value="5" {% if proj.priority = 5 %}selected="selected"{% endif %}>(!!) SUPER URGENT</option>
+                        <option value="4" {% if proj.priority = 4 %}selected="selected"{% endif %}>(!) Urgent</option>
+                        <option value="3" {% if proj.priority = 3 %}selected="selected"{% endif %}>High</option>
+                        <option value="2" {% if proj.priority = 2 %}selected="selected"{% endif %}>Medium</option>
+                        <option value="1" {% if proj.priority = 1 %}selected="selected"{% endif %}>Low</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-info">Finish</button>
+                  </div>
+              </form>
+
+          </div>
+      </section>
+  </div>
+  
+</div>  
+</section>
+             
+{% endblock %}

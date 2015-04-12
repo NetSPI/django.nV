@@ -1,0 +1,115 @@
+ <section class="wrapper site-min-height">
+     <!-- page start-->
+     <div class="row">
+       <div class="col-md-9">
+     <div class="tab-content">
+     <div class="tab-pane active" id="tab_1">
+         <div class="panel-group" id="accordion1">
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_1" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Missing Function Level Access Control
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse  in" id="accordion1_1">
+                     <div class="panel-body">
+                       <h6><strong>Description</strong></h6>
+                        <p>
+                          Function Level Access Control is a concept where web functions or calls are properly protected against unauthorized access by making the appropriate checks against the requestee. Missing Function Level Access Control results when an application does not properly protect these paths. Such vulnerabilites can be easy to overlook for a developer (as they are often as simple as a missed check) but are also easy to exploit and detect for an attacker. By changing a parameter in the URL, a vulnerable function has no protection against a hacker.<br />
+                          <br />
+                          Remember that any code executing on the client cannot be trusted to protect such paths - always be sure to double check user authorization on the server!
+                        </p>
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-danger">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_2" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Bug
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_2">
+                    <div class="panel-body">
+                        The manage_groups() method does not properly perform an authorization check. As seen below, an initial check is performed to see if a user is logged in but a role check
+                        not performed on a POST request. 
+                    </div>
+                    <pre><code class="lang-python">
+def manage_groups(request):
+
+    user = request.user
+
+    if user.is_authenticated():
+
+        user_list = User.objects.order_by('date_joined')
+
+        if request.method == 'POST':
+
+            post_data = request.POST.dict()
+
+            accesslevel = post_data["accesslevel"].strip()
+
+            if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+                try:
+                    grp = Group.objects.get(name=accesslevel)
+                except:
+                    grp = Group.objects.create(name=accesslevel)
+                user = User.objects.get(pk=post_data["userid"])
+                # Check if the user even exists
+                if user == None:
+                    return redirect('/taskManager/', {'permission':False})
+                user.groups.add(grp)
+                user.save()
+                return render_to_response('taskManager/manage_groups.html', 
+                    {'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
+            else:
+                return render_to_response('taskManager/manage_groups.html', 
+                    {'users':user_list, 'logged_in':True}, RequestContext(request))                 
+
+        else:
+            if user.has_perm('can_change_group'):
+                return render_to_response('taskManager/manage_groups.html', 
+                    {'users':user_list, 'logged_in':True}, RequestContext(request))
+            else:
+                return redirect('/taskManager/', {'permission':False})
+    else:
+        redirect('/taskManager/', {'logged_in':False})
+                    </code></pre>
+                 </div>
+             </div>
+             <div class="panel panel-success">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_3" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                            Solution
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_3">
+                     <div class="panel-body">
+                         Perform an authorization check prior to performing any state changing operation or returning any sensitive data to a user.
+                     </div>
+                 </div>
+             </div>
+             <div class="panel panel-warning">
+                 <div class="panel-heading">
+                     <h4 class="panel-title">
+                         <a href="#accordion1_4" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle">
+                             Hint
+                         </a>
+                     </h4>
+                 </div>
+                 <div class="panel-collapse collapse" id="accordion1_4">
+                     <div class="panel-body">
+                     	Just because a GET request to a resource returns a permission error doesn't mean that POST request will...
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     </div>
+     <!-- page end-->
+ </section>

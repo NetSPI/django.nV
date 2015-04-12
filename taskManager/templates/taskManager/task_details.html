@@ -6,44 +6,92 @@
 
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="panel">
+        <section class="panel col-md-10">
             <header class="panel-heading">
-                Task Details
+                <!--A3: Cross Site Scripting (XSS) -->
+                {{task.title|safe}}
+                <span class="pull-right">
+                  <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
+                  {% if task.completed %}
+                  <a href="#" id="loading-btn" class="btn btn-success btn-xs" disabled="disabled"><i class="fa fa-check"></i> Task is Completed</a>
+                  {% else %}
+                  <a href="{% url 'taskManager:task_complete' project_id=task.project.id task_id=task.id %}" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Complete Task</a>
+                  {% endif %}
+                </span>
             </header>
 
         </section>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <section class="panel">
-                    <div class="bio-graph-heading project-heading">
-                        <strong>{{task.title}}</strong>
-                    </div>
-                    <div class="panel-body bio-graph-info">
-                        <!--<h1>New Dashboard BS3 </h1>-->
+                    <div class="panel-body">
                         <div class="row p-details">
-                            <div class="bio-row">
-                                <p><span class="bold">Completed </span>: <span class="label label-primary">{{completed_task}}</span></p>
+                            <div class="col-md-5">
+                                <p><span class="bold">Created:</span> {{task.start_date}} </p>
                             </div>
-                            <div class="bio-row">
-                                <p><span class="bold">Created </span>: {{task.pub_date}} </p>
+                            <div class="col-md-5">
+                                <p><span class="bold">Due:</span> {{task.due_date}} </p>
                             </div>
-                            <div class="bio-row">
-                                <p><span class="bold">Participants </span>:
+                            <div class="col-md-5">
+                                <p><span class="bold">Participants:</span>
                                 <span class="p-team">
                                     {% for u in task.users_assigned.all%}
-                                      <a href="#"><img alt="image" class="" src="{{u.userprofile.profile_img}}"></a>
+                                      <a href="#"><img alt="image" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                                     {% endfor %}
                                 </span>
                                 </p>
                             </div>
-                            <div class="bio-row">
-                                <p><span class="bold">Description</span>:
+                            <div class="col-md-10">
+                                <p><span class="bold">Description:</span>
                                 <span class="p-team">
-                                  {{task.task_text}}
+                                  <!--A3: Cross Site Scripting (XSS) -->
+                                  {{task.text|safe}}
                                 </span>
                                 </p>
                             </div>
-                            
+                        </div>
+                    </div>
+                </section>
+                <section class="panel">
+                    <div class="panel-body">
+                        <div class="row p-details">
+                            <div class="col-md-10">
+                                <span class="bold">Notes</span>
+                                <span class="pull-right">
+                                    <a href="{% url 'taskManager:note_create' project_id=task.project.id task_id=task.id %}" class="btn btn-primary btn-xs"> Add Note</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row p-details">
+                            <div class="col-md-10">
+                                <span class="p-team">
+                                    <table class="table table-hover p-table">
+                                      <thead>
+                                        <tr>
+                                          <th>Title</th>
+                                          <th>Text</th>
+                                          <th>Edit</th>
+                                          <th>Del</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for note in task.notes_set.all%}
+                                        <tr>
+                                          <td>
+                                            {{note.title}}
+                                          </td>
+                                          <td>
+                                            {{note.text}}
+                                          </td>
+                                          <td><a href="{% url 'taskManager:note_edit' project_id=task.project.id task_id=task.id note_id=note.id %}">Edit</a></td>
+                                          <td><a href="{% url 'taskManager:note_delete' project_id=task.project.id task_id=task.id note_id=note.id %}">Delete</a></td>
+                                        </tr>
+                                        {% endfor %}  
+                                      </tbody>
+                                    </table>
+                                </span>
+                                </p>
+                            </div>
                         </div>
 
                     </div>
