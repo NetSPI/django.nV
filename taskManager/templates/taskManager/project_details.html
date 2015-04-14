@@ -37,7 +37,7 @@
                                 <p><span class="bold">Participants:</span>
                                 <span class="p-team">
                                     {% for u in proj.users_assigned.all%}
-                                      <a href="#"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
+                                      <a href="{% url 'taskManager:profile_view' u.id %}"><img alt="image" class="" src="{% url 'taskManager:download_profile_pic' u.id %}"></a>
                                     {% endfor %}
                                 </span>
                                 </p>
