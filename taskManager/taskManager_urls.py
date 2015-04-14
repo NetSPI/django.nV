@@ -20,6 +20,7 @@ urlpatterns = patterns('',
         url(r'^profile/$', views.profile, name = 'profile'),
         url(r'^change_password/$', views.change_password, name = 'change_password'),
         url(r'^profile/(?P<user_id>\d+)$', views.profile_by_id, name = 'profile_by_id'),
+        url(r'^profile_view/(?P<user_id>\d+)$', views.profile_view, name='profile_view'),
         
         # Projects
 	url(r'^project_create/$', views.project_create, name= 'project_create'),
