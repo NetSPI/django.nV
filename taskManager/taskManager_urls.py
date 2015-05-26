@@ -9,8 +9,6 @@ urlpatterns = patterns('',
 	url(r'^download/(?P<file_id>\d+)/$', views.download, name = 'download'),
         url(r'^(?P<project_id>\d+)/upload/$', views.upload, name = 'upload'),
 	url(r'^downloadprofilepic/(?P<user_id>\d+)/$', views.download_profile_pic, name = 'download_profile_pic'),
-        # TODO Upload Profile Pic
-
 
         # Authentication & Authorization
 	url(r'^register/$', views.register, name = 'register'),
