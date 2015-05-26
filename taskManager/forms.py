@@ -16,7 +16,6 @@ def get_my_choices_users():
         counter = counter +1
     return user_tuple
 
-
 def get_my_choices_tasks(current_proj):
     # you place some logic here
     task_list = []
@@ -78,9 +77,9 @@ class UserForm(forms.ModelForm):
     #look at mass assignments
 
 _Choices = (
-    (1,        'Admin Access'),
-    (2,        'Project Manager Access'),
-    (3,        'Team Member Access'),
+    (1, 'Admin Access'),
+    (2, 'Project Manager Access'),
+    (3, 'Team Member Access'),
 )
 
 class GroupForm(forms.Form):

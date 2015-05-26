@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.utils import timezone
 import datetime
-
 
 class Migration(migrations.Migration):
 
@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='task',
             name='due_date',
-            field=models.DateTimeField(default=datetime.date(2015, 3, 27), verbose_name='date due'),
+            field=models.DateTimeField(default=(timezone.now() + datetime.timedelta(days=7)), verbose_name='date due'),
             preserve_default=True,
         ),
     ]

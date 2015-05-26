@@ -9,8 +9,6 @@ urlpatterns = patterns('',
 	url(r'^download/(?P<file_id>\d+)/$', views.download, name = 'download'),
         url(r'^(?P<project_id>\d+)/upload/$', views.upload, name = 'upload'),
 	url(r'^downloadprofilepic/(?P<user_id>\d+)/$', views.download_profile_pic, name = 'download_profile_pic'),
-        # TODO Upload Profile Pic
-
 
         # Authentication & Authorization
 	url(r'^register/$', views.register, name = 'register'),
@@ -20,6 +18,7 @@ urlpatterns = patterns('',
         url(r'^profile/$', views.profile, name = 'profile'),
         url(r'^change_password/$', views.change_password, name = 'change_password'),
         url(r'^profile/(?P<user_id>\d+)$', views.profile_by_id, name = 'profile_by_id'),
+        url(r'^profile_view/(?P<user_id>\d+)$', views.profile_view, name='profile_view'),
         
         # Projects
 	url(r'^project_create/$', views.project_create, name= 'project_create'),

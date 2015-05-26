@@ -630,15 +630,6 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     border-top-color: #000;
 }
 
-.log-arrow-up {
-    background: url("/static/taskManager/img/arrow-up.png") no-repeat;
-    width: 20px;
-    height: 11px;
-    position: absolute;
-    right: 20px;
-    top: -10px;
-}
-
 /*----*/
 
 .notify-arrow {
@@ -677,14 +668,13 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 /*search*/
 
 .search {
-    margin-top: 6px ;
+    height: 36px;
     width: 20px;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
-    border: 1px solid #fff;
     box-shadow: none;
     background: url("/static/taskManager/img/search-icon.jpg") no-repeat 10px 8px;
     padding:0 5px 0 35px;
@@ -692,9 +682,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .search:focus {
-    margin-top: 5px ;
     width: 180px;
-    border: 1px solid #eaeaea;
     box-shadow: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;

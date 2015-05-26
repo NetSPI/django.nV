@@ -19,15 +19,13 @@ from django.contrib.auth import logout
 
 from django.core.urlresolvers import reverse
 
-
 from taskManager.models import Task, Project, Notes, File, UserProfile
 from taskManager.misc import *
 from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
 
-
-#pmem can only see his tasks
-#pman can only see his projects
-#admin can see all tasks
+# Admin can see all tasks
+# Project Manager can only see his projects
+# Team Member can only see his tasks
 
 def manage_tasks(request, project_id):
 
@@ -51,12 +49,12 @@ def manage_tasks(request, project_id):
 				return redirect('/taskManager/')
 			else:
 				return render_to_response('taskManager/manage_tasks.html',
-					{'tasks':Task.objects.order_by('title'), 'users':User.objects.order_by('date_joined')}, RequestContext(request))
+					{'tasks':Task.objects.filter(project=proj).order_by('title'), 'users':User.objects.order_by('date_joined')}, RequestContext(request))
 
 		else:
 			return redirect('/taskManager/', {'permission':False})
-	else:
-		redirect('/taskManager/', {'logged_in':False})
+
+	return redirect('/taskManager/', {'logged_in':False})
 
 def manage_projects(request):
 
@@ -85,8 +83,8 @@ def manage_projects(request):
 
 		else:
 			return redirect('/taskManager/', {'permission':False})
-	else:
-		redirect('/taskManager/', {'logged_in':False})
+	
+	return redirect('/taskManager/', {'logged_in':False})
 
 #A7 - Missing Function Level Access Control
 def manage_groups(request):
@@ -103,28 +101,24 @@ def manage_groups(request):
 
 			accesslevel = post_data["accesslevel"].strip()
 
-			post_data = request.POST.dict()
-
-			accesslevel = post_data["accesslevel"].strip()
-
 			if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+
+				# Create the group if it doesn't already exist
 				try:
 					grp = Group.objects.get(name=accesslevel)
 				except:
 					grp = Group.objects.create(name=accesslevel)
-				user = User.objects.get(pk=post_data["userid"])
+				specified_user = User.objects.get(pk=post_data["userid"])
 				# Check if the user even exists
-				if user == None:
+				if specified_user == None:
 					return redirect('/taskManager/', {'permission':False})
-				user.groups.add(grp)
-				groups.permission.add('project_edit', 'project_delete')
-				user.save()
+				specified_user.groups.add(grp)
+				specified_user.save()
 				return render_to_response('taskManager/manage_groups.html',
 					{'users':user_list, 'groups_changed': True, 'logged_in':True}, RequestContext(request))
 			else:
 				return render_to_response('taskManager/manage_groups.html',
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
-
 
 		else:
 			if user.has_perm('can_change_group'):
@@ -132,8 +126,8 @@ def manage_groups(request):
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
 			else:
 				return redirect('/taskManager/', {'permission':False})
-	else:
-		redirect('/taskManager/', {'logged_in':False})
+	
+	return redirect('/taskManager/', {'logged_in':False})
 
 #A4: Insecure Direct Object Reference (IDOR)
 def upload(request, project_id):
@@ -407,6 +401,36 @@ def index(request):
 			'admin_level':admin_level }
 			)
 
+def profile_view(request, user_id):
+	user = User.objects.get(pk = user_id)
+
+	profile = User(
+	username = user.username,
+	first_name = user.first_name,
+	last_name = user.last_name,
+	email = user.email)
+
+	image = user.userprofile.image
+	role = ''
+
+	admin_level = False
+	if request.user.groups.filter(name='admin_g').exists():
+		admin_level = True
+
+	pmanager_level = False
+	if request.user.groups.filter(name='project_managers').exists():
+		pmanager_level = True
+
+	if admin_level == True:
+		role ='Admin'
+	elif pmanager_level == True: 
+		role = 'Project Manager'
+	else:
+		role = 'Team Member'
+		
+	return render(request, 'taskManager/profile_view.html', {'user':request.user, 'profile':profile, 'role':role, 'image':image})
+
+
 def project_details(request, project_id):
 	proj = Project.objects.filter(users_assigned = request.user.id, pk = project_id)
 	if not proj:
@@ -482,7 +506,7 @@ def task_details(request, project_id, task_id):
 	logged_in = True
 
 	if not request.user.is_authenticated():
-		logged_in =False
+		logged_in = False
 
 	admin_level = False
 	if request.user.groups.filter(name='admin_g').exists():
@@ -507,8 +531,6 @@ def dashboard(request):
 	task_list = Task.objects.filter(users_assigned=request.user.id).order_by('title')
 	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'task_list':task_list})
 
-
-
 def project_list(request):
 	project_list = Project.objects.filter(users_assigned=request.user.id).order_by('title')
 	user_can_edit = request.user.has_perm('project_edit')
@@ -516,8 +538,6 @@ def project_list(request):
 	user_can_add = request.user.has_perm('project_add')
 	return render(request, 'taskManager/project_list.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete, 'user_can_add': user_can_add})
 	
-
-
 def task_list(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
 	return render(request, 'taskManager/task_list.html',  {'task_list': my_task_list, 'user':request.user })
@@ -599,3 +619,4 @@ def tm_settings(request):
 	#	settings_list[name] = getattr(settings,name)
 	#	print name, getattr(settings, name)
 	return render(request,'taskManager/settings.html',{'settings':settings_list})
+

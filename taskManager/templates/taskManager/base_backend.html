@@ -37,15 +37,20 @@
         <!--logo start-->
         <a href="/taskManager/" class="logo">Task<span>Manager</span></a>
         <!--logo end-->
-          <div class="top-nav ">
+          <div class="top-nav">
             <!--search & user info start-->
             <ul class="nav pull-right top-menu">
-                <li><a href="{% url 'taskManager:tutorials' %}">tutorials</a></li>
+
                 <li>
-                    <form action="{% url 'taskManager:search' %}">
-                        <input type="text" name="q" class="form-control search" placeholder="Search">
+                    <form class="navbar-search" action="{% url 'taskManager:search' %}">
+                        <div class="form-group">
+                            <input type="text" name="q" class="form-control search" placeholder="Search">
+                        </div>
                     </form>
                 </li>
+
+                <li><a href="{% url 'taskManager:tutorials' %}"><i class="fa fa-book"></i> tutorials</a></li>
+
                 <!-- user login dropdown start-->
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -53,11 +58,10 @@
                         <span class="username"><i class="fa fa-user fa-fw"></i> {{ user.username|safe }}</span>
                         <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu">
-                        <div class="log-arrow-up"></div>
-                        <li><a href="/taskManager/profile"><i class="fa fa-pencil"></i> Profile</a></li>
-                        <li><a href="/taskManager/change_password"><i class="fa fa-lock"></i> Change Password</a></li>
-                        <li><a href="/taskManager/logout?redirect=/taskManager/"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                    <ul class="dropdown-menu extended logout">
+                        <li><a href="/taskManager/profile"><i class="fa fa-cog"></i>Profile</a></li>
+                        <li><a href="/taskManager/change_password"><i class="fa fa-lock"></i>Change PW</a></li>
+                        <li><a href="/taskManager/logout?redirect=/taskManager/"><i class="fa fa-sign-out"></i>Log Out</a></li>
                     </ul>
                 </li>
 

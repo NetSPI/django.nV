@@ -1,4 +1,4 @@
-{% extends 'taskManager/base_backend.html' %}
+r{% extends 'taskManager/base_backend.html' %}
 {% block content %}
 <section class="wrapper">
 <div class="row">
@@ -19,10 +19,10 @@
                         </select>
                   </div>
                   <div class="form-group">
-                      <label>Access Level</label>
+                      <label>Access Level</label><br />
                         <input type="radio" name="accesslevel" id="accesslevel" value="admin_g"> Admin Access<br />
                         <input type="radio" name="accesslevel" id="accesslevel" value="project_managers"> Project Manager Access<br /> 
-                        <input type="radio" name="accesslevel" id="accesslevel" value="team_member" checked> Project Member Access<br />
+                        <input type="radio" name="accesslevel" id="accesslevel" value="team_member" checked> Team Member Access<br />
                   </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-info">Finish</button>
