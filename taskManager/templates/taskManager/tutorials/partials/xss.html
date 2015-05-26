@@ -50,7 +50,8 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         <p> Remove the safe method within the backend/base.html and tutorials/base.html files. </p>
+                         <p> Remove the safe method within the backend/base.html and tutorials/base.html files. Consider setting <b>X-XSS-Protection</b> in your webserver configuration as well. This Header will configure clients' browser XSS protection to always block XSS attacks it detects.
+                         Django can automatically do this if you set <b>SECURE_BROWSER_XSS_FILTER</b> to True in the configuration. While this won't protect against all XSS attacks, it's still a useful addition to your security.</p>
                      </div>
                  </div>
              </div>
