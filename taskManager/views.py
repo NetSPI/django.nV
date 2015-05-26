@@ -537,8 +537,6 @@ def dashboard(request):
 	task_list = Task.objects.filter(users_assigned=request.user.id).order_by('title')
 	return render(request, 'taskManager/dashboard.html',  {'project_list': project_list, 'user':request.user, 'task_list':task_list})
 
-
-
 def project_list(request):
 	project_list = Project.objects.filter(users_assigned=request.user.id).order_by('title')
 	user_can_edit = request.user.has_perm('project_edit')
@@ -546,8 +544,6 @@ def project_list(request):
 	user_can_add = request.user.has_perm('project_add')
 	return render(request, 'taskManager/project_list.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete, 'user_can_add': user_can_add})
 	
-
-
 def task_list(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
 	return render(request, 'taskManager/task_list.html',  {'task_list': my_task_list, 'user':request.user })
