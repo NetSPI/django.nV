@@ -2,41 +2,44 @@
 
 {% block content %}
 
-<!-- main content start-->
-	
-	<section class="wrappter site-min-height">
-		<!-- page start -->
-		<section class="panel">
-			<header class="panel-heading"> Profile View {{profile.username}}
-			</header>
-		</section>
-		<div class="row">
-			<div class="col-md-8">
-				<div class="bio-row">
-					<p><span class="bold">First Name: </span>{{profile.first_name}}</p></a>
-				</div>
-				<div class="bio-row">
-					<p><span class="bold">Last Name: </span>{{profile.last_name}}</p>
-				</div>
-				<div class="bio-row">
-					<p><span class="bold">Email: </span>{{profile.email}}</p>
-				</div>
-				<div class="bio-row">
-					<p><span class="bold">Icon: 
-					</span>
-					<span class="p-user">
-						<a href="#"><img alt="image" class="" src={{image}} height="35px" width="35px"></a>
-					</span>
-					</p>
-				</div>
-				<div class="bio-row">
-					<p><span class="bold">Role: </span>{{role}}</p>
-				</div>
-			</div>
-		</div>
-	</section>
+<!--main content start-->
+<section class="wrapper">
+        <section class="panel col-md-10">
+            <header class="panel-heading">
+                {{user.first_name}} {{user.last_name}}
+            </header>
 
-
-
-
+        </section>
+    <div class="row">
+        <div class="col-lg-6">
+            <section class="panel">
+                <header class="panel-heading"{{user.first_name}} {{user.last_name}}</header>
+                <div class="panel-body">
+	                <section class="panel">
+	                    <div class="panel-body">
+	                        <div class="row p-details">
+	                            <div class="col-md-9">
+	                            	<p><span class="bold">Role: </span>{{role}}</p>
+	                                <p><span class="bold">Email:</span> <a href="mailto:{{user.email}}">{{user.email}}</a></p>
+	                                <p><span class="bold">Projects</span><br />
+	                                <dl class="dl-horizontal">
+	                                	{% for proj in project_list %}
+	                                		<dt><small>{{proj.title}}</small></dt>
+	                                		<dd><small>{{proj.text}}</small></dd>
+	                                	{% endfor %}
+	                                </dl>
+	                                </p>
+	                            </div>
+	                            <div class="col-md-3">
+	                            	<p><span><small>Profile Picture</small></span></p>
+	                            	<p><img style="max-width: 100%; max-height:500px;" src="{% url 'taskManager:download_profile_pic' user.id %}" /></p>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </section>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
 {% endblock %}

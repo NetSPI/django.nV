@@ -402,33 +402,22 @@ def index(request):
 			)
 
 def profile_view(request, user_id):
-	user = User.objects.get(pk = user_id)
-
-	profile = User(
-	username = user.username,
-	first_name = user.first_name,
-	last_name = user.last_name,
-	email = user.email)
-
-	image = user.userprofile.image
-	role = ''
+	try:
+		user = User.objects.get(pk = user_id)
+	except:
+		return redirect("/taskManager/dashboard")
 
 	admin_level = False
 	if request.user.groups.filter(name='admin_g').exists():
-		admin_level = True
-
-	pmanager_level = False
-	if request.user.groups.filter(name='project_managers').exists():
-		pmanager_level = True
-
-	if admin_level == True:
-		role ='Admin'
-	elif pmanager_level == True: 
-		role = 'Project Manager'
+		role = "Admin"
+	elif request.user.groups.filter(name='project_managers').exists():
+		role = "Project Manager"
 	else:
-		role = 'Team Member'
-		
-	return render(request, 'taskManager/profile_view.html', {'user':request.user, 'profile':profile, 'role':role, 'image':image})
+		role = "Team Member"
+	
+	project_list = Project.objects.filter(users_assigned=request.user.id).order_by('title')
+
+	return render(request, 'taskManager/profile_view.html', {'user': user, 'role': role, 'project_list': project_list})
 
 
 def project_details(request, project_id):
