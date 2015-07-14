@@ -17,13 +17,15 @@
                      <div class="panel-body">
                        <h6><strong>Description</strong></h6>
                         <p>
-                          SQL Injection is a class of vulnerability where queries given to a SQL database are modified by an attacker in order to perform unintended operations or retrieve sensitive information. For example, let's assume we use the following query to check if a user exists and is has an <code>access_level</code> of 1.
-                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = " + user_id + " AND access_level = 1</code></pre>
-                            However, if the user_id is not properly sanitized, the attacker can inject SQL code (where data should be) and bypass an ID check. If the attacker could pass <code>1 OR 1=1</code> as the <code>user_id</code>, they would transform the query into the following:
-                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1 OR 1=1 AND access_level = 1</code></pre>
-                            This transforms the query entirely. While it originally checked if the given user had an <code>access_level</code> of 1, it now checks if <i>any</i> user has an <code>access_level</code> of 1. Unfortunately, SQL injections can be far more malicious than simply bypassing a permissions check, which is already bad enough. Consider the following, where the user_id is passed as <code>1; DROP TABLE user; --</code>. Our simple query then becomes:
-                            <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1; DROP TABLE user; -- AND access_level = 1</code></pre>
-                            The attacker has now successfully dropped our entire users table!
+                        Injection vulnerabilities are a class of vulnerability where attackers can cause malicious code to be exected on the server. Often times, untrusted data that is unproperly validated can end up in commands sent to a database, shell, or other parsers. Since the malicious data will appear in-stream with the intended code, it will execute with the same privileges as the original operation.<br />
+                        <br />
+                        SQL Injection is a class of injection where queries given to a SQL database are modified by an attacker in order to perform unintended operations or retrieve sensitive information. For example, let's assume we use the following query to check if a user exists and is has an <code>access_level</code> of 1.
+                        <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = " + user_id + " AND access_level = 1</code></pre>
+                        However, if the user_id is not properly sanitized, the attacker can inject SQL code (where data should be) and bypass an ID check. If the attacker could pass <code>1 OR 1=1</code> as the <code>user_id</code>, they would transform the query into the following:
+                        <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1 OR 1=1 AND access_level = 1</code></pre>
+                        This transforms the query entirely. While it originally checked if the given user had an <code>access_level</code> of 1, it now checks if <i>any</i> user has an <code>access_level</code> of 1. Unfortunately, SQL injections can be far more malicious than simply bypassing a permissions check, which is already bad enough. Consider the following, where the user_id is passed as <code>1; DROP TABLE user; --</code>. Our simple query then becomes:
+                        <pre class="line-numbers"><code class="language-javascript">SELECT 1 FROM USER WHERE user_id = 1; DROP TABLE user; -- AND access_level = 1</code></pre>
+                        The attacker has now successfully dropped our entire users table!
                         </p>
                      </div>
                  </div>
@@ -66,7 +68,10 @@
 
                         <pre>INSERT INTO taskManager_file ('name','path','project_id') VALUES (testPic',(SELECT password FROM auth_user WHERE username='admin'),8);--</pre>
 
-                        This would reveal the password of the admin user!
+                        This would reveal the password of the admin user!<br />
+                        <br />
+                        Furthermore, the file processing function <code>store_uploaded_file()</code> contains shell injection. It works by moving uploaded file that are stored as temporary
+                        files directory using <code>os.system()</code> The problem is that user input in the form of the file title is directly inserted into the command sent to the shell, allowing for other commands to be injected.
                     </div>
                  </div>
              </div>
@@ -86,9 +91,11 @@ name = name,
 path = upload_path,
 project = proj)
 file.save()</code></pre>
-                        This will insure that the arguments passed are properly escaped. Users will still be able to create files with strange names, but they won't be able to perform SQL injection attacks using those names anymore.
-
-                        On top of this, you may want to run checks using django's <a href="https://docs.djangoproject.com/en/1.8/topics/forms/">Form class</a> to run validations without hitting the database, and provide more immediate feedback.
+                        This will insure that the arguments passed are properly escaped. Users will still be able to create files with strange names, but they won't be able to perform SQL injection attacks using those names anymore.<br />
+                        <br />
+                        User input should never be directly passed to Python's <code>os.system()</code> function call. In this instance, file names should be randomly generated strings; there is no need to allow users to specify on-disk filenames, since they will never encounter these. The injection opportunity can be entirely avoided by removing any user input from the shell command. Another approach would be to use <code>os.rename()</code> with escaping and avoid access to arbitrary shell commands.<br />
+                        <br />
+                        On top of these fixes, you may want to run checks using django's <a href="https://docs.djangoproject.com/en/1.8/topics/forms/">Form class</a> for validation and to provide more immediate feedback.
                      </div>
                  </div>
              </div>
@@ -104,7 +111,7 @@ file.save()</code></pre>
                      <div class="panel-body">
                          The TaskManager devs seem to have just thrown file uploads in at the last minute...
                          <br /><br />
-                        Single quotes are a great way to find vanilla SQLi. Try them in different form fields within the app.
+                        Single quotes are a great way to find vanilla SQLi. Try them in different form fields within the app. And how are uploaded files processed?
                      </div>
                  </div>
              </div>
