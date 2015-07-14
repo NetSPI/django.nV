@@ -32,7 +32,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                     <div class="panel-body">
-                        Debug mode is enabled within the settings.py config file.
+                        Debug mode is enabled within the settings.py config file. CookieStorage is also used as the default session store
                     </div>
                  </div>
              </div>
@@ -46,7 +46,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         Disable debug mode whenever pushing an application to a production or staging server.
+                         Disable debug mode whenever pushing an application to a production or staging server. Also, use a server-side session storage backend. CookieStorage allows malicious users to read any session data, and if your SECRET_KEY is compromised they can also manipulate sesion data.
                      </div>
                  </div>
              </div>
