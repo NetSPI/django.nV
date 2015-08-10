@@ -68,7 +68,7 @@ class UserForm(forms.ModelForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
-    user_permissions = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    #user_permissions = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 	
 
     class Meta:

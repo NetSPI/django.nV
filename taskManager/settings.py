@@ -41,6 +41,7 @@ ROOT_URLCONF = 'taskManager.urls'
 
 WSGI_APPLICATION = 'taskManager.wsgi.application'
 
+FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",)
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
