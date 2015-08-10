@@ -354,8 +354,10 @@ def register(request):
 			user.set_password(user.password)
 
 			#add user to lowest permission group
+			
 			#grp = Group.objects.get(name='team_member')
 			#user.groups.add(grp)
+			
 			user.userProfile = UserProfile.objects.create(user=user)
 			user.userProfile.save()
 			user.save()
@@ -363,8 +365,8 @@ def register(request):
 			# Update our variable to tell the template registration was successful.
 			registered = True
 
-		#else:
-		 #   print user_form.errors
+		else:
+		    print user_form.errors
 
 	# Not a HTTP POST, so we render our form using two ModelForm instances.
 	# These forms will be blank, ready for user input.
