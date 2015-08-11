@@ -83,7 +83,7 @@ def manage_projects(request):
 
 		else:
 			return redirect('/taskManager/', {'permission':False})
-	
+
 	return redirect('/taskManager/', {'logged_in':False})
 
 #A7 - Missing Function Level Access Control
@@ -126,7 +126,7 @@ def manage_groups(request):
 					{'users':user_list, 'logged_in':True}, RequestContext(request))
 			else:
 				return redirect('/taskManager/', {'permission':False})
-	
+
 	return redirect('/taskManager/', {'logged_in':False})
 
 #A4: Insecure Direct Object Reference (IDOR)
@@ -354,10 +354,10 @@ def register(request):
 			user.set_password(user.password)
 
 			#add user to lowest permission group
-			
+
 			#grp = Group.objects.get(name='team_member')
 			#user.groups.add(grp)
-			
+
 			user.userProfile = UserProfile.objects.create(user=user)
 			user.userProfile.save()
 			user.save()
@@ -366,7 +366,7 @@ def register(request):
 			registered = True
 
 		else:
-		    print user_form.errors
+		    print(user_form.errors)
 
 	# Not a HTTP POST, so we render our form using two ModelForm instances.
 	# These forms will be blank, ready for user input.
@@ -416,7 +416,7 @@ def profile_view(request, user_id):
 		role = "Project Manager"
 	else:
 		role = "Team Member"
-	
+
 	project_list = Project.objects.filter(users_assigned=request.user.id).order_by('title')
 
 	return render(request, 'taskManager/profile_view.html', {'user': user, 'role': role, 'project_list': project_list})
@@ -528,7 +528,7 @@ def project_list(request):
 	user_can_delete = request.user.has_perm('project_delete')
 	user_can_add = request.user.has_perm('project_add')
 	return render(request, 'taskManager/project_list.html',  {'project_list': project_list, 'user':request.user, 'user_can_edit':user_can_edit, 'user_can_delete':user_can_delete, 'user_can_add': user_can_add})
-	
+
 def task_list(request):
 	my_task_list = Task.objects.filter(users_assigned=request.user.id)
 	return render(request, 'taskManager/task_list.html',  {'task_list': my_task_list, 'user':request.user })
@@ -610,4 +610,3 @@ def tm_settings(request):
 	#	settings_list[name] = getattr(settings,name)
 	#	print name, getattr(settings, name)
 	return render(request,'taskManager/settings.html',{'settings':settings_list})
-
