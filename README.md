@@ -30,7 +30,7 @@ You can also use the same script to reset the database if you make any changes.
 ###Running the application###
 To run the app in its application folder type:
 
-    ./runnapp.sh
+    ./runapp.sh
 
 You should then be able to access the web interface at `http://localhost:8000/`.
 
