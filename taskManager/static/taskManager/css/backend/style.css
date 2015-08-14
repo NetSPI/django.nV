@@ -356,12 +356,18 @@ ul.sidebar-menu li a.active i {
     width: 100%;
 }
 
-a.logo {
+.logo {
     font-size: 21px;
     color: #2e2e2e;
     float: left;
     margin-top: 15px;
     text-transform: uppercase;
+}
+
+.logo-small {
+    font-size: 13px;
+    margin-top: 22px;
+    margin-left: 20px;
 }
 
 a.logo:hover, a.logo:focus {
