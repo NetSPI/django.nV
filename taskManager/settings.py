@@ -1,14 +1,14 @@
 #     _  _                        __   __
 #  __| |(_)__ _ _ _  __ _ ___   _ \ \ / /
-# / _` || / _` | ' \/ _` / _ \_| ' \ V / 
-# \__,_|/ \__,_|_||_\__, \___(_)_||_\_/  
-#     |__/          |___/                
+# / _` || / _` | ' \/ _` / _ \_| ' \ V /
+# \__,_|/ \__,_|_||_\__, \___(_)_||_\_/
+#     |__/          |___/
 #
 #           INSECURE APPLICATION WARNING
 #
 # django.nV is a PURPOSELY INSECURE web-application
 # meant to demonstrate Django security problems
-# UNDER NO CIRCUMSTANCES should you take any code 
+# UNDER NO CIRCUMSTANCES should you take any code
 # from django.nV for use in another web application!
 #
 
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0yxzudryd8)-%)(fz&7q-!v&cq1u6vbfoc4u7@u_&i)b@4eh^q'
 
-#A5: Security Misconfiguration
+# A5: Security Misconfiguration
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = True
@@ -55,7 +55,8 @@ ROOT_URLCONF = 'taskManager.urls'
 
 WSGI_APPLICATION = 'taskManager.wsgi.application'
 
-FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",)
+FILE_UPLOAD_HANDLERS = (
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",)
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -87,7 +88,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ( 
+STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
 )
@@ -96,10 +97,10 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 LOGIN_URL = '/taskManager/login/'
 
-#A6: Sensitive Data Exposure
+# A6: Sensitive Data Exposure
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 
-#A2: Broken Auth and Session Management
+# A2: Broken Auth and Session Management
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 # Needs compatibility with older Django!

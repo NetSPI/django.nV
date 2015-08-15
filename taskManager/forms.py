@@ -1,14 +1,14 @@
 #     _  _                        __   __
 #  __| |(_)__ _ _ _  __ _ ___   _ \ \ / /
-# / _` || / _` | ' \/ _` / _ \_| ' \ V / 
-# \__,_|/ \__,_|_||_\__, \___(_)_||_\_/  
-#     |__/          |___/                
+# / _` || / _` | ' \/ _` / _ \_| ' \ V /
+# \__,_|/ \__,_|_||_\__, \___(_)_||_\_/
+#     |__/          |___/
 #
 #           INSECURE APPLICATION WARNING
 #
 # django.nV is a PURPOSELY INSECURE web-application
 # meant to demonstrate Django security problems
-# UNDER NO CIRCUMSTANCES should you take any code 
+# UNDER NO CIRCUMSTANCES should you take any code
 # from django.nV for use in another web application!
 #
 
@@ -27,8 +27,9 @@ def get_my_choices_users():
     counter = 1
     for user in user_list:
         user_tuple.append((counter, user))
-        counter = counter +1
+        counter = counter + 1
     return user_tuple
+
 
 def get_my_choices_tasks(current_proj):
     # you place some logic here
@@ -42,18 +43,19 @@ def get_my_choices_tasks(current_proj):
     counter = 1
     for task in task_list:
         task_tuple.append((counter, task))
-        counter = counter +1
+        counter = counter + 1
     return task_tuple
 
+
 class ManageTask(forms.Form):
-    
+
     def __init__(self, *args, **kwargs):
         current_project = kwargs.pop('current_proj', None)
         super(ManageTask, self).__init__(*args, **kwargs)
         self.fields['User'] = forms.ChoiceField(
-            choices=get_my_choices_users() )
+            choices=get_my_choices_users())
         self.fields['Task'] = forms.ChoiceField(
-            choices = get_my_choices_tasks(current_project))
+            choices=get_my_choices_tasks(current_project))
 
 
 def get_my_choices_projects():
@@ -63,32 +65,55 @@ def get_my_choices_projects():
     counter = 1
     for proj in proj_list:
         proj_tuple.append((counter, proj))
-        counter = counter +1
+        counter = counter + 1
     return proj_tuple
 
+
 class AssignProject(forms.Form):
-    
+
     def __init__(self, *args, **kwargs):
         super(AssignProject, self).__init__(*args, **kwargs)
         self.fields['User'] = forms.ChoiceField(
-            choices=get_my_choices_users() )
+            choices=get_my_choices_users())
         self.fields['Project'] = forms.ChoiceField(
-            choices = get_my_choices_projects())
+            choices=get_my_choices_projects())
 
-#A2: Broken Authentication and Session Management
+# A2: Broken Authentication and Session Management
+
+
 class UserForm(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    email = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'}))
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'}))
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'}))
+    email = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control'}))
     #user_permissions = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-	
 
     class Meta:
-    	model = User
-    	fields = ('username', 'first_name', 'last_name', 'email', 'password', 'user_permissions')
-    #look at mass assignments
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'user_permissions')
+    # look at mass assignments
 
 _Choices = (
     (1, 'Admin Access'),
@@ -96,21 +121,27 @@ _Choices = (
     (3, 'Team Member Access'),
 )
 
+
 class GroupForm(forms.Form):
-    question  = forms.ChoiceField(label = 'Permission Level', choices=_Choices, widget=forms.RadioSelect())
+    question = forms.ChoiceField(
+        label='Permission Level',
+        choices=_Choices,
+        widget=forms.RadioSelect())
 
     class Meta:
-    	model = Group
+        model = Group
 
 
 class AssignemntForm(forms.Form):
 
     class Meta:
         model = Project
-    
+
+
 class ProjectFileForm(forms.Form):
     name = forms.CharField(max_length=300)
     file = forms.FileField()
+
 
 class ProfileForm(forms.Form):
     first_name = forms.CharField(max_length=30, required=False)
