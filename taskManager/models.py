@@ -18,7 +18,6 @@ from django.contrib.auth.models import User
 
 from django.utils import timezone
 from django.db import models
-from django import forms
 
 
 class UserProfile(models.Model):
@@ -50,11 +49,11 @@ class Project(models.Model):
 
     def percent_complete(self):
         counter = 0
-        for a in self.task_set.all():
-            counter = counter + (1 if a.completed else 0)
+        for task in self.task_set.all():
+            counter = counter + (1 if task.completed else 0)
         try:
             return round(float(counter) / self.task_set.count() * 100)
-        except:
+        except ZeroDivisionError:
             return 0
 
 
@@ -74,9 +73,6 @@ class Task(models.Model):
 
     def __str__(self):
         return self.text
-
-    def getProjectTitle(self):
-        return self.project.title
 
     def was_created_recently(self):
         return self.start_date >= timezone.now() - datetime.timedelta(days=1)

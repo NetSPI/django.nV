@@ -11,28 +11,31 @@
 # UNDER NO CIRCUMSTANCES should you take any code
 # from django.nV for use in another web application!
 #
+""" misc.py contains miscellaneous functions
+
+    Functions that are used in multiple places in the
+    rest of the application, but are not tied to a
+    specific area are stored in misc.py
+"""
 
 import os
 
 
-def store_uploaded_file(title, f):
-    d = '%s/static/taskManager/uploads' % (
+def store_uploaded_file(title, uploaded_file):
+    """ Stores a temporary uploaded file on disk """
+    upload_dir_path = '%s/static/taskManager/uploads' % (
         os.path.dirname(os.path.realpath(__file__)))
-    if not os.path.exists(d):
-        os.makedirs(d)
+    if not os.path.exists(upload_dir_path):
+        os.makedirs(upload_dir_path)
 
     # A1: Injection (shell)
     # Let's avoid the file corruption race condition!
     os.system(
         "mv " +
-        f.temporary_file_path() +
+        uploaded_file.temporary_file_path() +
         " " +
-        "%s/static/taskManager/uploads/%s" %
-        (os.path.dirname(
-            os.path.realpath(__file__)),
-            title))
+        "%s/%s" %
+        (upload_dir_path,
+         title))
 
-    # with open('%s/static/taskManager/uploads/%s' % (os.path.dirname(os.path.realpath(__file__)), title), 'wb+') as destination:
-    #	for chunk in f.chunks():
-    #		destination.write(chunk)
     return '/static/taskManager/uploads/%s' % (title)

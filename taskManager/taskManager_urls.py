@@ -90,4 +90,4 @@ urlpatterns = patterns('',
 
                        # Settings - DEBUG
                        url(r'^settings/$', views.tm_settings, name='settings'),
-                       )
+                      )

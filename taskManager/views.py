@@ -13,36 +13,26 @@
 #
 
 import datetime
-import pprint
 import mimetypes
 import os
 
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.utils import timezone
-from django.template import RequestContext, loader
+from django.template import RequestContext
 from django.db import connection
 
-from django.views.generic import RedirectView
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.models import Group, Permission, User
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group, User
 from django.contrib.auth import logout
 
-from django.core.urlresolvers import reverse
-
 from taskManager.models import Task, Project, Notes, File, UserProfile
-from taskManager.misc import *
-from taskManager.forms import UserForm, GroupForm, AssignProject, ManageTask, ProjectFileForm, ProfileForm
-
-# Admin can see all tasks
-# Project Manager can only see his projects
-# Team Member can only see his tasks
+from taskManager.misc import store_uploaded_file
+from taskManager.forms import UserForm, ProjectFileForm, ProfileForm
 
 
 def manage_tasks(request, project_id):
@@ -137,7 +127,7 @@ def manage_groups(request):
                 # Create the group if it doesn't already exist
                 try:
                     grp = Group.objects.get(name=accesslevel)
-                except:
+                except Group.DoesNotExist:
                     grp = Group.objects.create(name=accesslevel)
                 specified_user = User.objects.get(pk=post_data["userid"])
                 # Check if the user even exists
@@ -390,11 +380,7 @@ def project_delete(request, project_id):
 
 def logout_view(request):
     logout(request)
-    url = request.GET.get('redirect')
-    if not url:
-        url = '/taskManager/'
-    project_list = Project.objects.order_by('-start_date')
-    return redirect(url)
+    return redirect(request.GET.get('redirect', '/taskManager/'))
 
 
 def login(request):
@@ -469,7 +455,7 @@ def register(request):
 
 
 def index(request):
-    project_list = Project.objects.order_by('-start_date')
+    sorted_projects = Project.objects.order_by('-start_date')
 
     admin_level = False
 
@@ -477,7 +463,7 @@ def index(request):
         admin_level = True
 
     list_to_show = []
-    for project in project_list:
+    for project in sorted_projects:
         if(project.users_assigned.filter(username=request.user.username)).exists():
             list_to_show.append(project)
 
@@ -487,7 +473,7 @@ def index(request):
         return render(
             request,
             'taskManager/index.html',
-            {'project_list': project_list,
+            {'project_list': sorted_projects,
              'user': request.user,
              'admin_level': admin_level}
         )
@@ -496,10 +482,9 @@ def index(request):
 def profile_view(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
-    except:
+    except User.DoesNotExist:
         return redirect("/taskManager/dashboard")
 
-    admin_level = False
     if request.user.groups.filter(name='admin_g').exists():
         role = "Admin"
     elif request.user.groups.filter(name='project_managers').exists():
@@ -507,11 +492,11 @@ def profile_view(request, user_id):
     else:
         role = "Team Member"
 
-    project_list = Project.objects.filter(
+    sorted_projects = Project.objects.filter(
         users_assigned=request.user.id).order_by('title')
 
     return render(request, 'taskManager/profile_view.html',
-                  {'user': user, 'role': role, 'project_list': project_list})
+                  {'user': user, 'role': role, 'project_list': sorted_projects})
 
 
 def project_details(request, project_id):
@@ -540,7 +525,6 @@ def note_create(request, project_id, task_id):
 
         note_title = request.POST.get('note_title', False)
         text = request.POST.get('text', False)
-        now = datetime.datetime.now()
 
         note = Notes(
             title=note_title,
@@ -619,8 +603,10 @@ def task_details(request, project_id, task_id):
         assigned_to = True
     elif admin_level:
         assigned_to = True
-    elif pmanager_level and proj.users_assigned.filter(username=request.user.username).exists():
-        assigned_to = True
+    elif pmanager_level:
+        project_users = task.project.users_assigned
+        if project_users.filter(username=request.user.username).exists():
+            assigned_to = True
 
     return render(request,
                   'taskManager/task_details.html',
@@ -631,26 +617,26 @@ def task_details(request, project_id, task_id):
 
 
 def dashboard(request):
-    project_list = Project.objects.filter(
+    sorted_projects = Project.objects.filter(
         users_assigned=request.user.id).order_by('title')
-    task_list = Task.objects.filter(
+    sorted_tasks = Task.objects.filter(
         users_assigned=request.user.id).order_by('title')
     return render(request,
                   'taskManager/dashboard.html',
-                  {'project_list': project_list,
+                  {'project_list': sorted_projects,
                    'user': request.user,
-                   'task_list': task_list})
+                   'task_list': sorted_tasks})
 
 
 def project_list(request):
-    project_list = Project.objects.filter(
+    sorted_projects = Project.objects.filter(
         users_assigned=request.user.id).order_by('title')
     user_can_edit = request.user.has_perm('project_edit')
     user_can_delete = request.user.has_perm('project_delete')
     user_can_add = request.user.has_perm('project_add')
     return render(request,
                   'taskManager/project_list.html',
-                  {'project_list': project_list,
+                  {'project_list': sorted_projects,
                    'user': request.user,
                    'user_can_edit': user_can_edit,
                    'user_can_delete': user_can_delete,
@@ -664,18 +650,17 @@ def task_list(request):
 
 
 def search(request):
-    q = request.GET.get('q')
-    if not q:
-        q = ''
+    query = request.GET.get('q', '')
+
     my_project_list = Project.objects.filter(
         users_assigned=request.user.id).filter(
-        title__icontains=q).order_by('title')
+            title__icontains=query).order_by('title')
     my_task_list = Task.objects.filter(
         users_assigned=request.user.id).filter(
-        title__icontains=q).order_by('title')
+            title__icontains=query).order_by('title')
     return render(request,
                   'taskManager/search.html',
-                  {'q': q,
+                  {'q': query,
                    'task_list': my_task_list,
                    'project_list': my_project_list,
                    'user': request.user})
@@ -748,11 +733,10 @@ def change_password(request):
         user = request.user
         old_password = request.POST.get('old_password')
         new_password = request.POST.get('new_password')
-        confirm_passwrd = request.POST.get('confirm_password')
+        confirm_password = request.POST.get('confirm_password')
 
-        u = authenticate(username=user.username, password=old_password)
-        if u is not None:
-            if new_password == confirm_passwrd:
+        if authenticate(username=user.username, password=old_password):
+            if new_password == confirm_password:
                 user.set_password(new_password)
                 user.save()
                 messages.success(request, 'Password Updated')
@@ -767,13 +751,7 @@ def change_password(request):
 
 
 def tm_settings(request):
-    from django.conf import settings
-    # return render(request,'taskManager/settings.html',{'settings':settings})
     settings_list = request.META
-    # for name in dir(settings):
-    #	settings_list[name] = "None"
-    #	settings_list[name] = getattr(settings,name)
-    #	print name, getattr(settings, name)
     return render(request,
                   'taskManager/settings.html',
                   {'settings': settings_list})

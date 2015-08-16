@@ -12,16 +12,18 @@
 # from django.nV for use in another web application!
 #
 
-from django.contrib.auth.models import User
-from taskManager.models import Project, Task, Notes
+""" forms.py contains various Django forms for the application """
+
+from taskManager.models import Project, Task
 from django import forms
-from django.contrib.auth.models import Permission, Group, User
+from django.contrib.auth.models import User
 
-
-#from taskManager import Comments
 
 def get_my_choices_users():
-    # you place some logic here
+    """ Retrieves a list of all users in the system
+        for the user management page
+    """
+
     user_list = User.objects.order_by('date_joined')
     user_tuple = []
     counter = 1
@@ -32,7 +34,10 @@ def get_my_choices_users():
 
 
 def get_my_choices_tasks(current_proj):
-    # you place some logic here
+    """ Retrieves all tasks in the system
+        for the task management page
+    """
+
     task_list = []
     tasks = Task.objects.all()
     for task in tasks:
@@ -47,19 +52,11 @@ def get_my_choices_tasks(current_proj):
     return task_tuple
 
 
-class ManageTask(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        current_project = kwargs.pop('current_proj', None)
-        super(ManageTask, self).__init__(*args, **kwargs)
-        self.fields['User'] = forms.ChoiceField(
-            choices=get_my_choices_users())
-        self.fields['Task'] = forms.ChoiceField(
-            choices=get_my_choices_tasks(current_project))
-
-
 def get_my_choices_projects():
-    # you place some logic here
+    """ Retrieves all projects in the system
+        for the project management page
+    """
+
     proj_list = Project.objects.all()
     proj_tuple = []
     counter = 1
@@ -68,20 +65,11 @@ def get_my_choices_projects():
         counter = counter + 1
     return proj_tuple
 
-
-class AssignProject(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        super(AssignProject, self).__init__(*args, **kwargs)
-        self.fields['User'] = forms.ChoiceField(
-            choices=get_my_choices_users())
-        self.fields['Project'] = forms.ChoiceField(
-            choices=get_my_choices_projects())
-
 # A2: Broken Authentication and Session Management
 
 
 class UserForm(forms.ModelForm):
+    """ User registration form """
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -102,7 +90,6 @@ class UserForm(forms.ModelForm):
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control'}))
-    #user_permissions = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
 
     class Meta:
         model = User
@@ -113,37 +100,16 @@ class UserForm(forms.ModelForm):
             'email',
             'password',
             'user_permissions')
-    # look at mass assignments
-
-_Choices = (
-    (1, 'Admin Access'),
-    (2, 'Project Manager Access'),
-    (3, 'Team Member Access'),
-)
-
-
-class GroupForm(forms.Form):
-    question = forms.ChoiceField(
-        label='Permission Level',
-        choices=_Choices,
-        widget=forms.RadioSelect())
-
-    class Meta:
-        model = Group
-
-
-class AssignemntForm(forms.Form):
-
-    class Meta:
-        model = Project
 
 
 class ProjectFileForm(forms.Form):
+    """ Used for uploading files attached to projects """
     name = forms.CharField(max_length=300)
     file = forms.FileField()
 
 
 class ProfileForm(forms.Form):
+    """ Provides a form for editing your own profile """
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
     email = forms.CharField(max_length=300, required=False)

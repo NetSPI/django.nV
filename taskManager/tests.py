@@ -11,7 +11,3 @@
 # UNDER NO CIRCUMSTANCES should you take any code
 # from django.nV for use in another web application!
 #
-
-from django.test import TestCase
-
-# Create your tests here.

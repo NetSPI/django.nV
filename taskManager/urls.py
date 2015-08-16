@@ -24,4 +24,4 @@ urlpatterns = patterns('',
                                    namespace="taskManager")),
                        url(r'^admin/',
                            include(admin.site.urls)),
-                       )
+                      )
