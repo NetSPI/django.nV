@@ -366,7 +366,7 @@ def register(request):
 			registered = True
 
 		else:
-		    print user_form.errors
+		    print(user_form.errors)
 
 	# Not a HTTP POST, so we render our form using two ModelForm instances.
 	# These forms will be blank, ready for user input.
