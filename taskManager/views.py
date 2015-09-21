@@ -15,6 +15,7 @@
 import datetime
 import mimetypes
 import os
+import codecs
 
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
@@ -725,6 +726,66 @@ def profile_by_id(request, user_id):
 
 # A8: Cross Site Request Forgery (CSRF)
 
+@csrf_exempt
+def reset_password(request, reset_token):
+    try:
+        userprofile = UserProfile.objects.get(reset_token = reset_token)
+        if timezone.now() > userprofile.reset_token_expiration:
+            # Reset the token and move on
+            userprofile.reset_token_expiration = timezone.now()
+            userprofile.reset_token = ''
+            userprofile.save()
+            return redirect('/taskManager/')
+
+    except UserProfile.DoesNotExist:
+        return redirect('/taskManager/')
+
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        if new_password != confirm_password:
+            messages.warning(request, 'Passwords do not match')
+            return render(request, 'taskManager/reset_password.html')
+
+        # Reset the user's password + remove the tokens
+        userprofile.user.set_password(new_password)
+        userprofile.reset_token = ''
+        userprofile.reset_token_expiration = timezone.now()
+        userprofile.user.save()
+        userprofile.save()
+
+        messages.success(request, 'Password has been successfully reset')
+        return redirect('/taskManager/login')
+
+    return render(request, 'taskManager/reset_password.html')
+
+# Vuln: Username Enumeration
+
+@csrf_exempt
+def forgot_password(request):
+
+    if request.method == 'POST':
+        t_email = request.POST.get('email')
+
+        try:
+            reset_user = User.objects.get(email=t_email)
+            reset_token = codecs.encode(os.urandom(6), 'hex_codec')[:6].decode("utf-8")
+            reset_user.userprofile.reset_token = reset_token
+            reset_user.userprofile.reset_token_expiration = timezone.now() + datetime.timedelta(minutes=10)
+            reset_user.userprofile.save()
+            reset_user.save()
+
+            reset_user.email_user(
+                "Reset your password",
+                "You can reset your password at /reset_password/{}. This link will only work for 10 minutes.".format(reset_token))
+
+            messages.success(request, 'Check your email for a reset token')
+        except User.DoesNotExist:
+            messages.warning(request, 'Check your email for a reset token')
+
+    return render(request, 'taskManager/forgot_password.html')
+
+# A8: Cross Site Request Forgery (CSRF)
 
 @csrf_exempt
 def change_password(request):

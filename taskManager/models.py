@@ -23,7 +23,8 @@ from django.db import models
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     image = models.CharField(max_length=3000, default="")
-
+    reset_token = models.CharField(max_length=7, default="")
+    reset_token_expiration = models.DateTimeField(default=timezone.now)
 
 class Project(models.Model):
     title = models.CharField(max_length=50, default='Default')

@@ -1,13 +1,14 @@
 
 {% extends 'taskManager/base.html' %}
-      
+
         {% block content %}
+        {% include 'taskManager/messages.html'%}
         {% if failed_login == False %}
 
         <h3>Login failed. Please try again</h3>
 
         {% endif %}
-        
+
           <div class="col-lg-7 col-sm-7 address">
                <h4>Login to Task Manager</h4>
                <div class="contact-form">
@@ -23,8 +24,9 @@
                        </div>
                        <button class="btn btn-danger" type="submit">Submit</button>
                    </form>
-          
+
                </div>
+               <small><a href="/taskManager/forgot_password">Forgot your password?</a></small>
           </div>
-        
+
         {%  endblock %}

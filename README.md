@@ -39,3 +39,11 @@ You should then be able to access the web interface at `http://localhost:8000/`.
 django.nV comes with a series of writeups for the vulnerabilities we've added to the code. Each tutorial comes with a description of the vuln, a hint to where to find it, and then the exact bug and how it could be remedied.
 
 You can access these tutorials within the app at `http://localhost:8000/taskManager/tutorials/`, or by clicking on the 'Tutorials' link in the top-right of the web interface.
+
+### Mail ###
+
+The only mail sent by the app is for the "Forgot Password" feature. You can use the built-in Python mailserver for those messages.
+
+    python -m smtpd -n -c DebuggingServer localhost:1025
+
+If you prefer to use your own mailserver, simply add your settings to `settings.py`.

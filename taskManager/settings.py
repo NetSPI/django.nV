@@ -103,6 +103,8 @@ PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 # A2: Broken Auth and Session Management
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
+EMAIL_PORT = 1025
+
 # Needs compatibility with older Django!
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 SESSION_COOKIE_HTTPONLY = False
