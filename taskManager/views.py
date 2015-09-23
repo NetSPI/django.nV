@@ -727,20 +727,25 @@ def profile_by_id(request, user_id):
 # A8: Cross Site Request Forgery (CSRF)
 
 @csrf_exempt
-def reset_password(request, reset_token):
-    try:
-        userprofile = UserProfile.objects.get(reset_token = reset_token)
-        if timezone.now() > userprofile.reset_token_expiration:
-            # Reset the token and move on
-            userprofile.reset_token_expiration = timezone.now()
-            userprofile.reset_token = ''
-            userprofile.save()
-            return redirect('/taskManager/')
-
-    except UserProfile.DoesNotExist:
-        return redirect('/taskManager/')
+def reset_password(request):
 
     if request.method == 'POST':
+
+        reset_token = request.POST.get('reset_token')
+
+        try:
+            userprofile = UserProfile.objects.get(reset_token = reset_token)
+            if timezone.now() > userprofile.reset_token_expiration:
+                # Reset the token and move on
+                userprofile.reset_token_expiration = timezone.now()
+                userprofile.reset_token = ''
+                userprofile.save()
+                return redirect('/taskManager/')
+
+        except UserProfile.DoesNotExist:
+            messages.warning(request, 'Invalid password reset token')
+            return render(request, 'taskManager/reset_password.html')
+
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
         if new_password != confirm_password:
@@ -769,7 +774,14 @@ def forgot_password(request):
 
         try:
             reset_user = User.objects.get(email=t_email)
-            reset_token = codecs.encode(os.urandom(6), 'hex_codec')[:6].decode("utf-8")
+
+            # Generate secure random 6 digit number
+            res = ""
+            nums = [x for x in os.urandom(6)]
+            for x in nums:
+                res = res + str(x)
+
+            reset_token = res[:6]
             reset_user.userprofile.reset_token = reset_token
             reset_user.userprofile.reset_token_expiration = timezone.now() + datetime.timedelta(minutes=10)
             reset_user.userprofile.save()
@@ -777,9 +789,10 @@ def forgot_password(request):
 
             reset_user.email_user(
                 "Reset your password",
-                "You can reset your password at /reset_password/{}. This link will only work for 10 minutes.".format(reset_token))
+                "You can reset your password at /taskManager/reset_password/. Use \"{}\" as your token. This link will only work for 10 minutes.".format(reset_token))
 
             messages.success(request, 'Check your email for a reset token')
+            return redirect('/taskManager/reset_password')
         except User.DoesNotExist:
             messages.warning(request, 'Check your email for a reset token')
 
