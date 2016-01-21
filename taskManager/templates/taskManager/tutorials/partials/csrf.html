@@ -32,8 +32,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                      <div class="panel-body">
-                         Both the profile_by_id() and change_password() functions have the @csrfexempt decorator. As the name indicates, Django will not check the validity or presence of
-                         the CSRF nonce when these functions are called. 
+                         Both the <code>profile_by_id()</code> and <code>change_password()</code> functions have the <code>@csrfexempt</code> decorator. As the name indicates, Django will not check the validity or presence of the CSRF nonce when these functions are called. 
                      </div>
                  </div>
              </div>
@@ -47,8 +46,8 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         Remove the @csrfexempt decorator from all sensitive functionality. An anti-CSRF nonce can be enabled application wide by including the django.middleware.csrf.CsrfViewMiddleware
-                         module in the MIDDLEWARE_CLASSES array within the settings.py config file.
+                         Remove the <code>@csrfexempt</code> decorator from all sensitive functionality. An anti-CSRF nonce can be enabled application wide by including the <code>django.middleware.csrf.CsrfViewMiddleware</code>
+                         module in the <code>MIDDLEWARE_CLASSES</code> array within the <code>settings.py</code> config file.
                      </div>
                  </div>
              </div>
@@ -62,8 +61,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         Try altering or removing the CSRF nonce on different requests to test if it truly is validated or not. This is easier to achieve with a client side proxy such
-                         as Burp or Fiddler.
+                         Try altering or removing the CSRF nonce on different requests to test if it truly is validated or not. This is easier to achieve with a client side proxy such as Burp or Fiddler.
                      </div>
                  </div>
              </div>
