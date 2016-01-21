@@ -70,36 +70,9 @@ def get_my_choices_projects():
 
 class UserForm(forms.ModelForm):
     """ User registration form """
-    username = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control'}))
-    first_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control'}))
-    last_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control'}))
-    email = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control'}))
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control'}))
-
     class Meta:
         model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-            'user_permissions')
+        exclude = ['groups', 'user_permissions', 'last_login', 'date_joined']
 
 
 class ProjectFileForm(forms.Form):
