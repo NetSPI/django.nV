@@ -242,7 +242,7 @@ def task_create(request, project_id):
 
         text = request.POST.get('text', False)
         task_title = request.POST.get('task_title', False)
-        now = datetime.datetime.now()
+        now = timezone.now()
         task_duedate = timezone.now() + datetime.timedelta(weeks=1)
         if request.POST.get('task_duedate') != '':
             task_duedate = datetime.datetime.fromtimestamp(
@@ -323,9 +323,9 @@ def project_create(request):
         title = request.POST.get('title', False)
         text = request.POST.get('text', False)
         project_priority = int(request.POST.get('project_priority', False))
-        now = datetime.datetime.now()
-        project_duedate = datetime.datetime.fromtimestamp(
-            int(request.POST.get('project_duedate', False)))
+        now = timezone.now()
+        project_duedate = timezone.make_aware(datetime.datetime.fromtimestamp(
+            int(request.POST.get('project_duedate', False))))
 
         project = Project(title=title,
                           text=text,
