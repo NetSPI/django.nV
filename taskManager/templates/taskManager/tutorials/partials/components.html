@@ -17,7 +17,7 @@
                      <div class="panel-body">
                        <h6><strong>Description</strong></h6>
                         <p>
-                          Almost any medium-large scale software project uses several external libraries to simplify development. In web development, libraries are common on the server (django, Ruby on Rails, etc) and on the client (jQuery, AngularJS, etc). If such libraries are used, it is important to make sure they are up to date to avoid allowing your application to become vulnerable as bugs are discovered.<br />
+                          Almost any medium-large scale software project uses several external libraries to simplify development. In web development, libraries are common on the server (Django, Ruby on Rails, etc) and on the client (jQuery, AngularJS, etc). If such libraries are used, it is important to make sure they are up to date to avoid allowing your application to become vulnerable as bugs are discovered.<br />
                         <br />
                           Virtually every application has issues with vulnerable components because most development teams do not focus on ensuring their components are up to date. In many cases, the developers do not even know all the components they are using, due to unexpected factors like component dependencies.
                         </p>
@@ -48,9 +48,9 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         The validation in is_safe_url() has been tightened in django versions before 1.7.7, and 1.8x before 1.8c1. Make sure that you have the latest version of Django installed.
-                         Django update for 1.7: https://github.com/django/django/commit/e7b0cace455c2da24492660636bfd48c45a19cdf
-                         Django update for 1.8: https://github.com/django/django/commit/255449c1ee61c14778658caae8c430fa4d76afd6
+                         The validation in <code>is_safe_url()</code> has been tightened in django versions before 1.7.7, and 1.8x before 1.8c1. Make sure that you have the latest version of Django installed. If you're using <code>pip</code>, you can check for outdated packages using the <code>pip list --outdated</code> command.<br/>
+                         <br/>
+                         You can view the Django commit fixing this issue in <a href="https://github.com/django/django/commit/e7b0cace455c2da24492660636bfd48c45a19cdf">version 1.7</a> or <a href="https://github.com/django/django/commit/255449c1ee61c14778658caae8c430fa4d76afd6">version 1.8</a>.
                      </div>
                  </div>
              </div>
@@ -64,7 +64,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_4">
                      <div class="panel-body">
-                         Make sure that you have the latest version of django installed.
+                         Make sure that you have the latest version of Django installed.
                      </div>
                  </div>
              </div>
