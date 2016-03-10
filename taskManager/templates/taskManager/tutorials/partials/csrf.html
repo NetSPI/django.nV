@@ -32,7 +32,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_2">
                      <div class="panel-body">
-                         Both the <code>profile_by_id()</code> and <code>change_password()</code> functions have the <code>@csrfexempt</code> decorator. As the name indicates, Django will not check the validity or presence of the CSRF nonce when these functions are called. 
+                         The <code>profile_by_id()</code> function (in addition to several others) have the <code>@csrf_exempt</code> decorator. As the name indicates, Django will not check the validity or presence of the CSRF nonce when these functions are called. 
                      </div>
                  </div>
              </div>
@@ -46,7 +46,7 @@
                  </div>
                  <div class="panel-collapse collapse" id="accordion1_3">
                      <div class="panel-body">
-                         Remove the <code>@csrfexempt</code> decorator from all sensitive functionality. An anti-CSRF nonce can be enabled application wide by including the <code>django.middleware.csrf.CsrfViewMiddleware</code>
+                         Remove the <code>@csrf_exempt</code> decorator from all sensitive functionality. An anti-CSRF nonce can be enabled application wide by including the <code>django.middleware.csrf.CsrfViewMiddleware</code>
                          module in the <code>MIDDLEWARE_CLASSES</code> array within the <code>settings.py</code> config file.
                      </div>
                  </div>
