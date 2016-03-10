@@ -433,6 +433,7 @@ def register(request):
             # user.groups.add(grp)
 
             user.userProfile = UserProfile.objects.create(user=user)
+            user.userProfile.image = '/static/taskManager/uploads/default.png' 
             user.userProfile.save()
             user.save()
 
@@ -707,6 +708,8 @@ def profile_by_id(request, user_id):
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
             print("made it!")
+            if request.POST.get('username') != user.username:
+                user.username = request.POST.get('username')
             if request.POST.get('first_name') != user.first_name:
                 user.first_name = request.POST.get('first_name')
             if request.POST.get('last_name') != user.last_name:
@@ -716,8 +719,8 @@ def profile_by_id(request, user_id):
             if request.POST.get('password'):
                 user.set_password(request.POST.get('password'))
             if request.FILES:
-                user.userprofile.image = store_uploaded_file(user.get_full_name(
-                ) + "." + request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
+                user.userprofile.image = store_uploaded_file(user.username
+                + "." + request.FILES['picture'].name.split(".")[-1], request.FILES['picture'])
                 user.userprofile.save()
             user.save()
             messages.info(request, "User Updated")
@@ -777,7 +780,7 @@ def forgot_password(request):
 
             # Generate secure random 6 digit number
             res = ""
-            nums = [x for x in os.urandom(6)]
+            nums = map(ord, os.urandom(6))
             for x in nums:
                 res = res + str(x)
 
