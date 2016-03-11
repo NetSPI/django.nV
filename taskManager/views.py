@@ -221,7 +221,10 @@ def download_profile_pic(request, user_id):
 
     user = User.objects.get(pk=user_id)
     filepath = user.userprofile.image
-    return redirect(filepath)
+    if len(filepath) > 1:
+        return redirect(filepath)
+    else:
+        return redirect('/static/taskManager/uploads/default.png')
     #filename = user.get_full_name()+"."+filepath.split(".")[-1]
     # try:
     #	abspath = open(filepath, 'rb')
@@ -433,7 +436,6 @@ def register(request):
             # user.groups.add(grp)
 
             user.userProfile = UserProfile.objects.create(user=user)
-            user.userProfile.image = '/static/taskManager/uploads/default.png' 
             user.userProfile.save()
             user.save()
 
