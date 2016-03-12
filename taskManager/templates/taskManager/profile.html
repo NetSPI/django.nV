@@ -12,6 +12,10 @@
                 <div class="panel-body">
                     <form method="post" role="form" action="/taskManager/profile/{{user.id}}" enctype="multipart/form-data">
                         <div class="form-group col-lg-7 col-sm-7">
+                            <label>Username</label>
+                            <input name="username" class="form-control" value ="{{user.username}}">
+                        </div>
+                        <div class="form-group col-lg-7 col-sm-7">
                             <label>First Name</label>
                             <input name="first_name" class="form-control" value ="{{user.first_name}}">
                         </div>

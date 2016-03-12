@@ -55,8 +55,8 @@
                          It is almost always better to leverage a whitelist over a blacklist when restricting valid values. In this case, the 'exclude' blacklist array should be replaced with the
                          'fields' whitelist array. This array should include only the User model attributes which can be modified by a user. For this application, it may include the following attributes: <code>fields = ('username', 'first_name', 'last_name', 'email', 'password')</code><br />
                          <br />
-                         Avoid using CookieStorage for user session storage. It is best to store all session information on the server, and pass only a session token to the user, so session variables
-                         cannot be read without accessing the server first. Furthermore, the default in django 1.6+ (JSONSerializer) is much more secure and does not suffer from code execution vulnerabilities
+                         Avoid using <code>CookieStorage</code> for user session storage. It is best to store all session information on the server, and pass only a session token to the user, so session variables
+                         cannot be read without accessing the server first. Furthermore, the default in Django 1.6+ (JSONSerializer) is much more secure and does not suffer from code execution vulnerabilities
                          like PickleSerializer, so it should be used instead.
                      </div>
                  </div>

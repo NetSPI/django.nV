@@ -70,8 +70,8 @@
 
                         Notice the embedded query that runs and would reveal the password of the admin user!<br />
                         <br />
-                        Furthermore, the file processing function <code>store_uploaded_file()</code> contains shell injection. It works by moving uploaded file that are stored as temporary
-                        files directory using <code>os.system()</code> The problem is that user input in the form of the file title is directly inserted into the command sent to the shell, allowing for other commands to be injected.
+                        Furthermore, the file processing function <code>store_uploaded_file()</code> contains shell injection. It works by moving the uploaded file that are stored as temporary
+                        files using <code>os.system()</code> The problem is that user input in the form of the file title is directly inserted into the command sent to the shell, allowing for other commands to be injected.
                     </div>
                  </div>
              </div>
