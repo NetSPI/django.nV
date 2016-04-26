@@ -387,7 +387,7 @@ def project_delete(request, project_id):
 
 def logout_view(request):
     logout(request)
-    return redirect('/taskManager/')
+    return redirect(request.GET.get('redirect', '/taskManager/'))
 
 
 def login(request):
