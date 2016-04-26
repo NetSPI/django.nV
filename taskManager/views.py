@@ -113,7 +113,7 @@ def manage_groups(request):
 
     user = request.user
 
-    if user.is_authenticated():
+    if user.is_authenticated() and user.has_perm():
 
         user_list = User.objects.order_by('date_joined')
 
@@ -178,18 +178,19 @@ def upload(request, project_id):
             name = request.POST.get('name', False)
             upload_path = store_uploaded_file(name, request.FILES['file'])
 
-            #A1 - Injection (SQLi)
-            curs = connection.cursor()
-            curs.execute(
-                "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
-                (name, upload_path, project_id))
+            # #A1 - Injection (SQLi)
+            # curs = connection.cursor()
+            # curs.execute(
+            #     "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
+            #     (name, upload_path, project_id))
 
-            # file = File(
-            #name = name,
-            #path = upload_path,
-            # project = proj)
+            file = File(
+                name=name,
+                path=upload_path,
+                project=proj
+            )
 
-            # file.save()
+            file.save()
 
             return redirect('/taskManager/' + project_id +
                             '/', {'new_file_added': True})
@@ -299,9 +300,10 @@ def task_edit(request, project_id, task_id):
 def task_delete(request, project_id, task_id):
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
-    if proj is not None:
-        if task is not None and task.project == proj:
-            task.delete()
+    if request.user in task.users_assigned.all():
+        if proj is not None:
+            if task is not None and task.project == proj:
+                task.delete()
 
     return redirect('/taskManager/' + project_id + '/')
 
@@ -311,10 +313,11 @@ def task_delete(request, project_id, task_id):
 def task_complete(request, project_id, task_id):
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
-    if proj is not None:
-        if task is not None and task.project == proj:
-            task.completed = not task.completed
-            task.save()
+    if request.user in task.users_assigned.all():
+        if proj is not None:
+            if task is not None and task.project == proj:
+                task.completed = not task.completed
+                task.save()
 
     return redirect('/taskManager/' + project_id)
 
@@ -384,7 +387,7 @@ def project_delete(request, project_id):
 
 def logout_view(request):
     logout(request)
-    return redirect(request.GET.get('redirect', '/taskManager/'))
+    return redirect('/taskManager/')
 
 
 def login(request):
@@ -702,7 +705,6 @@ def profile(request):
 # A8: Cross Site Request Forgery (CSRF)
 
 
-@csrf_exempt
 def profile_by_id(request, user_id):
     user = User.objects.get(pk=user_id)
 
