@@ -782,7 +782,7 @@ def forgot_password(request):
 
             # Generate secure random 6 digit number
             res = ""
-            nums = map(ord, os.urandom(6))
+            nums = [x for x in os.urandom(6)]
             for x in nums:
                 res = res + str(x)
 
