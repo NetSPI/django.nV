@@ -170,35 +170,36 @@ def manage_groups(request):
 def upload(request, project_id):
 
     if request.method == 'POST':
+        if request.user.is_authenticated():
 
-        proj = Project.objects.get(pk=project_id)
-        form = ProjectFileForm(request.POST, request.FILES)
+            proj = Project.objects.get(users_assigned=request.user)
+            form = ProjectFileForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            name = request.POST.get('name', False)
-            upload_path = store_uploaded_file(name, request.FILES['file'])
+            if form.is_valid():
+                name = request.POST.get('name', False)
+                upload_path = store_uploaded_file(name, request.FILES['file'])
 
-            #A1 - Injection (SQLi)
-            curs = connection.cursor()
-            curs.execute(
-                "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
-                (name, upload_path, project_id))
+                #A1 - Injection (SQLi)
+                # curs = connection.cursor()
+                # curs.execute(
+                #     "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
+                #     (name, upload_path, project_id))
 
-            # file = File(
-            #name = name,
-            #path = upload_path,
-            # project = proj)
+                file = File(
+                name = name,
+                path = upload_path,
+                project = proj)
 
-            # file.save()
+                file.save()
 
-            return redirect('/taskManager/' + project_id +
-                            '/', {'new_file_added': True})
+                return redirect('/taskManager/' + project_id +
+                                '/', {'new_file_added': True})
+            else:
+                form = ProjectFileForm()
         else:
             form = ProjectFileForm()
-    else:
-        form = ProjectFileForm()
-    return render_to_response(
-        'taskManager/upload.html', {'form': form}, RequestContext(request))
+        return render_to_response(
+            'taskManager/upload.html', {'form': form}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
