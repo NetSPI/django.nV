@@ -113,7 +113,7 @@ def manage_groups(request):
 
     user = request.user
 
-    if user.is_authenticated():
+    if user.is_authenticated() and user.has_perm():
 
         user_list = User.objects.order_by('date_joined')
 
