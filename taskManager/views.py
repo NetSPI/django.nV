@@ -392,20 +392,25 @@ def login(request):
         username = request.POST.get('username', False)
         password = request.POST.get('password', False)
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                # Redirect to a success page.
-                return redirect('/taskManager/')
+        if User.objects.filter(username=username).exists():
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    # Redirect to a success page.
+                    return redirect('/taskManager/')
+                else:
+                    # Return a 'disabled account' error message
+                    return redirect('/taskManager/', {'disabled_user': True})
             else:
-                # Return a 'disabled account' error message
-                return redirect('/taskManager/', {'disabled_user': True})
+                # Return an 'invalid login' error message.
+                return render(request,
+                              'taskManager/login.html',
+                              {'failed_login': False})
         else:
-            # Return an 'invalid login' error message.
             return render(request,
                           'taskManager/login.html',
-                          {'failed_login': False})
+                          {'invalid_username': False})
     else:
         return render_to_response(
             'taskManager/login.html',
