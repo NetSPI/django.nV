@@ -1,3 +1,4 @@
+
 #     _  _                        __   __
 #  __| |(_)__ _ _ _  __ _ ___   _ \ \ / /
 # / _` || / _` | ' \/ _` / _ \_| ' \ V /
@@ -98,8 +99,7 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 LOGIN_URL = '/taskManager/login/'
 
 # A6: Sensitive Data Exposure
-PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
-
+PASSWORD_HASHERS = ['django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher']
 # A2: Broken Auth and Session Management
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 

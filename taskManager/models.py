@@ -4,7 +4,7 @@
 # \__,_|/ \__,_|_||_\__, \___(_)_||_\_/
 #     |__/          |___/
 #
-#			INSECURE APPLICATION WARNING
+#			INECURE APPLICATION WARNING
 #
 # django.nV is a PURPOSELY INSECURE web-application
 # meant to demonstrate Django security problems
