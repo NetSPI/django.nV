@@ -72,7 +72,7 @@ class UserForm(forms.ModelForm):
     """ User registration form """
     class Meta:
         model = User
-        exclude = ['groups', 'user_permissions', 'last_login', 'date_joined', 'is_active']
+        exclude = ['groups', 'user_permissions', 'last_login', 'date_joined', 'is_active', 'is_superuser', 'is_staff']
 
 
 class ProjectFileForm(forms.Form):
