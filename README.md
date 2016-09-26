@@ -3,7 +3,23 @@ django.nV
 
 django.nV is a purposefully vulnerable Django application provided by [nVisium](https://www.nvisium.com/).
 
-###System Requirements & Setup###
+###Docker Setup###
+
+Install docker and build locally.
+
+```
+docker build -t vulnapp/djangonV .
+```
+
+Launch the docker container.
+
+```
+docker run -i -t --name django-nV -p 8000:8000  vulnapp/djangonV /django.nV/docker-startup.sh
+```
+
+You should then be able to access the web interface at `http://localhost:8000/`.
+
+###Native System Requirements & Setup###
 
 First, make sure Python 3.4+ is installed on your machine. On OSX, this can be installed with Homebrew (eg. `brew install python3`). If you receive an error about conflicting PYTHONPATH, try updating the variable to reflect your python version.
 
