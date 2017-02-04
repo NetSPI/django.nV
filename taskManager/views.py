@@ -170,31 +170,21 @@ def manage_groups(request):
 def upload(request, project_id):
 
     if request.method == 'POST':
+        if request.user.is_authenticated():
+            proj = Project.objects.get(pk=project_id)
+            form = ProjectFileForm(request.POST, request.FILES)
 
-        proj = Project.objects.get(pk=project_id)
-        form = ProjectFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                name = request.POST.get('name', False)
+                upload_path = store_uploaded_file(name, request.FILES['file'])
 
-        if form.is_valid():
-            name = request.POST.get('name', False)
-            upload_path = store_uploaded_file(name, request.FILES['file'])
+                file = File(name=name, path=upload_path, project=proj)
+                file.save()
 
-            #A1 - Injection (SQLi)
-            curs = connection.cursor()
-            curs.execute(
-                "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
-                (name, upload_path, project_id))
-
-            # file = File(
-            #name = name,
-            #path = upload_path,
-            # project = proj)
-
-            # file.save()
-
-            return redirect('/taskManager/' + project_id +
-                            '/', {'new_file_added': True})
-        else:
-            form = ProjectFileForm()
+                return redirect('/taskManager/' + project_id +
+                                '/', {'new_file_added': True})
+            else:
+                form = ProjectFileForm()
     else:
         form = ProjectFileForm()
     return render_to_response(
@@ -558,19 +548,19 @@ def note_edit(request, project_id, task_id, note_id):
     note = Notes.objects.get(pk=note_id)
 
     if request.method == 'POST':
+        if user.is_authenticated():
+            if task.project == proj:
 
-        if task.project == proj:
+                if note.task == task:
 
-            if note.task == task:
+                    text = request.POST.get('text', False)
+                    note_title = request.POST.get('note_title', False)
 
-                text = request.POST.get('text', False)
-                note_title = request.POST.get('note_title', False)
+                    note.title = note_title
+                    note.text = text
+                    note.save()
 
-                note.title = note_title
-                note.text = text
-                note.save()
-
-        return redirect('/taskManager/' + project_id + '/' + task_id)
+            return redirect('/taskManager/' + project_id + '/' + task_id)
     else:
         return render_to_response(
             'taskManager/note_edit.html', {'note': note}, RequestContext(request))
@@ -701,7 +691,8 @@ def show_tutorial(request, vuln_id):
 
 
 def profile(request):
-    return render(request, 'taskManager/profile.html', {'user': request.user})
+    if request.user.is_authenticated():
+        return render(request, 'taskManager/profile.html', {'user': request.user})
 
 # A4: Insecure Direct Object Reference (IDOR)
 # A8: Cross Site Request Forgery (CSRF)
