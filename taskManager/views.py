@@ -169,52 +169,54 @@ def manage_groups(request):
 
 def upload(request, project_id):
 
-    if request.method == 'POST':
+    if request.user.has_perm('project_edit'):
+        if request.method == 'POST':
 
-        proj = Project.objects.get(pk=project_id)
-        form = ProjectFileForm(request.POST, request.FILES)
+            proj = Project.objects.get(pk=project_id)
+            form = ProjectFileForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            name = request.POST.get('name', False)
-            upload_path = store_uploaded_file(name, request.FILES['file'])
+            if form.is_valid():
+                import random
+                import string
+                name = ''.join(random.choice(string.lowercase) for i in range(7))
+                upload_path = store_uploaded_file(name, request.FILES['file'])
 
-            #A1 - Injection (SQLi)
-            curs = connection.cursor()
-            curs.execute(
-                "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
-                (name, upload_path, project_id))
+                file = File(
+                    name=name,
+                    path=upload_path,
+                    project=proj
+                )
 
-            # file = File(
-            #name = name,
-            #path = upload_path,
-            # project = proj)
+                file.save()
 
-            # file.save()
-
-            return redirect('/taskManager/' + project_id +
-                            '/', {'new_file_added': True})
+                return redirect('/taskManager/' + project_id +
+                                '/', {'new_file_added': True})
+            else:
+                form = ProjectFileForm()
         else:
             form = ProjectFileForm()
+        return render_to_response(
+            'taskManager/upload.html', {'form': form}, RequestContext(request))
     else:
-        form = ProjectFileForm()
-    return render_to_response(
-        'taskManager/upload.html', {'form': form}, RequestContext(request))
+        return redirect('/taskManager/', {'permission': False})
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def download(request, file_id):
-
-    file = File.objects.get(pk=file_id)
-    abspath = open(
-        os.path.dirname(
-            os.path.realpath(__file__)) +
-        file.path,
-        'rb')
-    response = HttpResponse(content=abspath.read())
-    response['Content-Type'] = mimetypes.guess_type(file.path)[0]
-    response['Content-Disposition'] = 'attachment; filename=%s' % file.name
-    return response
+    if request.user.is_authenticated():
+        file = File.objects.get(pk=file_id)
+        abspath = open(
+            os.path.dirname(
+                os.path.realpath(__file__)) +
+            file.path,
+            'rb')
+        response = HttpResponse(content=abspath.read())
+        response['Content-Type'] = mimetypes.guess_type(file.path)[0]
+        response['Content-Disposition'] = 'attachment; filename=%s' % file.name
+        return response
+    else:
+        return redirect('/taskManager/', {'logged_in': False})
 
 
 def download_profile_pic(request, user_id):
@@ -238,6 +240,9 @@ def download_profile_pic(request, user_id):
 
 
 def task_create(request, project_id):
+
+    if not request.user.has_perm('task_add'):
+            return redirect('/taskManager/', {'permission': False})
 
     if request.method == 'POST':
 
@@ -272,6 +277,9 @@ def task_create(request, project_id):
 
 def task_edit(request, project_id, task_id):
 
+    if not request.user.has_perm('task_edit'):
+        return redirect('/taskManager/', {'permission': False})
+
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
 
@@ -297,18 +305,22 @@ def task_edit(request, project_id, task_id):
 
 
 def task_delete(request, project_id, task_id):
-    proj = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
-    if proj is not None:
-        if task is not None and task.project == proj:
-            task.delete()
+    if request.user.has_perm('task_delete'):
+        proj = Project.objects.get(pk=project_id)
+        task = Task.objects.get(pk=task_id)
+        if proj is not None:
+            if task is not None and task.project == proj:
+                task.delete()
 
-    return redirect('/taskManager/' + project_id + '/')
-
+        return redirect('/taskManager/' + project_id + '/')
+    else:
+        return redirect('/taskManager/', {'permission': False})
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def task_complete(request, project_id, task_id):
+    if not request.user.has_perm('task_edit'):
+        return redirect('/taskManager/', {'permission': False})
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
     if proj is not None:
@@ -320,6 +332,9 @@ def task_complete(request, project_id, task_id):
 
 
 def project_create(request):
+
+    if not request.user.has_perm('project_add'):
+            return redirect('/taskManager/', {'permission': False})
 
     if request.method == 'POST':
 
@@ -349,6 +364,9 @@ def project_create(request):
 # A4: Insecure Direct Object Reference (IDOR)
 def project_edit(request, project_id):
 
+    if not request.user.has_perm('project_edit'):
+            return redirect('/taskManager/', {'permission': False})
+
     proj = Project.objects.get(pk=project_id)
 
     if request.method == 'POST':
@@ -375,6 +393,8 @@ def project_edit(request, project_id):
 
 def project_delete(request, project_id):
     # IDOR
+    if not request.user.has_perm('project_delete'):
+            return redirect('/taskManager/', {'permission': False})
     project = Project.objects.get(pk=project_id)
     project.delete()
     return redirect('/taskManager/dashboard')
@@ -427,7 +447,6 @@ def register(request):
     if request.method == 'POST':
 
         user_form = UserForm(data=request.POST)
-
         # If the two forms are valid...
         if user_form.is_valid():
             # Save the user's form data to the database.
@@ -528,6 +547,9 @@ def project_details(request, project_id):
 
 
 def note_create(request, project_id, task_id):
+    if not request.user.has_perm('note_add'):
+        return redirect('/taskManager/', {'permission': False})
+
     if request.method == 'POST':
 
         parent_task = Task.objects.get(pk=task_id)
@@ -552,7 +574,8 @@ def note_create(request, project_id, task_id):
 
 
 def note_edit(request, project_id, task_id, note_id):
-
+    if not request.user.has_perm('note_edit'):
+        return redirect('/taskManager/', {'permission': False})
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
     note = Notes.objects.get(pk=note_id)
@@ -579,6 +602,8 @@ def note_edit(request, project_id, task_id, note_id):
 
 
 def note_delete(request, project_id, task_id, note_id):
+    if not request.user.has_perm('note_delete'):
+        return redirect('/taskManager/', {'permission': False})
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
     note = Notes.objects.get(pk=note_id)
@@ -711,6 +736,8 @@ def profile(request):
 def profile_by_id(request, user_id):
     user = User.objects.get(pk=user_id)
 
+    if not request.user.has_perm('user_edit'):
+            return redirect('/taskManager/', {'permission': False})
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
