@@ -817,7 +817,7 @@ def forgot_password(request):
 
 # A8: Cross Site Request Forgery (CSRF)
 
-@csrf_exempt
+
 def change_password(request):
 
     if request.method == 'POST':
