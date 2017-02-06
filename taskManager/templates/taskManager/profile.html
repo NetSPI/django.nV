@@ -10,7 +10,8 @@
          		{% include 'taskManager/messages.html'%}
                 <header class="panel-heading">Edit Profile ({{user.username}})</header>
                 <div class="panel-body">
-                    <form method="post" role="form" action="/taskManager/profile/{{user.id}}" enctype="multipart/form-data">
+                    <form method="post" role="form" action="/taskManager/profile/{{user.id}}" enctype="multipart/form-data" >
+                    {% csrf token %}
                         <div class="form-group col-lg-7 col-sm-7">
                             <label>Username</label>
                             <input name="username" class="form-control" value ="{{user.username}}">
