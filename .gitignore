@@ -22,6 +22,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+pip-selfcheck.json
+pyvenv.cfg
 
 # Installer logs
 pip-log.txt
