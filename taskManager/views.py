@@ -34,8 +34,10 @@ from django.contrib.auth import logout
 from taskManager.models import Task, Project, Notes, File, UserProfile
 from taskManager.misc import store_uploaded_file
 from taskManager.forms import UserForm, ProjectFileForm, ProfileForm
+from django.contrib.auth.decorators import permission_required
 
 
+@permission_required('taskManager.task_manage')
 def manage_tasks(request, project_id):
 
     user = request.user
@@ -71,6 +73,7 @@ def manage_tasks(request, project_id):
     return redirect('/taskManager/', {'logged_in': False})
 
 
+@permission_required('taskManager.project_manage')
 def manage_projects(request):
 
     user = request.user
@@ -109,6 +112,7 @@ def manage_projects(request):
 # A7 - Missing Function Level Access Control
 
 
+@permission_required('taskManager.group_manage')
 def manage_groups(request):
 
     user = request.user
@@ -167,6 +171,7 @@ def manage_groups(request):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.upload')
 def upload(request, project_id):
 
     if request.method == 'POST':
@@ -207,6 +212,7 @@ def download(request, file_id):
     return response
 
 
+@permission_required('taskManager.profle_download')
 def download_profile_pic(request, user_id):
 
     user = User.objects.get(pk=user_id)
@@ -227,6 +233,7 @@ def download_profile_pic(request, user_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.task_create')
 def task_create(request, project_id):
 
     if request.method == 'POST':
@@ -260,6 +267,7 @@ def task_create(request, project_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.task_edit')
 def task_edit(request, project_id, task_id):
 
     proj = Project.objects.get(pk=project_id)
@@ -286,6 +294,7 @@ def task_edit(request, project_id, task_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.task_delete')
 def task_delete(request, project_id, task_id):
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
@@ -298,6 +307,7 @@ def task_delete(request, project_id, task_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.task_complete')
 def task_complete(request, project_id, task_id):
     proj = Project.objects.get(pk=project_id)
     task = Task.objects.get(pk=task_id)
@@ -309,6 +319,7 @@ def task_complete(request, project_id, task_id):
     return redirect('/taskManager/' + project_id)
 
 
+@permission_required('taskManager.project_create')
 def project_create(request):
 
     if request.method == 'POST':
@@ -337,6 +348,8 @@ def project_create(request):
 
 
 # A4: Insecure Direct Object Reference (IDOR)
+
+@permission_required('taskManager.project_edit')
 def project_edit(request, project_id):
 
     proj = Project.objects.get(pk=project_id)
@@ -498,6 +511,7 @@ def profile_view(request, user_id):
                   {'user': user, 'role': role, 'project_list': sorted_projects})
 
 
+@permission_required('taskManager.project_details')
 def project_details(request, project_id):
     proj = Project.objects.filter(
         users_assigned=request.user.id,
@@ -517,6 +531,7 @@ def project_details(request, project_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.project_note')
 def note_create(request, project_id, task_id):
     if request.method == 'POST':
 
@@ -541,6 +556,7 @@ def note_create(request, project_id, task_id):
 # A4: Insecure Direct Object Reference (IDOR)
 
 
+@permission_required('taskManager.project_note_edit')
 def note_edit(request, project_id, task_id, note_id):
 
     proj = Project.objects.get(pk=project_id)
@@ -690,6 +706,7 @@ def show_tutorial(request, vuln_id):
                       {'user': request.user})
 
 
+@permission_required('taskManager.profile_edit')
 def profile(request):
     return render(request, 'taskManager/profile.html', {'user': request.user})
 
@@ -697,7 +714,7 @@ def profile(request):
 # A8: Cross Site Request Forgery (CSRF)
 
 
-@csrf_exempt
+@permission_required('taskManager.profile_id')
 def profile_by_id(request, user_id):
     user = User.objects.get(pk=user_id)
 
