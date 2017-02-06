@@ -1,0 +1,37 @@
+Reviewer : Patrick Saunders
+Date: May 5, 2017
+Reviewing nVisium Task Manager
+Vulnerability 1: Insecure Direct Object Reference
+Exposure
+We found an instance of Insecure DOR. By manually navigating to /taskManager/profile/_profile_number_ I was able to access and edit any existing user’s profile.
+By navigating to /_project_id_/upload I was able to upload any file I chose to a project.
+At downloadprofilepic/_user_id I was able to access any users’ profile pic.
+Using similar techniques we were able to view and edit any task, create new tasks, delete tasks, create and edit projects, view project details, create project notes and edit them.
+
+Repair
+These vulnerabilities were contained within views.py. I was able to fix them by applying the @permission_required decorator the relevant view functions.
+
+Vulnerability 2: SQL Injection
+Exposure
+I found an instance of SQL Injection via code review. On testing I was able to retrieve the username and password of any registered user.
+Repair
+Views.py contained the problem.  I was able to repair the file by using the object relational manager to properly escape user input:
+user_upload = File(name=name, path=upload_path, project=proj)
+user_upload.save()
+
+
+Vulnerability 3: Broken Authentication
+Exposure
+We found that it was possible to manually give a user superuser status on registration. The cause was an incomplete list of excluded user attributes. 
+Repair
+Forms.py contained the issue. I replaced the exclude value with a fields value, specifically listing the permitted form inputs.
+Fields = [‘Username’, ‘First Name’, ‘Last Name’, ‘Email’, ‘Password’]
+
+Vulnerability 4: Cross-site scripting.
+Exposure
+Code review exposed that several templates accessed the user’s username with the safe method. This allowed us to execute our username as code.
+Repair
+taskManager/base_backend.html and tutorials/base.html contained the vulnerable code. I removed the reference to the safe method.
+{{ user.username|safe }}
+Becomes
+{{ user.username }}
