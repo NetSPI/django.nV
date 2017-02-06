@@ -9,7 +9,7 @@
         <section class="panel col-md-10">
             <header class="panel-heading">
                 <!--A3: Cross Site Scripting (XSS) -->
-                {{task.title|safe}}
+                {{task.title}}
                 <span class="pull-right">
                   <a href="{% url 'taskManager:task_edit' project_id=task.project.id task_id=task.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit Task</a>
                   {% if task.completed %}
@@ -45,7 +45,7 @@
                                 <p><span class="bold">Description:</span>
                                 <span class="p-team">
                                   <!--A3: Cross Site Scripting (XSS) -->
-                                  {{task.text|safe}}
+                                  {{task.text}}
                                 </span>
                                 </p>
                             </div>
