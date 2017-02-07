@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'taskManager'
@@ -82,6 +83,9 @@ USE_L10N = True
 USE_TZ = True
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+# leaving here because I think I'll get back to it:
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.SessionStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
