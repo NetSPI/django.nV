@@ -117,7 +117,7 @@ def manage_groups(request):
 
         user_list = User.objects.order_by('date_joined')
 
-        if request.method == 'POST':
+        if request.method == 'POST' and user.has_perm('can_change_group'):
 
             post_data = request.POST.dict()
 
