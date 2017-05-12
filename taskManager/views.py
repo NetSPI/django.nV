@@ -168,37 +168,38 @@ def manage_groups(request):
 
 
 def upload(request, project_id):
+    user = request.user
+    if user.is_authenticated():
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            proj = Project.objects.get(pk=project_id)
+            form = ProjectFileForm(request.POST, request.FILES)
 
-        proj = Project.objects.get(pk=project_id)
-        form = ProjectFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                name = request.POST.get('name', False)
+                upload_path = store_uploaded_file(name, request.FILES['file'])
 
-        if form.is_valid():
-            name = request.POST.get('name', False)
-            upload_path = store_uploaded_file(name, request.FILES['file'])
+                #A1 - Injection (SQLi)
+                curs = connection.cursor()
+                curs.execute(
+                    "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
+                    (name, upload_path, project_id))
 
-            #A1 - Injection (SQLi)
-            curs = connection.cursor()
-            curs.execute(
-                "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
-                (name, upload_path, project_id))
+                # file = File(
+                #name = name,
+                #path = upload_path,
+                # project = proj)
 
-            # file = File(
-            #name = name,
-            #path = upload_path,
-            # project = proj)
+                # file.save()
 
-            # file.save()
-
-            return redirect('/taskManager/' + project_id +
-                            '/', {'new_file_added': True})
+                return redirect('/taskManager/' + project_id +
+                                '/', {'new_file_added': True})
+            else:
+                form = ProjectFileForm()
         else:
             form = ProjectFileForm()
-    else:
-        form = ProjectFileForm()
-    return render_to_response(
-        'taskManager/upload.html', {'form': form}, RequestContext(request))
+        return render_to_response(
+            'taskManager/upload.html', {'form': form}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
@@ -220,11 +221,13 @@ def download(request, file_id):
 def download_profile_pic(request, user_id):
 
     user = User.objects.get(pk=user_id)
-    filepath = user.userprofile.image
-    if len(filepath) > 1:
-        return redirect(filepath)
-    else:
-        return redirect('/static/taskManager/uploads/default.png')
+    if user.is_authenticated():
+
+        filepath = user.userprofile.image
+        if len(filepath) > 1:
+            return redirect(filepath)
+        else:
+            return redirect('/static/taskManager/uploads/default.png')
     #filename = user.get_full_name()+"."+filepath.split(".")[-1]
     # try:
     #	abspath = open(filepath, 'rb')
@@ -238,72 +241,76 @@ def download_profile_pic(request, user_id):
 
 
 def task_create(request, project_id):
+    user = request.user
+    if user.is_authenticated():
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            proj = Project.objects.get(pk=project_id)
 
-        proj = Project.objects.get(pk=project_id)
+            text = request.POST.get('text', False)
+            task_title = request.POST.get('task_title', False)
+            now = timezone.now()
+            task_duedate = timezone.now() + datetime.timedelta(weeks=1)
+            if request.POST.get('task_duedate') != '':
+                task_duedate = datetime.datetime.fromtimestamp(
+                    int(request.POST.get('task_duedate', False)))
 
-        text = request.POST.get('text', False)
-        task_title = request.POST.get('task_title', False)
-        now = timezone.now()
-        task_duedate = timezone.now() + datetime.timedelta(weeks=1)
-        if request.POST.get('task_duedate') != '':
-            task_duedate = datetime.datetime.fromtimestamp(
-                int(request.POST.get('task_duedate', False)))
+            task = Task(
+                text=text,
+                title=task_title,
+                start_date=now,
+                due_date=task_duedate,
+                project=proj)
 
-        task = Task(
-            text=text,
-            title=task_title,
-            start_date=now,
-            due_date=task_duedate,
-            project=proj)
+            task.save()
+            task.users_assigned = [request.user]
 
-        task.save()
-        task.users_assigned = [request.user]
-
-        return redirect('/taskManager/' + project_id +
-                        '/', {'new_task_added': True})
-    else:
-        return render_to_response(
-            'taskManager/task_create.html', {'proj_id': project_id}, RequestContext(request))
+            return redirect('/taskManager/' + project_id +
+                            '/', {'new_task_added': True})
+        else:
+            return render_to_response(
+                'taskManager/task_create.html', {'proj_id': project_id}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def task_edit(request, project_id, task_id):
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.get(pk=project_id)
+        task = Task.objects.get(pk=task_id)
 
-    proj = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            if task.project == proj:
 
-        if task.project == proj:
+                text = request.POST.get('text', False)
+                task_title = request.POST.get('task_title', False)
+                task_completed = request.POST.get('task_completed', False)
 
-            text = request.POST.get('text', False)
-            task_title = request.POST.get('task_title', False)
-            task_completed = request.POST.get('task_completed', False)
+                task.title = task_title
+                task.text = text
+                task.completed = True if task_completed == "1" else False
+                task.save()
 
-            task.title = task_title
-            task.text = text
-            task.completed = True if task_completed == "1" else False
-            task.save()
-
-        return redirect('/taskManager/' + project_id + '/' + task_id)
-    else:
-        return render_to_response(
-            'taskManager/task_edit.html', {'task': task}, RequestContext(request))
+            return redirect('/taskManager/' + project_id + '/' + task_id)
+        else:
+            return render_to_response(
+                'taskManager/task_edit.html', {'task': task}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def task_delete(request, project_id, task_id):
-    proj = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
-    if proj is not None:
-        if task is not None and task.project == proj:
-            task.delete()
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.get(pk=project_id)
+        task = Task.objects.get(pk=task_id)
+        if proj is not None:
+            if task is not None and task.project == proj:
+                task.delete()
 
-    return redirect('/taskManager/' + project_id + '/')
+        return redirect('/taskManager/' + project_id + '/')
 
 # A4: Insecure Direct Object Reference (IDOR)
 
@@ -320,55 +327,57 @@ def task_complete(request, project_id, task_id):
 
 
 def project_create(request):
+    user = request.user
+    if user.is_authenticated():
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            title = request.POST.get('title', False)
+            text = request.POST.get('text', False)
+            project_priority = int(request.POST.get('project_priority', False))
+            now = timezone.now()
+            project_duedate = timezone.make_aware(datetime.datetime.fromtimestamp(
+                int(request.POST.get('project_duedate', False))))
 
-        title = request.POST.get('title', False)
-        text = request.POST.get('text', False)
-        project_priority = int(request.POST.get('project_priority', False))
-        now = timezone.now()
-        project_duedate = timezone.make_aware(datetime.datetime.fromtimestamp(
-            int(request.POST.get('project_duedate', False))))
+            project = Project(title=title,
+                              text=text,
+                              priority=project_priority,
+                              due_date=project_duedate,
+                              start_date=now)
+            project.save()
+            project.users_assigned = [request.user.id]
 
-        project = Project(title=title,
-                          text=text,
-                          priority=project_priority,
-                          due_date=project_duedate,
-                          start_date=now)
-        project.save()
-        project.users_assigned = [request.user.id]
-
-        return redirect('/taskManager/', {'new_project_added': True})
-    else:
-        return render_to_response(
-            'taskManager/project_create.html',
-            {},
-            RequestContext(request))
+            return redirect('/taskManager/', {'new_project_added': True})
+        else:
+            return render_to_response(
+                'taskManager/project_create.html',
+                {},
+                RequestContext(request))
 
 
 # A4: Insecure Direct Object Reference (IDOR)
 def project_edit(request, project_id):
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.get(pk=project_id)
 
-    proj = Project.objects.get(pk=project_id)
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            title = request.POST.get('title', False)
+            text = request.POST.get('text', False)
+            project_priority = int(request.POST.get('project_priority', False))
+            project_duedate = datetime.datetime.fromtimestamp(
+                int(request.POST.get('project_duedate', False)))
 
-        title = request.POST.get('title', False)
-        text = request.POST.get('text', False)
-        project_priority = int(request.POST.get('project_priority', False))
-        project_duedate = datetime.datetime.fromtimestamp(
-            int(request.POST.get('project_duedate', False)))
+            proj.title = title
+            proj.text = text
+            proj.priority = project_priority
+            proj.due_date = project_duedate
+            proj.save()
 
-        proj.title = title
-        proj.text = text
-        proj.priority = project_priority
-        proj.due_date = project_duedate
-        proj.save()
-
-        return redirect('/taskManager/' + project_id + '/')
-    else:
-        return render_to_response(
-            'taskManager/project_edit.html', {'proj': proj}, RequestContext(request))
+            return redirect('/taskManager/' + project_id + '/')
+        else:
+            return render_to_response(
+                'taskManager/project_edit.html', {'proj': proj}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
@@ -509,85 +518,92 @@ def profile_view(request, user_id):
 
 
 def project_details(request, project_id):
-    proj = Project.objects.filter(
-        users_assigned=request.user.id,
-        pk=project_id)
-    if not proj:
-        messages.warning(
-            request,
-            'You are not authorized to view this project')
-        return redirect('/taskManager/dashboard')
-    else:
-        proj = Project.objects.get(pk=project_id)
-        user_can_edit = request.user.has_perm('project_edit')
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.filter(
+            users_assigned=request.user.id,
+            pk=project_id)
+        if not proj:
+            messages.warning(
+                request,
+                'You are not authorized to view this project')
+            return redirect('/taskManager/dashboard')
+        else:
+            proj = Project.objects.get(pk=project_id)
+            user_can_edit = request.user.has_perm('project_edit')
 
-        return render(request, 'taskManager/project_details.html',
-                      {'proj': proj, 'user_can_edit': user_can_edit})
+            return render(request, 'taskManager/project_details.html',
+                          {'proj': proj, 'user_can_edit': user_can_edit})
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def note_create(request, project_id, task_id):
-    if request.method == 'POST':
+    user = request.user
+    if user.is_authenticated():
+        if request.method == 'POST':
 
-        parent_task = Task.objects.get(pk=task_id)
+            parent_task = Task.objects.get(pk=task_id)
 
-        note_title = request.POST.get('note_title', False)
-        text = request.POST.get('text', False)
+            note_title = request.POST.get('note_title', False)
+            text = request.POST.get('text', False)
 
-        note = Notes(
-            title=note_title,
-            text=text,
-            user=request.user,
-            task=parent_task)
+            note = Notes(
+                title=note_title,
+                text=text,
+                user=request.user,
+                task=parent_task)
 
-        note.save()
-        return redirect('/taskManager/' + project_id + '/' +
-                        task_id, {'new_note_added': True})
-    else:
-        return render_to_response(
-            'taskManager/note_create.html', {'task_id': task_id}, RequestContext(request))
+            note.save()
+            return redirect('/taskManager/' + project_id + '/' +
+                            task_id, {'new_note_added': True})
+        else:
+            return render_to_response(
+                'taskManager/note_create.html', {'task_id': task_id}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def note_edit(request, project_id, task_id, note_id):
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.get(pk=project_id)
+        task = Task.objects.get(pk=task_id)
+        note = Notes.objects.get(pk=note_id)
 
-    proj = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
-    note = Notes.objects.get(pk=note_id)
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            if task.project == proj:
 
-        if task.project == proj:
+                if note.task == task:
 
-            if note.task == task:
+                    text = request.POST.get('text', False)
+                    note_title = request.POST.get('note_title', False)
 
-                text = request.POST.get('text', False)
-                note_title = request.POST.get('note_title', False)
+                    note.title = note_title
+                    note.text = text
+                    note.save()
 
-                note.title = note_title
-                note.text = text
-                note.save()
-
-        return redirect('/taskManager/' + project_id + '/' + task_id)
-    else:
-        return render_to_response(
-            'taskManager/note_edit.html', {'note': note}, RequestContext(request))
+            return redirect('/taskManager/' + project_id + '/' + task_id)
+        else:
+            return render_to_response(
+                'taskManager/note_edit.html', {'note': note}, RequestContext(request))
 
 # A4: Insecure Direct Object Reference (IDOR)
 
 
 def note_delete(request, project_id, task_id, note_id):
-    proj = Project.objects.get(pk=project_id)
-    task = Task.objects.get(pk=task_id)
-    note = Notes.objects.get(pk=note_id)
-    if proj is not None:
-        if task is not None and task.project == proj:
-            if note is not None and note.task == task:
-                note.delete()
+    user = request.user
+    if user.is_authenticated():
+        proj = Project.objects.get(pk=project_id)
+        task = Task.objects.get(pk=task_id)
+        note = Notes.objects.get(pk=note_id)
+        if proj is not None:
+            if task is not None and task.project == proj:
+                if note is not None and note.task == task:
+                    note.delete()
 
-    return redirect('/taskManager/' + project_id + '/' + task_id)
+        return redirect('/taskManager/' + project_id + '/' + task_id)
 
 
 def task_details(request, project_id, task_id):
@@ -701,7 +717,9 @@ def show_tutorial(request, vuln_id):
 
 
 def profile(request):
-    return render(request, 'taskManager/profile.html', {'user': request.user})
+    user = request.user
+    if user.is_authenticated():
+        return render(request, 'taskManager/profile.html', {'user': request.user})
 
 # A4: Insecure Direct Object Reference (IDOR)
 # A8: Cross Site Request Forgery (CSRF)
