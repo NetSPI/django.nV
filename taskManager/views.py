@@ -73,6 +73,13 @@ def manage_tasks(request, project_id):
 
 def manage_projects(request):
 
+    # This is not request-data-injection but we could detect something like it.
+    # This is basically the same thing that we wrote for Golang, here:
+    # https://github.com/returntocorp/sgrep-rules/blob/develop/go/gorilla/handler-attribute-read-from-multiple-sources.yml
+    # The vulnerability here is that it does all the authorization checks using
+    # request.user. Then it reads userid from the request object and gets that
+    # user from the DB. This means an attacker could bypass authorization by using a different
+    # userid than the one used for authorization.
     user = request.user
 
     if user.is_authenticated():
@@ -175,11 +182,15 @@ def upload(request, project_id):
         form = ProjectFileForm(request.POST, request.FILES)
 
         if form.is_valid():
+            # request-data-injection.sql-injection.001.source
+            # request-data-injection.advanced-path-traversal.001.source
             name = request.POST.get('name', False)
+            # request-data-injection.advanced-path-traversal.001.sink
             upload_path = store_uploaded_file(name, request.FILES['file'])
 
             #A1 - Injection (SQLi)
             curs = connection.cursor()
+            # request-data-injection.sql-injection.001.sink
             curs.execute(
                 "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
                 (name, upload_path, project_id))
@@ -384,6 +395,8 @@ def project_delete(request, project_id):
 
 def logout_view(request):
     logout(request)
+    # request-data-injection.open-redirect.001.source
+    # request-data-injection.open-redirect.001.sink
     return redirect(request.GET.get('redirect', '/taskManager/'))
 
 
