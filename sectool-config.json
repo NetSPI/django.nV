@@ -1,0 +1,23 @@
+{
+	"auth": {
+		"ACCESS_KEY": "123456",
+		"SECRET_KEY": "234567"
+	},
+	"tests": [{
+			"category": "static analysis",
+			"policy": {
+				"action": "alert",
+				"options": {
+					"weak_ssl": "off",
+					"rng": "off",
+					"legacy_hash": "off",
+					"cryptomining": "off",
+					"deserialization": "off",
+					"xmlparsing": "off",
+					"dynamic_execution": "on"
+				}
+			},
+			"name": "appinspector"
+		}
+	]
+}
