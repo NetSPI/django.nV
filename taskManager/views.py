@@ -488,6 +488,12 @@ def index(request):
         )
 
 
+def new_route(request):
+    sorted_projects = Project.objects.order_by('-start_date')
+
+    admin_level = False
+
+
 def profile_view(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
