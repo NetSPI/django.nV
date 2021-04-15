@@ -3,14 +3,14 @@ FROM python:3.4-alpine
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update \
-  && apk add --virtual build-deps gcc python3-dev musl-dev
+  && apk add --virtual build-deps gcc python3-dev musl-dev libffi-dev
 
 RUN addgroup -S -g 1002 django \
     && adduser -S -G django -u 1002 django
 
 COPY ./requirements.txt /requirements.txt
 RUN pip install --no-cache-dir -r /requirements.txt \
-    && rm -rf /requirements
+    && rm /requirements.txt
 
 COPY ./reset_db.sh /reset_db.sh
 RUN sed -i 's/\r$//g' /reset_db.sh
