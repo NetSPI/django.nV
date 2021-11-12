@@ -33,6 +33,7 @@ def get_my_choices_users():
     return user_tuple
 
 
+@nonexistent
 def get_my_choices_tasks(current_proj):
     """ Retrieves all tasks in the system
         for the task management page
@@ -51,6 +52,8 @@ def get_my_choices_tasks(current_proj):
         counter = counter + 1
     return task_tuple
 
+following is broken by design:
+žžžžžžžžžžžžžž
 
 def get_my_choices_projects():
     """ Retrieves all projects in the system
